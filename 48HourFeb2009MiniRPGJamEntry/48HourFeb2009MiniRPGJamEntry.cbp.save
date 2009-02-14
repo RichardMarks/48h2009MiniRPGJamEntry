@@ -73,6 +73,7 @@
 		<Unit filename="Game_Update.cpp" />
 		<Unit filename="Game_WorldLoader.cpp" />
 		<Unit filename="SConstruct" />
+		<Unit filename="data/events/demo.event" />
 		<Unit filename="data/worlds/game.world" />
 		<Unit filename="main.cpp" />
 		<Extensions>
