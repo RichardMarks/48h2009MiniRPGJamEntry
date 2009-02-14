@@ -1,0 +1,28 @@
+#
+# SConstruct
+# this scons build script produces a version of the ged101 engine library 
+################################################################################
+projectConfig = {}
+################################################################################
+# this is the file name of the library file to output
+projectConfig['lib'] = 'ged101minimal'
+################################################################################
+projectConfig['src'] = Split("""
+	./source/BitmapFont.cpp
+	./source/ColorRGB.cpp
+	./source/DebugReport.cpp
+	./source/GameTimer.cpp
+	./source/GraphicsDevice.cpp
+	./source/ImageList.cpp
+	./source/ImageResource.cpp
+	./source/InputDevice.cpp
+	./source/InputDevice_Joystick.cpp
+	./source/InputDevice_Keyboard.cpp
+	./source/InputDevice_Mouse.cpp
+	./source/NameDirectory.cpp
+	""")
+################################################################################
+buildEnv = Environment(CCFLAGS = '-g', CPPPATH = ['../','.','./include'])
+buildEnv.StaticLibrary('./lib/' + projectConfig['lib'], projectConfig['src'])
+################################################################################
+

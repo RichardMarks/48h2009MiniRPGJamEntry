@@ -1,0 +1,84 @@
+# game.world
+# World Definition File for the ged101minimal-based Mini-RPG Game Engine
+# developed by Richard Marks and Redslash
+
+# Command reference
+# TILESDIR [path]
+# MAPSDIR [path]
+# TILESET [name]:[file]:[width]:[height]:[columns]:[rows]:[padding]
+# MAP [map-name]:[file]:[tileset-name]
+# START [map-name]
+
+# define the tileset directory
+TILESDIR data/graphics/game/tiles/
+
+# define the map directory
+MAPSDIR data/maps/
+
+# define the sprite directory
+SPRITESDIR data/graphics/game/sprites/
+
+# define the tilesets
+TILESET Test:testmap_tiles.png:8:8:24:1:1
+
+# define the maps
+MAP Test1:test1.map:Test
+MAP Test2:test2.map:Test
+
+# define the map warps
+# WARP [from-map-name]:[from-x]:[from-y]:[to-map-name]:[to-x]:[to-y]:[armed (true|false)]:[persists (true|false)]
+
+WARP Test1:29:13:Test2:2:13:true:true
+WARP Test2:0:13:Test1:26:13:true:true
+
+# define the starting location
+START Test1
+
+# define the sprites
+
+SPRITE player.png:8:8:3:5
+SPRITE npc_adultm.png:8:8:3:15
+SPRITE npc_adultf.png:8:8:3:15
+SPRITE npc_childm.png:8:8:3:9
+SPRITE npc_childf.png:8:8:3:9
+SPRITE npc_guard.png:8:8:3:20
+SPRITE antagonist.png:8:8:3:20
+
+#define the player
+PLAYER 1:10:10
+
+# define some npcs
+NPC 2:Test1:19:11
+NPC 2:Test2:15:12
+NPC 3:Test1:9:18
+
+NPCMOTION 1:@@ERRRRSDDDDWLLLLNUUUU
+NPCMOTION 3:@@ERRRRRR_!N!!S!!@WLLLLLL_!S!!N!!
+NPCMOTION 2:@@NUUUUU_!!W!!N!!E!!S!!@DDDDD_!!W!!S!!E!!
+
+
+# gameMaps_->AddMap("World", "data/maps/world.map", "data/maps/world.set");
+# gameMaps_->AddMap("Castle Entrance", "data/maps/castle0.map", "data/maps/castle.set");
+# gameMaps_->AddMap("Castle Hall", "data/maps/castle1.map", "data/maps/castle.set");
+# gameMaps_->AddMap("Castle Armory", "data/maps/castle2.map", "data/maps/castle.set");
+# gameMaps_->AddMap("Castle Throne Room", "data/maps/castle3.map", "data/maps/castle.set");
+# gameMaps_->AddMap("Castle Chambers", "data/maps/castle4.map", "data/maps/castle.set");
+# gameMaps_->AddMap("Castle Dungeon", "data/maps/castle5.map", "data/maps/castle.set");
+# gameMaps_->AddMap("Town", "data/maps/town0.map", "data/maps/town.set");
+# gameMaps_->AddMap("Dark Forest Entrance", "data/maps/forest0.map", "data/maps/forest.set");
+# gameMaps_->AddMap("Dark Forest Path", "data/maps/forest1.map", "data/maps/forest.set");
+# gameMaps_->AddMap("Dark Forest Dead End", "data/maps/forest2.map", "data/maps/forest.set");
+
+# define the path that holds event files
+# EVENTSDIR [path]
+# EVENTSDIR data/events/
+
+# define some events
+# EVENT [file]:[map-name]:[x-tile]:[y-tile]:[armed (true|false)]:[persists (true|false)]
+
+# EVENT demo.event:Test1:17:19:true:true
+
+
+
+
+

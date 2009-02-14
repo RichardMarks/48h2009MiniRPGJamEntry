@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="ged101minimal_Workspace">
+		<Project filename="48HourFeb2009MiniRPGJamEntry/48HourFeb2009MiniRPGJamEntry.cbp" active="1">
+			<Depends filename="ged101minimal/ged101minimal.cbp" />
+		</Project>
+		<Project filename="ged101minimal/ged101minimal.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

@@ -1,0 +1,62 @@
+#
+# SConstruct
+# this scons build script produces the executable for the example project
+################################################################################
+# a little preparation for building an allegro project
+buildEnv = Environment(CCFLAGS = '-g -Wall')
+buildEnv.ParseConfig('allegro-config --cflags --libs')
+projectConfig = {}
+################################################################################
+# this is the file name of the executable file to output
+projectConfig['executable'] = 'GameExe'
+################################################################################
+# if you need to look in special folders for include files add them here
+projectConfig['include path'] = Split("""
+	.
+	../ged101minimal/include
+	""")
+################################################################################
+# if your libs are in special locations set their paths here
+projectConfig['library path'] = Split("""
+	../ged101minimal/lib/
+	""")
+################################################################################
+# if you need to link against other libs, add them here
+projectConfig['libraries'] = Split("""
+	png
+	ged101minimal
+	""") + buildEnv['LIBS']
+################################################################################
+# add your sources for your project here
+projectConfig['sources'] = Split("""
+	GameCamera.cpp
+	GameSprite.cpp
+	GameMapSprite.cpp
+	GameMapSpriteManager.cpp
+	GameMap.cpp
+	GameMapLayer.cpp
+	GameMapEvent.cpp
+	GameMapManager.cpp
+	GameTilesetManager.cpp
+	GameTileset.cpp
+	GameObject.cpp
+	GameBasicMapWarp.cpp
+	GameNPC.cpp
+	GameNPCManager.cpp
+	GameGUIGaugeWidget.cpp
+	GameBattle.cpp
+	Game.cpp
+	Game_Initialize.cpp
+	Game_Destroy.cpp
+	Game_Update.cpp
+	Game_Render.cpp
+	Game_WorldLoader.cpp
+	main.cpp
+	""")
+################################################################################
+buildEnv.Program(projectConfig['executable'], projectConfig['sources'],
+	LIBS = projectConfig['libraries'],
+	LIBPATH = projectConfig['library path'],
+	CPPPATH = projectConfig['include path'])
+################################################################################
+
