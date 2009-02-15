@@ -6,7 +6,7 @@
 // Author: Richard Marks
 // Purpose: the class that defines a map event
 
-#include "GameMapEvent.h"
+#include "GameLibrary.h"
 
 
 namespace GAME
@@ -16,15 +16,15 @@ int worldX_;					// world position of trigger
 		int worldY_;					// ..
 
 		GameMapEventHandler* handler_; // pointer to the class instance that has the code to Execute()
-		
+
 		bool armed_;					// is this trigger armed?
 		bool persists_;					// should the trigger disarm after being activated?
-		
+
 		int parentMapIndex_;			// the index of the map that the trigger is placed on
 		int targetMapIndex_;			// the index of the map to warp to (warp triggers only)
 		int targetX_;					// the world position to warp to
 		int targetY_;					// ..
-		
+
 		std::string extra_;				// anything extra I might need
 */
 	GameMapEvent::GameMapEvent() :
@@ -39,9 +39,9 @@ int worldX_;					// world position of trigger
 		targetY_(0)
 	{
 	}
-	
+
 	/**************************************************************************/
-	
+
 	GameMapEvent::GameMapEvent(
 		int worldX, int worldY, int parentMapIndex,
 		GameMapEventHandler* handler,
@@ -60,117 +60,117 @@ int worldX_;					// world position of trigger
 		targetY_(targetY)
 	{
 	}
-	
+
 	/**************************************************************************/
-	
+
 	GameMapEvent::~GameMapEvent()
 	{
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapEvent::SetLocation(int parentMapIndex, int x, int y)
 	{
 		parentMapIndex_ = parentMapIndex;
 		worldX_ = x;
 		worldY_ = y;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapEvent::GetLocation(int& storageMapIndex, int& storageX, int& storageY)
 	{
 		storageMapIndex = parentMapIndex_;
 		storageX = worldX_;
 		storageY = worldY_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapEvent::SetEventHandler(GameMapEventHandler* handler)
 	{
 		handler_ = handler;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	GameMapEventHandler* GameMapEvent::GetEventHandler()
 	{
 		return handler_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapEvent::Arm()
 	{
 		armed_ = true;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapEvent::Disarm()
 	{
 		armed_ = false;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	bool GameMapEvent::IsArmed()
 	{
 		return armed_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapEvent::Persists(bool persists)
 	{
 		persists_ = persists;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	bool GameMapEvent::IsPersistent()
 	{
 		return persists_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapEvent::SetWarpTargetLocation(int targetMapIndex, int x, int y)
 	{
 		targetMapIndex_ = targetMapIndex;
 		targetX_ = x;
 		targetY_ = y;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapEvent::GetWarpTargetLocation(int& storageMapIndex, int& storageX, int& storageY)
 	{
 		storageMapIndex = targetMapIndex_;
 		storageX = targetX_;
 		storageY = targetY_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapEvent::SetExtra(const char* extra)
 	{
 		extra_ = extra;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	const std::string& GameMapEvent::GetExtra()
 	{
 		return extra_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapEvent::CloneFrom(GameMapEvent* sourceEvent)
 	{
-		
+
 		worldX_ = sourceEvent->worldX_;
 		worldY_ = sourceEvent->worldY_;
 		handler_ = sourceEvent->handler_;
@@ -181,9 +181,9 @@ int worldX_;					// world position of trigger
 		targetX_ = sourceEvent->targetX_;
 		targetY_ = sourceEvent->targetY_;
 		extra_ = sourceEvent->extra_;
-		
+
 		/*
-		fprintf(stderr, 
+		fprintf(stderr,
 		"Event 0x%8X Data:\n{\n"
 		"\tworldX_ = %d;\n"
 		"\tworldY_ = %d;\n"
@@ -197,13 +197,13 @@ int worldX_;					// world position of trigger
 		"\textra_ = %s;\n"
 		"}\n",
 		event->worldX_, event->worldY_, event->handler_); */
-		
+
 	}
-	
+
 	void GameMapEvent::DebugList()
 	{
 #if 0
-		fprintf(stderr, 
+		fprintf(stderr,
 		"Event Data:\n{\n"
 		"\tworldX_ = %d;\n"
 		"\tworldY_ = %d;\n"
@@ -220,7 +220,7 @@ int worldX_;					// world position of trigger
 		parentMapIndex_,targetMapIndex_,targetX_,targetY_,extra_.c_str());
 #endif
 	}
-	
+
 } // end namespace
 
 

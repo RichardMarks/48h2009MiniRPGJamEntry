@@ -25,36 +25,40 @@ namespace GAME
 		const int WALK_EAST_FRAME  		= 8;
 		const int WALK_WEST_FRAME  		= 12;
 	} // end namespace
-	
+
 	class GameMapSprite : public GameSprite
 	{
 	public:
 		GameMapSprite();
-		
+
 		GameMapSprite(const char* pathName);
-	
+
 		GameMapSprite(
-			const char* frameImagePathName, 
+			const char* frameImagePathName,
 			int frameWidth, int frameHeight,
 			int frameCount,
 			int frameDelay,
 			int initialFrame = 0);
-			
+
 		~GameMapSprite();
-		
+
 		void SetFaceDirection(int facing = MAPSPRITE::WALK_SOUTH_FRAME);
 		void GetFaceDirection(int& storageFacing);
-		
+
 		void SetWorldPosition(int x, int y);
 		void GetWorldPosition(int& storageX, int& storageY);
-		
+
 		void Update();
 		void Render(ImageResource* target);
-		
+
+
+		// returns true if the bounding rectangle of this sprite intersects with the passed sprite
+		bool CollidesWith(GameMapSprite* sprite) const;
+
 	private:
 		GameMapSprite(const GameMapSprite& rhs);
 		const GameMapSprite& operator=(const GameMapSprite& rhs);
-		
+
 	private:
 		int face_; 				// which direction is the sprite facing
 		int worldX_; 			// game world coordinate in pixels

@@ -99,6 +99,8 @@ namespace GAME
 	}
 	END_OF_FUNCTION(CloseButtonHandler)
 
+	/**************************************************************************/
+
 	void GameSingleton::Execute()
 	{
 		LOCK_FUNCTION(CloseButtonHandler);
@@ -115,6 +117,8 @@ namespace GAME
 				running = false;
 			}
 
+			// test the battle system by pressing F8
+#if 1
 			if (InputDevice->KeyPressed(KEY::Key_F8))
 			{
 				if (BattleEngine->Initialize())
@@ -122,6 +126,7 @@ namespace GAME
 					BattleEngine->Execute();
 				}
 			}
+#endif
 
 			while (allegroTimerSpeedCounter > 0)
 			{
@@ -143,21 +148,6 @@ namespace GAME
 
 	/**************************************************************************/
 
-	GameTilesetManager* GameSingleton::GetTilesetManager() const { return gameTiles_; } // get a pointer to the tileset manager
-	GameMapManager* GameSingleton::GetMapManager() const { return gameMaps_; } // get a pointer to the map manager
-
-	GameMapSpriteManager* GameSingleton::GetMapSpriteManager() const { return gameSprites_; } // get a pointer to the map sprite manager
-	GameNPCManager* GameSingleton::GetNPCManager() const { return gameNPCs_; } // get a pointer to the npc manager
-
-	int GameSingleton::GetPlayerSpriteIndex() const { return playerSpriteIndex_; } // get the player sprite index value
-
-	GameMap* GameSingleton::GetMap() const { return currentMap_; } // get a pointer to the current map
-	// GameObject* GameSingleton::GetPlayerObject() const { return playerObject_; } // get a pointer to the player
-	GameCamera* GameSingleton::GetCamera() const { return camera_; } // get a pointer to the camera
-	BitmapFont* GameSingleton::GetSmallFont() const { return smallFont_; } // get a pointer to the small font
-	BitmapFont* GameSingleton::GetLargeFont() const { return largeFont_; } // get a pointer to the large font
-	ImageResource* GameSingleton::GetDisplay() const { return microDisplay_; } // get a pointer to the micro display
-
 	void GameSingleton::ChangeMap(GameMap* map)
 	{
 		currentMap_ = map;
@@ -165,68 +155,75 @@ namespace GAME
 
 	/**************************************************************************/
 
-	#if 1
-
-	void GameSingleton::InitializeNPCs()
+	GameTilesetManager* GameSingleton::GetTilesetManager() const
 	{
-		npcObject_ = new GameObject("data/graphics/game/sprites/npc_adultm.png", 8, 8, 3, 15);
-
-		GameMapSprite* npcSprite = npcObject_->GetSprite();
-
-		npcSprite->SetWorldPosition(8 * 18, 8 * 6);
-		npcSprite->SetFaceDirection(MAPSPRITE::WALK_SOUTH_FRAME);
-		npcSprite->Animate();
-
+		return gameTiles_;
 	}
 
 	/**************************************************************************/
 
-	void GameSingleton::UpdateNPCs()
+	GameMapManager* GameSingleton::GetMapManager() const
 	{
-		npcObject_->Update();
+		return gameMaps_;
 	}
 
 	/**************************************************************************/
 
-	void GameSingleton::RenderNPCs()
+	GameMapSpriteManager* GameSingleton::GetMapSpriteManager() const
 	{
-
-		// get player's field of view (camera)
-		int camWidth = 0, camHeight = 0;
-		int camWorldX = 0, camWorldY = 0;
-
-		camera_->GetSize(camWidth, camHeight);
-		camera_->GetWorldPosition(camWorldX, camWorldY);
-
-		int fov[] = /* left, top, right, and bottom collision planes */
-		{
-			camWorldX,
-			camWorldY,
-			camWorldX + camWidth,
-			camWorldY + camHeight
-		};
-
-		// if the npc is within the field of view
-		int npcsx = 0, npcsy = 0;
-		int npcwx = 0, npcwy = 0;
-		GameMapSprite* npcSprite = npcObject_->GetSprite();
-
-		npcSprite->GetWorldPosition(npcwx, npcwy);
-
-		if (npcwx >= fov[0] && npcwx <= fov[2] && npcwy >= fov[1] && npcwy <= fov[3])
-		{
-			// figure the screen position
-			npcsx = npcwx - fov[0];
-			npcsy = npcwy - fov[1];
-			// set the screen position
-			npcSprite->SetScreenPosition(npcsx, npcsy);
-			// draw the npc
-			npcObject_->Render(microDisplay_);
-		}
-
+		return gameSprites_;
 	}
 
-	#endif
+	/**************************************************************************/
+
+	GameNPCManager* GameSingleton::GetNPCManager() const
+	{
+		return gameNPCs_;
+	}
+
+	/**************************************************************************/
+
+	int GameSingleton::GetPlayerSpriteIndex() const
+	{
+		return playerSpriteIndex_;
+	}
+
+	/**************************************************************************/
+
+	GameMap* GameSingleton::GetMap() const
+	{
+		return currentMap_;
+	}
+
+	/**************************************************************************/
+
+	GameCamera* GameSingleton::GetCamera() const
+	{
+		return camera_;
+	}
+
+	/**************************************************************************/
+
+	BitmapFont* GameSingleton::GetSmallFont() const
+	{
+		return smallFont_;
+	}
+
+	/**************************************************************************/
+
+	BitmapFont* GameSingleton::GetLargeFont() const
+	{
+		return largeFont_;
+	}
+
+	/**************************************************************************/
+
+	ImageResource* GameSingleton::GetDisplay() const
+	{
+		return microDisplay_;
+	}
+
+	/**************************************************************************/
 
 } // end namespace
 

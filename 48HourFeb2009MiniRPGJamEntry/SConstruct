@@ -51,6 +51,7 @@ projectConfig['sources'] = Split("""
 	Game_Update.cpp
 	Game_Render.cpp
 	Game_WorldLoader.cpp
+	Game_CheckNPCCollisions.cpp
 	main.cpp
 	""")
 ################################################################################

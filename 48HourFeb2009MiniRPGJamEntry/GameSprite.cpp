@@ -6,18 +6,7 @@
 // Author: Richard Marks
 // Purpose: the class that defines a game sprite, its animation abilities, and anything else I think of
 
-// so we don't need to prefix the ENGINE:: namespace scope to everything
-#define GED101_USE_SIMPLE_NAMESPACES
-
-// windows build bug patch
-#if defined(WIN_32)
-#define DWORD signed long long
-#endif
-
-// include the ged101 minimal header
-#include "ged101minimal.h"
-
-#include "GameSprite.h"
+#include "GameLibrary.h"
 
 namespace GAME
 {
@@ -34,9 +23,9 @@ namespace GAME
 		frames_(0)
 	{
 	}
-	
+
 	/**************************************************************************/
-	
+
 	GameSprite::GameSprite(const char* pathName) :
 		width_(0),
 		height_(0),
@@ -54,11 +43,11 @@ namespace GAME
 			LogFatal("could not load the requested sprite file: %s", pathName);
 		}
 	}
-	
+
 	/**************************************************************************/
-	
+
 	GameSprite::GameSprite(
-		const char* frameImagePathName, 
+		const char* frameImagePathName,
 		int frameWidth, int frameHeight,
 		int frameCount,
 		int frameDelay,
@@ -76,16 +65,16 @@ namespace GAME
 	{
 		frames_ = new ImageResource(frameImagePathName);
 	}
-	
+
 	/**************************************************************************/
-	
+
 	GameSprite::~GameSprite()
 	{
 		Destroy();
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameSprite::Destroy()
 	{
 		if (frames_)
@@ -94,32 +83,32 @@ namespace GAME
 			frames_ = 0;
 		}
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameSprite::SetScreenPosition(int x, int y)
 	{
 		screenX_ = x;
 		screenY_ = y;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameSprite::GetScreenPosition(int& storageX, int& storageY)
 	{
 		storageX = screenX_;
 		storageY = screenY_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameSprite::Animate(bool enabled)
 	{
 		animating_ = enabled;
 	}
 
 	/**************************************************************************/
-	
+
 	void GameSprite::Update()
 	{
 		// only animate if we should be
@@ -131,95 +120,95 @@ namespace GAME
 			{
 				frame_ = 0;
 			}
-	
+
 			frameCounter_ = 0;
 		}
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameSprite::Render(ENGINE::ImageResource* target)
 	{
 		frames_->BlitMasked(
 			target,
 			1 + (frame_ * width_) + (frame_), 1,
-			screenX_, screenY_, 
+			screenX_, screenY_,
 			width_, height_);
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameSprite::SetFrame(int frame)
 	{
 		frame_ = frame;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameSprite::GetFrame(int& storageFrame)
 	{
 		storageFrame = frame_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameSprite::SetFrameCount(int frameCount)
 	{
 		frameCount_ = frameCount;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameSprite::GetFrameCount(int& storageFrameCount)
 	{
 		storageFrameCount = frameCount_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameSprite::SetFrameDelay(int frameDelay)
 	{
 		frameDelay_ = frameDelay;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameSprite::GetFrameDelay(int& storageFrameDelay)
 	{
 		storageFrameDelay = frameDelay_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	bool GameSprite::IsAnimating() const
 	{
 		return animating_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameSprite::SetSize(int width, int height)
 	{
 		width_ = width;
 		height_ = height;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameSprite::GetSize(int& storageWidth, int& storageHeight)
 	{
 		storageWidth = width_;
 		storageHeight = height_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	bool GameSprite::LoadFromFile(const char* pathName)
 	{
 		// write a sprite loader here later...
 		return false;
 	}
-	
+
 } // end namespace
 
 

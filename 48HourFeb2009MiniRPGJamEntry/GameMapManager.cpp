@@ -6,21 +6,7 @@
 // Author: Richard Marks
 // Purpose: manages a registry of named maps
 
-#include "GameMapManager.h"
-#include "GameMap.h"
-#include "GameTilesetManager.h"
-#include "GameTileset.h"
-
-// so we don't need to prefix the ENGINE:: namespace scope to everything
-#define GED101_USE_SIMPLE_NAMESPACES
-
-// windows build bug patch
-#if defined(WIN_32)
-#define DWORD signed long long
-#endif
-
-// include the ged101 minimal header
-#include "ged101minimal.h"
+#include "GameLibrary.h"
 
 namespace GAME
 {
@@ -28,19 +14,19 @@ namespace GAME
 	{
 		tilesets_ = tilesetManager;
 	}
-	
+
 	GameMapManager::~GameMapManager()
 	{
 		maps_.clear();
 		names_.clear();
 	}
-	
+
 	/**************************************************************************/
 
 	void GameMapManager::Add(const char* mapName, const char* mapFilePath, const char* tilesetName)
 	{
 		GameMapSTLMapIterator iter;
-		
+
 		if (!((iter = names_.find(mapName)) != names_.end()))
 		{
 			// register the map instance
@@ -48,7 +34,7 @@ namespace GAME
 			mapInstance->LoadMapFromFile(mapFilePath);
 			mapInstance->SetName(mapName);
 			maps_.push_back(mapInstance);
-			
+
 			// register the name
 			names_[mapName] = static_cast<unsigned int>(maps_.size() - 1);
 			//LogMessage("Registered %s\n", mapName);
@@ -58,13 +44,13 @@ namespace GAME
 			LogError("The map [%s] is already registered!\nYou cannot register a map to the same map name!\n", mapName);
 		}
 	}
-	
+
 	/**************************************************************************/
-	
+
 	GameMap* GameMapManager::Get(const char* mapName)
 	{
 		GameMapSTLMapIterator iter;
-		
+
 		if ((iter = names_.find(mapName)) != names_.end())
 		{
 			// return the map instance
@@ -73,24 +59,24 @@ namespace GAME
 		else
 		{
 			LogError("The map [%s] is not registered!\n", mapName);
-			
+
 			// return a null pointer
 			return 0;
 		}
 	}
-	
+
 	/**************************************************************************/
-	
+
 	GameMap* GameMapManager::Get(int index)
 	{
 		return (static_cast<unsigned int>(index) < maps_.size()) ? maps_.at(index) : 0;
 	}
-	
+
 	void GameMapManager::DebugList()
 	{
 #if 0
 		GameMapSTLMapIterator iter;
-		
+
 		for (iter = names_.begin(); iter != names_.end(); iter++)
 		{
 			GameMap* map = maps_.at(static_cast<unsigned int>(iter->second));
@@ -99,7 +85,7 @@ namespace GAME
 		}
 #endif
 	}
-	
+
 } // end namespace
 
 

@@ -19,37 +19,37 @@ namespace ENGINE
 namespace GAME
 {
 	using ENGINE::ImageResource;
-	
+
 	class GameNPC;
-	
+
 	class GameNPCManager
 	{
 	public:
 		GameNPCManager();
 		~GameNPCManager();
-		
+
 		void Clear();
-		
+
 		unsigned int Add(GameNPC* npc, const char* parentMapName);
-		
+
 		GameNPC* Get(unsigned int index);
-		
+
 		const unsigned int GetNumNPCs();
-		
+
 		bool IsNPCOnMap(unsigned int index, const char* mapName) const;
-		
+
 		void Update(const char* mapName);
 		void Render(const char* mapName, ImageResource* target, int* fov = 0);
-		
+
 	private:
 		GameNPCManager(const GameNPCManager& rhs);
 		const GameNPCManager& operator=(const GameNPCManager& rhs);
-		
+
 	private:
 		std::vector<GameNPC*> npcs_;
 		std::vector<std::string> maps_;
 	};
-	
+
 } // end namespace
 #endif
 

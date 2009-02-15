@@ -6,110 +6,116 @@
 // Author: Richard Marks
 // Purpose: the class that defines a sprite that walks on the world map
 
-// so we don't need to prefix the ENGINE:: namespace scope to everything
-#define GED101_USE_SIMPLE_NAMESPACES
-
-// windows build bug patch
-#if defined(WIN_32)
-#define DWORD signed long long
-#endif
-
-// include the ged101 minimal header
-#include "ged101minimal.h"
-
-#include "GameMapSprite.h"
+#include "GameLibrary.h"
 
 namespace GAME
 {
-	GameMapSprite::GameMapSprite() : 
+	GameMapSprite::GameMapSprite() :
 		GameSprite(),
 		face_(0),
 		worldX_(0),
 		worldY_(0)
 	{
 	}
-	
+
 	/**************************************************************************/
-	
-	GameMapSprite::GameMapSprite(const char* pathName) : 
+
+	GameMapSprite::GameMapSprite(const char* pathName) :
 		GameSprite(pathName),
 		face_(0),
 		worldX_(0),
 		worldY_(0)
 	{
 	}
-	
+
 	/**************************************************************************/
-	
+
 	GameMapSprite::GameMapSprite(
-		const char* frameImagePathName, 
+		const char* frameImagePathName,
 		int frameWidth, int frameHeight,
 		int frameCount,
 		int frameDelay,
-		int initialFrame) : 
+		int initialFrame) :
 		GameSprite(frameImagePathName, frameWidth, frameHeight, frameCount, frameDelay, initialFrame),
 		face_(0),
 		worldX_(0),
 		worldY_(0)
 	{
 	}
-	
+
 	/**************************************************************************/
-	
+
 	GameMapSprite::~GameMapSprite()
 	{
 		GameSprite::Destroy();
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapSprite::SetFaceDirection(int facing)
 	{
 		face_ = facing;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapSprite::GetFaceDirection(int& storageFacing)
 	{
 		storageFacing = face_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapSprite::SetWorldPosition(int x, int y)
 	{
 		worldX_ = x;
 		worldY_ = y;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapSprite::GetWorldPosition(int& storageX, int& storageY)
 	{
 		storageX = worldX_;
 		storageY = worldY_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapSprite::Update()
 	{
 		GameSprite::Update();
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameMapSprite::Render(ImageResource* target)
 	{
 		int currentFrame = frame_ + face_;
 		frames_->BlitMasked(
 			target,
 			1 + (currentFrame * width_) + (currentFrame), 1,
-			screenX_, screenY_, 
+			screenX_, screenY_,
 			width_, height_);
 	}
-	
+
+	/**************************************************************************/
+
+	bool GameMapSprite::CollidesWith(GameMapSprite* sprite) const
+	{
+		// world position and dimension of the passed sprite
+		int spriteWorldX = 0, spriteWorldY = 0;
+		int spriteWidth = 0, spriteHeight = 0;
+		sprite->GetWorldPosition(spriteWorldX, spriteWorldY);
+		sprite->GetSize(spriteWidth, spriteHeight);
+
+		return static_cast<bool>(
+			worldX_ + width_ > spriteWorldX &&
+			worldX_ < spriteWorldX + spriteWidth &&
+			worldY_ + height_ > spriteWorldY &&
+			worldY_ < spriteWorldY + spriteHeight);
+	}
+
 } // end namespace
 
 

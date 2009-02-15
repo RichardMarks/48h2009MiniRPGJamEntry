@@ -67,6 +67,7 @@
 		<Unit filename="GameTileset.h" />
 		<Unit filename="GameTilesetManager.cpp" />
 		<Unit filename="GameTilesetManager.h" />
+		<Unit filename="Game_CheckNPCCollisions.cpp" />
 		<Unit filename="Game_Destroy.cpp" />
 		<Unit filename="Game_Initialize.cpp" />
 		<Unit filename="Game_Render.cpp" />
