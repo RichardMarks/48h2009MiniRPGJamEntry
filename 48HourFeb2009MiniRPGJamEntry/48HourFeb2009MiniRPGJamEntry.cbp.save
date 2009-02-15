@@ -39,6 +39,8 @@
 		<Unit filename="GameBattle.h" />
 		<Unit filename="GameCamera.cpp" />
 		<Unit filename="GameCamera.h" />
+		<Unit filename="GameDialogueMessage.cpp" />
+		<Unit filename="GameDialogueMessage.h" />
 		<Unit filename="GameGUIGaugeWidget.cpp" />
 		<Unit filename="GameGUIGaugeWidget.h" />
 		<Unit filename="GameLibrary.h" />
@@ -69,8 +71,10 @@
 		<Unit filename="GameTilesetManager.h" />
 		<Unit filename="Game_CheckNPCCollisions.cpp" />
 		<Unit filename="Game_Destroy.cpp" />
+		<Unit filename="Game_Dialogue.cpp" />
 		<Unit filename="Game_Initialize.cpp" />
 		<Unit filename="Game_Render.cpp" />
+		<Unit filename="Game_Starfield.cpp" />
 		<Unit filename="Game_Update.cpp" />
 		<Unit filename="Game_WorldLoader.cpp" />
 		<Unit filename="SConstruct" />

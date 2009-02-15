@@ -52,9 +52,20 @@ namespace GAME
 		// draw the hud
 		playerPortrait_->Blit(microDisplay_, 0, 0, 143, 16, 16, 16);
 
+		// draw the starfield
+		starfield_->Render(microDisplay_);
+
 		// draw the overlays
 		windowOverlay_->BlitMasked(microDisplay_, 0, 0, 0, 0, 200, 150);
 		lofiOverlay_->BlitMasked(microDisplay_, 0, 0, 141, 58, 55, 60);
+
+
+		// handle any region clear requests
+		if (requestToClearDialogueRegion_)
+		{
+			microDisplay_->Rect(4, 93, 133, 145, 0, true);
+			requestToClearDialogueRegion_ = false;
+		}
 
 		// we are done rendering
 		// end the scene using special 4x scaling

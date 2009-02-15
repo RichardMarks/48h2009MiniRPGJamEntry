@@ -128,9 +128,34 @@ namespace GAME
 			}
 #endif
 
+// test the dialogue system by pressing SPACE and clear it with BACKSPACE
+#if 1
+			if (InputDevice->KeyPressed(KEY::Key_Space))
+			{
+				Dialogue("Castle Guard:         Halt! Who goes there? You are not allowed in this area! Be Gone!");
+			}
+
+			if (InputDevice->KeyPressed(KEY::Key_Backspace))
+			{
+				ClearDialogue();
+			}
+#endif
+
 			while (allegroTimerSpeedCounter > 0)
 			{
-				Update();
+				// if the dialogue is not undefined
+				if (DIALOGUE::Undefined != dialogueMessage_->GetState())
+				{
+					// update only the dialogue logic
+					dialogueMessage_->Update(false /* set to true if you want delayed output printing */ );
+				}
+				else
+				{
+					// update the game logic
+					Update();
+				}
+
+				starfield_->Update();
 
 				gameNPCs_->Update(currentMap_->GetName().c_str());
 

@@ -17,6 +17,7 @@ namespace GAME
 
 		_TMP_DELRES(smallFont_)
 		_TMP_DELRES(largeFont_)
+		_TMP_DELRES(dialogueMessage_)
 		_TMP_DELRES(microDisplay_)
 
 		_TMP_DELRES(playerPortrait_)
@@ -30,6 +31,8 @@ namespace GAME
 		_TMP_DELRES(gameMaps_)
 		_TMP_DELRES(gameSprites_)
 		_TMP_DELRES(gameNPCs_)
+
+		_TMP_DELRES(starfield_)
 
 		#undef _TMP_DELRES
 	}

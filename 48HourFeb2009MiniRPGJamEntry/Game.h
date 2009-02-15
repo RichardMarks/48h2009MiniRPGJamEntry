@@ -30,6 +30,7 @@ namespace GAME
 	class GameMap;
 	class GameMapSpriteManager;
 	class GameNPCManager;
+	class GameDialogueMessage;
 
 	class GameSingleton
 	{
@@ -62,6 +63,15 @@ namespace GAME
 		std::vector<std::string> Tokenize(const std::string& source, const std::string& delimiters);
 		void LoadWorldFile(const char* worldPath);
 
+		/// writes out @message to the dialogue display panel
+		void Dialogue(const char* message);
+
+		/// clears the dialogue display panel
+		void ClearDialogue();
+
+		/// renders the scene
+		void Render();
+
 	private:
 		GameSingleton();
 		GameSingleton(const GameSingleton& rhs);
@@ -69,13 +79,39 @@ namespace GAME
 
 	private:
 
+		/// really basic starfield code for the lofi logo area just to add something cool to distract the player LOL
+		struct Star
+		{
+			int screenX_, screenY_;
+			int speedY_;
+			int color_;
+		};
+
+		class Starfield
+		{
+		public:
+			/// expects an array of 4 ints defining the left, top, right, and bottom clipping planes
+			Starfield(int* fov, int count = 50, int maxSpeed = 2);
+			~Starfield();
+
+			void Update();
+			void Render(ImageResource* target);
+
+		private:
+			int* fov_;
+			Star* stars_;
+			int starCount_;
+		};
+
+		Starfield* starfield_;
+
+
 		void CheckMapEvents(int scanX, int scanY);
 
 		// returns true if there is a collision between the player sprite and any npc on the current map
 		bool CheckNPCCollisions() const;
 
 
-		void Render();
 		void Destroy();
 
 		ImageResource* microDisplay_; 		// the 200x150 display buffer that we scale x4 -- draw to this
@@ -96,6 +132,10 @@ namespace GAME
 		GameNPCManager* gameNPCs_; 			// manages the NPCs
 
 		int playerSpriteIndex_;
+
+		bool requestToClearDialogueRegion_; // should the render pass clear the dialogue region?
+
+		GameDialogueMessage* dialogueMessage_; // the game dialogue message handling class instance
 
 	};
 
