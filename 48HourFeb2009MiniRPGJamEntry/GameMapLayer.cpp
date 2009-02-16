@@ -170,6 +170,23 @@ namespace GAME
 				if(dy + h > destY + height) h = destY + height - dy;
 
 				tileSet_->GetImageResourceAt(tiles_[i].tileIndex)->BlitMasked(destImage,sx,sy,dx,dy,w,h);
+
+// show collision tiles (red) and events (blue)
+#if 1
+				if (tiles_[i].eventNo == 0xFF)
+				{
+					ColorRGB colorRed(255, 0, 0);
+					destImage->Rect(dx, dy, dx + w-1, dy + h-1, colorRed.Get());
+
+				}
+				else if (tiles_[i].eventNo > 0x0 && tiles_[i].eventNo < 0xFF)
+				{
+					ColorRGB colorBlue(0, 0, 255);
+					destImage->Rect(dx, dy, dx + w-1, dy + h-1, colorBlue.Get());
+
+				}
+#endif
+
 			}
 			row += numCols_;
 		}
