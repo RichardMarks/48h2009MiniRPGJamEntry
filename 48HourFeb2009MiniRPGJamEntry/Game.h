@@ -137,6 +137,12 @@ namespace GAME
 
 		GameDialogueMessage* dialogueMessage_; // the game dialogue message handling class instance
 
+		/// number of steps the player has taken
+		int stepsTaken_;
+
+		/// number of steps to initiate a random monster encounter
+		int stepsUntilAmbush_;
+
 	};
 
 	extern volatile int allegroTimerSpeedCounter;

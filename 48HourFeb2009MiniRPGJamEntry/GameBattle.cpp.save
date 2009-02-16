@@ -33,7 +33,8 @@ namespace GAME
 		//largeFont_ = new BitmapFont();
 		//if (!largeFont_->Load("data/graphics/fonts/font8x8white.png", 8, 8,1)) { return false; }
 
-		smallFont_ = GameSingleton->Get
+		smallFont_ = GameSingleton::GetInstance()->GetSmallFont();
+		largeFont_ = GameSingleton::GetInstance()->GetLargeFont();
 
 		battleSceneImage_ = new ImageResource();
 		microDisplay_ = new ImageResource(200, 150);
@@ -41,7 +42,7 @@ namespace GAME
 		SetupMonsterParty();
 		SetupFightingOrder();
 		SetupScene();
-		
+
 		return true;
 	}
 
@@ -380,6 +381,15 @@ namespace GAME
 						case 137:
 						{
 							// flee battle
+							int chance = 1 + rand() % (5 - 1);
+							if (chance == 3 || chance == 4)
+							{
+								battleOver = true;
+							}
+							timeGauge.Reset();
+							playerCanPerform = false;
+							actionCursorX = 114;
+							actionCursorY = 109;
 
 						} break;
 
@@ -514,6 +524,24 @@ namespace GAME
 		battleSceneImage_->Load(buffer);
 
 		#endif
+		
+		GameMapSprite* playerSprite = GameSingleton::GetInstance()->GetMapSpriteManager()->Get(game->GetPlayerSpriteIndex());
+		
+		int pwx, pwy;
+		playerSprite->GetWorldPosition(pwx, pwy);
+		
+		// get the value of the base layer tile at the player's world position
+		int tileValue = GameSingleton::GetInstance()->GetMap()->GetGameMapLayer(0)->GetTileIndexAt((pwx + 4) / 8, (pwy + 4) / 8);
+		
+		switch(tileValue)
+		{
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+		}
 
 		battleSceneImage_->Load("data/graphics/battle/scenes/0002.png");
 	}

@@ -153,6 +153,17 @@ namespace GAME
 				{
 					// update the game logic
 					Update();
+					stepsUntilAmbush_ -= stepsTaken_;
+					stepsTaken_ = 0;
+					if (stepsUntilAmbush_ <= 0)
+					{
+						if (BattleEngine->Initialize())
+						{
+							BattleEngine->Execute();
+						}
+						stepsUntilAmbush_ 	= 160;
+
+					}
 				}
 
 				starfield_->Update();

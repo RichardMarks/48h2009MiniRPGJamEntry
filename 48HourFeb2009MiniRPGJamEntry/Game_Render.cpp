@@ -101,13 +101,15 @@ namespace GAME
 			int eventCode = baseLayer->GetEventAt(playerTileX, playerTileY);
 
 			BitmapFont debugFont;
-			debugFont.Print(display, 4, 80,     "Current Map ID: %d", currentMap_->GetID());
-			debugFont.Print(display, 4, 80+8,   "Camera W Pos: %d, %d", camWorldX, camWorldY);
-			debugFont.Print(display, 4, 80+8*2, "Player W Pos: %d, %d", pwx, pwy);
-			debugFont.Print(display, 4, 80+8*3, "Player S Pos: %d, %d", psx, psx);
-			debugFont.Print(display, 4, 80+8*4, "Player T Pos: %d, %d", playerTileX, playerTileY);
-			debugFont.Print(display, 4, 80+8*5, "Event Code @ Player T Pos: %d", eventCode);
+			debugFont.Print(display, 4, 80,     "Current Map: (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
+			debugFont.Print(display, 4, 80+8,   "Camera World Pos: %d, %d", camWorldX, camWorldY);
+			debugFont.Print(display, 4, 80+8*2, "Player World Pos: %d, %d", pwx, pwy);
+			debugFont.Print(display, 4, 80+8*3, "Player Screen Pos: %d, %d", psx, psx);
+			debugFont.Print(display, 4, 80+8*4, "Player Tile Pos: %d, %d", playerTileX, playerTileY);
+			debugFont.Print(display, 4, 80+8*5, "Event Code @ Player Tile Pos: %d", eventCode);
 
+			debugFont.Print(display, 4, 80+8*6, "Steps Taken: %d", stepsTaken_);
+			debugFont.Print(display, 4, 80+8*7, "Steps Until Ambush: %d", stepsUntilAmbush_);
 		}
 #endif
 		GraphicsDevice->EndScene();

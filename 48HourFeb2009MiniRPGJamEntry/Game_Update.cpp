@@ -94,6 +94,7 @@ namespace GAME
 				{
 					psx--;
 					playerSprite->SetScreenPosition(psx, psy);
+					stepsTaken_++;
 
 					if (CheckNPCCollisions())
 					{
@@ -111,6 +112,7 @@ namespace GAME
 					if (!collide[0])
 					{
 						camera_->Pan(CAMERA::West);
+						stepsTaken_++;
 
 						if (CheckNPCCollisions())
 						{
@@ -128,6 +130,7 @@ namespace GAME
 						{
 							psx--;
 							playerSprite->SetScreenPosition(psx, psy);
+							stepsTaken_++;
 
 							if (CheckNPCCollisions())
 							{
@@ -158,6 +161,7 @@ namespace GAME
 				{
 					psx++;
 					playerSprite->SetScreenPosition(psx, psy);
+					stepsTaken_++;
 
 					if (CheckNPCCollisions())
 					{
@@ -175,6 +179,7 @@ namespace GAME
 					if (!collide[2])
 					{
 						camera_->Pan(CAMERA::East);
+						stepsTaken_++;
 
 						if (CheckNPCCollisions())
 						{
@@ -192,6 +197,7 @@ namespace GAME
 						{
 							psx++;
 							playerSprite->SetScreenPosition(psx, psy);
+							stepsTaken_++;
 
 							if (CheckNPCCollisions())
 							{
@@ -222,6 +228,7 @@ namespace GAME
 				{
 					psy--;
 					playerSprite->SetScreenPosition(psx, psy);
+					stepsTaken_++;
 
 					if (CheckNPCCollisions())
 					{
@@ -239,6 +246,7 @@ namespace GAME
 					if (!collide[1])
 					{
 						camera_->Pan(CAMERA::North);
+						stepsTaken_++;
 
 						if (CheckNPCCollisions())
 						{
@@ -256,6 +264,7 @@ namespace GAME
 						{
 							psy--;
 							playerSprite->SetScreenPosition(psx, psy);
+							stepsTaken_++;
 
 							if (CheckNPCCollisions())
 							{
@@ -286,6 +295,7 @@ namespace GAME
 				{
 					psy++;
 					playerSprite->SetScreenPosition(psx, psy);
+					stepsTaken_++;
 
 					if (CheckNPCCollisions())
 					{
@@ -303,6 +313,7 @@ namespace GAME
 					if (!collide[3])
 					{
 						camera_->Pan(CAMERA::South);
+						stepsTaken_++;
 
 						if (CheckNPCCollisions())
 						{
@@ -320,6 +331,7 @@ namespace GAME
 						{
 							psy++;
 							playerSprite->SetScreenPosition(psx, psy);
+							stepsTaken_++;
 
 							if (CheckNPCCollisions())
 							{

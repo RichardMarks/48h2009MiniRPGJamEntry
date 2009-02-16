@@ -90,6 +90,9 @@ namespace GAME
 		int fov[] = { 141, 43, 195, 131 };
 		starfield_ = new Starfield(fov);
 
+		stepsTaken_ 		= 0;
+		stepsUntilAmbush_ 	= 160;
+
 		return true;
 	}
 

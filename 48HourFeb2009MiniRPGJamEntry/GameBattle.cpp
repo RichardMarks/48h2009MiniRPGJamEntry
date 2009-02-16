@@ -381,6 +381,15 @@ namespace GAME
 						case 137:
 						{
 							// flee battle
+							int chance = 1 + rand() % (5 - 1);
+							if (chance == 3 || chance == 4)
+							{
+								battleOver = true;
+							}
+							timeGauge.Reset();
+							playerCanPerform = false;
+							actionCursorX = 114;
+							actionCursorY = 109;
 
 						} break;
 
@@ -516,7 +525,36 @@ namespace GAME
 
 		#endif
 
-		battleSceneImage_->Load("data/graphics/battle/scenes/0002.png");
+
+		GameMapSprite* playerSprite = GameSingleton::GetInstance()->GetMapSpriteManager()->Get(GameSingleton::GetInstance()->GetPlayerSpriteIndex());
+
+		int pwx, pwy;
+		playerSprite->GetWorldPosition(pwx, pwy);
+
+		// get the value of the base layer tile at the player's world position
+		int tileValue = GameSingleton::GetInstance()->GetMap()->GetGameMapLayer(0)->GetTileIndexAt((pwx + 4) / 8, (pwy + 4) / 8);
+
+		int zoneID = 0;
+		switch(tileValue)
+		{
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 11: { zoneID = 0; } break;
+			case 12: { zoneID = 1; } break;
+			case 20: { zoneID = 1; } break;
+			default: break;
+		}
+
+		char buffer[256];
+		sprintf(buffer, "data/graphics/battle/scenes/%04d.png", zoneID);
+		battleSceneImage_->Load(buffer);
+
+		// battleSceneImage_->Load("data/graphics/battle/scenes/0002.png");
+
 	}
 
 	void UselessDummyFunct()
