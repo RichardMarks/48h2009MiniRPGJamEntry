@@ -41,6 +41,7 @@ projectConfig['sources'] = Split("""
 	GameTileset.cpp
 	GameObject.cpp
 	GameBasicMapWarp.cpp
+	GameNameEntry.cpp
 	GameNPC.cpp
 	GameNPCManager.cpp
 	GameGUIGaugeWidget.cpp
