@@ -37,6 +37,10 @@
 		<Unit filename="GameBasicMapWarp.h" />
 		<Unit filename="GameBattle.cpp" />
 		<Unit filename="GameBattle.h" />
+		<Unit filename="GameBattleSprite.cpp" />
+		<Unit filename="GameBattleSprite.h" />
+		<Unit filename="GameBattleSpriteManager.cpp" />
+		<Unit filename="GameBattleSpriteManager.h" />
 		<Unit filename="GameCamera.cpp" />
 		<Unit filename="GameCamera.h" />
 		<Unit filename="GameDialogueMessage.cpp" />
@@ -61,6 +65,8 @@
 		<Unit filename="GameNPC.h" />
 		<Unit filename="GameNPCManager.cpp" />
 		<Unit filename="GameNPCManager.h" />
+		<Unit filename="GameNameEntry.cpp" />
+		<Unit filename="GameNameEntry.h" />
 		<Unit filename="GameObject.cpp" />
 		<Unit filename="GameObject.h" />
 		<Unit filename="GameSprite.cpp" />

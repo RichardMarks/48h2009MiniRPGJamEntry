@@ -102,7 +102,7 @@ namespace GAME
 		/// a dialogue is a list of pages
 		struct Dialogue
 		{
-			std::vector<DialoguePage> pages_;
+			std::vector<DialoguePage*> pages_;
 
 		};
 

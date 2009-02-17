@@ -40,6 +40,10 @@
 #include "GameGUIGaugeWidget.h"
 #include "GameBattle.h"
 #include "GameDialogueMessage.h"
+#include "GameNameEntry.h"
+
+#include "GameBattleSprite.h"
+#include "GameBattleSpriteManager.h"
 
 #include "Game.h"
 

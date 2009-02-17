@@ -34,9 +34,28 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="main.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Unit filename="include/BitmapFont.h" />
+		<Unit filename="include/ColorRGB.h" />
+		<Unit filename="include/DebugReport.h" />
+		<Unit filename="include/GameTimer.h" />
+		<Unit filename="include/GraphicsDevice.h" />
+		<Unit filename="include/ImageList.h" />
+		<Unit filename="include/ImageResource.h" />
+		<Unit filename="include/InputDevice.h" />
+		<Unit filename="include/NameDirectory.h" />
+		<Unit filename="include/ged101minimal.h" />
+		<Unit filename="source/BitmapFont.cpp" />
+		<Unit filename="source/ColorRGB.cpp" />
+		<Unit filename="source/DebugReport.cpp" />
+		<Unit filename="source/GameTimer.cpp" />
+		<Unit filename="source/GraphicsDevice.cpp" />
+		<Unit filename="source/ImageList.cpp" />
+		<Unit filename="source/ImageResource.cpp" />
+		<Unit filename="source/InputDevice.cpp" />
+		<Unit filename="source/InputDevice_Joystick.cpp" />
+		<Unit filename="source/InputDevice_Keyboard.cpp" />
+		<Unit filename="source/InputDevice_Mouse.cpp" />
+		<Unit filename="source/NameDirectory.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

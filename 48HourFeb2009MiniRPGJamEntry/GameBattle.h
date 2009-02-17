@@ -19,55 +19,72 @@ namespace ENGINE
 
 namespace GAME
 {
+	using ENGINE::ImageResource;
+	using ENGINE::BitmapFont;
+
+	/// a class for handling battle rewards
 	class BattleReward
 	{
 	public:
 		BattleReward();
 		~BattleReward();
-		
+
 	private:
 		BattleReward(const BattleReward& rhs);
 		const BattleReward& operator=(const BattleReward& rhs);
 	};
-	
+
+	class BattleCombatant
+	{
+	public:
+	private:
+	private:
+	};
+
+	/// the battle system singleton class
 	class BattleEngineSingleton
 	{
 	public:
 		static BattleEngineSingleton* GetInstance();
 		~BattleEngineSingleton();
-		
+
 		bool Initialize();
 		void Execute();
-		
+
 	private:
-	
+
 		void SetupMonsterParty();
 		void SetupFightingOrder();
 		void SetupScene();
-		
+
 		void RenderScene();
-		
+
 		void PlayerTurn();
 		void EnemyTurn();
-		
+
 		void GiveRewards();
-		
+
 		void Destroy();
-	
+
 		BattleEngineSingleton();
 		BattleEngineSingleton(const BattleEngineSingleton& rhs);
 		const BattleEngineSingleton& operator=(const BattleEngineSingleton& rhs);
+
 	private:
-	
+		/// shared resource pointers -- the game singleton class is responsible for init/destroy these pointers
+		BitmapFont* smallFont_;
+		BitmapFont* largeFont_;
+		ImageResource* microDisplay_;
+
+		/// the battle rewards that are awarded to the player if the player is alive when the battle ends
 		std::vector<BattleReward*> rewards_;
-		
-		ENGINE::ImageResource* battleSceneImage_;
-		ENGINE::ImageResource* microDisplay_; // the 200x150 display buffer that we scale x4
-		
-		ENGINE::BitmapFont* smallFont_;
-		ENGINE::BitmapFont* largeFont_;
+
+		/// the background scene image of the battle
+		ImageResource* battleSceneImage_;
+
 	}; // end class
 
+	/// simple define to access the singleton class pointer easily
 	#define BattleEngine BattleEngineSingleton::GetInstance()
 } // end namespace
 #endif

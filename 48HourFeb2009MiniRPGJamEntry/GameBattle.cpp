@@ -27,17 +27,18 @@ namespace GAME
 
 	bool BattleEngineSingleton::Initialize()
 	{
-		//smallFont_ = new BitmapFont();
-		//if (!smallFont_->Load("data/graphics/fonts/font5x5white.png", 5, 5,1)) { return false; }
+		// get the shared resources
+		smallFont_ 		= GameSingleton::GetInstance()->GetSmallFont();
+		largeFont_ 		= GameSingleton::GetInstance()->GetLargeFont();
+		microDisplay_ 	= GameSingleton::GetInstance()->GetDisplay();
 
-		//largeFont_ = new BitmapFont();
-		//if (!largeFont_->Load("data/graphics/fonts/font8x8white.png", 8, 8,1)) { return false; }
-
-		smallFont_ = GameSingleton::GetInstance()->GetSmallFont();
-		largeFont_ = GameSingleton::GetInstance()->GetLargeFont();
-
+		// the background scene image for the battle
+		if (0 != battleSceneImage_)
+		{
+			delete battleSceneImage_;
+		}
 		battleSceneImage_ = new ImageResource();
-		microDisplay_ = new ImageResource(200, 150);
+
 
 		SetupMonsterParty();
 		SetupFightingOrder();

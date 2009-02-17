@@ -139,7 +139,21 @@ namespace GAME
 		// TODO: Implement the message ripper code
 
 		// cut message into lines (taking into account any '\n' characters)
+		std::string fullText = message;
+		std::vector<std::string> fullTextLines = GameSingleton::GetInstance()->Tokenize(fullText, "\n");
+#if 1
+		unsigned int lineCount = fullTextLines.size();
+		unsigned int index = 0;
+		fprintf(stderr, "There are %d new-lines in the fullText:\n", lineCount);
 
+		for (index = 0; index < lineCount; index++)
+		{
+			fprintf(stderr, "\tLine %04d: \"%s\"\n", index + 1, fullTextLines.at(index).c_str());
+		}
+
+		// cut each line in fullTextLines into 21-character lines
+		// making sure that we don't break any words
+#endif
 		// create pages from the lines
 
 		// init the dialogue data counter variables
@@ -152,7 +166,7 @@ namespace GAME
 		// for each page, clear out the lines vector proper
 		for (unsigned int index = 0; index < pageCount_; index++)
 		{
-			dialogue_.pages_.at(index).lines_.clear();
+			dialogue_.pages_.at(index)->lines_.clear();
 		}
 
 		// clear the pages vector proper
@@ -174,7 +188,7 @@ namespace GAME
 
 			// update the new page info
 			currentLine_ 	= 0;
-			lineCount_ 		= dialogue_.pages_.at(currentPage_).lines_.size();
+			lineCount_ 		= dialogue_.pages_.at(currentPage_)->lines_.size();
 
 		}
 		else
@@ -194,7 +208,7 @@ namespace GAME
 
 			// update the new line info
 			currentChar_ 	= 0;
-			charCount_ 		= dialogue_.pages_.at(currentPage_).lines_.at(currentLine_).size();
+			charCount_ 		= dialogue_.pages_.at(currentPage_)->lines_.at(currentLine_).size();
 		}
 		else
 		{

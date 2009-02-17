@@ -1,7 +1,7 @@
 
 // CODESTYLE: v2.0
 
-// GameTilesetManager.h
+// GameNameEntry.h
 // Project: 48h Contest LO-Fi Mini-RPG Game Project (GAME)
 // Author: Richard Marks
 // Purpose: manages a registry of named tilesets
@@ -31,25 +31,25 @@ namespace GAME
 		 * @param maxChars Specify the maximum number of characters a name can hold.
 		 */
 		GameNameEntry(const std::string& defaultName,int maxChars);
-		
+
 		// destructor
 		~GameNameEntry();
-		
+
 		/**
 		 * Call Update() in the main loop.
 		 * @return Returns 1 when user accepts name entry, -1 if user cancels, 0 otherwise
 		 */
 		int Update();
-		
+
 		/**
 		 * Renders the name entry screen to a buffer.
 		 * @param target Destination image.
 		 */
 		void Render(ImageResource *target);
-		
+
 		/// Changes the name explicitly
 		void SetName(const std::string& name);
-		
+
 		/// Returns the name entered.
 		std::string GetName() const;
 	private:
@@ -62,7 +62,7 @@ namespace GAME
 		BitmapFont *font_;
 		ImageResource *overlay_;
 		ImageResource *cursorImage_;
-		
+
 		static char keyMap_[];
 	};
 }
