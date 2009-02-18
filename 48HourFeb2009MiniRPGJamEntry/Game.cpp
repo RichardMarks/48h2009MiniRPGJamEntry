@@ -8,6 +8,9 @@
 
 #include "GameLibrary.h"
 
+// comment this out to turn off the debugging display
+#define ENABLE_DEBUGGING_DISPLAY_INFORMATION
+
 namespace GAME
 {
 	// this is the simplest way to get the game running the same speed across systems
@@ -16,6 +19,80 @@ namespace GAME
 	void allegroTimerSpeedController(){allegroTimerSpeedCounter++;}END_OF_FUNCTION(allegroTimerSpeedController)
 
 	/**************************************************************************/
+
+	namespace GAMESTATE
+	{
+		GameStateManager::GameStateManager() :
+			state_(World)
+		{
+		}
+
+		/**********************************************************************/
+
+		GameStateManager::~GameStateManager()
+		{
+		}
+
+		/**********************************************************************/
+
+		void GameStateManager::SetState(StateType state)
+		{
+			state_ = state;
+		}
+
+		/**********************************************************************/
+
+		StateType GameStateManager::GetState() const
+		{
+			return state_;
+		}
+
+	} // end namespace
+
+	/**************************************************************************/
+
+
+
+
+	GameMenuManager::GameMenuManager() {}
+	GameMenuManager::~GameMenuManager() {}
+	void GameMenuManager::Update() {}
+	void GameMenuManager::Render() {}
+
+
+
+
+
+
+
+	void GameSingleton::SetState(GAMESTATE::StateType state)
+	{
+		gameStateManager_->SetState(state);
+	}
+
+	/**************************************************************************/
+
+	GAMESTATE::StateType GameSingleton::GetState() const
+	{
+		return gameStateManager_->GetState();
+	}
+
+	/**************************************************************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	GameSingleton::GameSingleton() { /* do not put code here */ }
 
@@ -117,17 +194,6 @@ namespace GAME
 				running = false;
 			}
 
-			// test the battle system by pressing F8
-#if 1
-			if (InputDevice->KeyPressed(KEY::Key_F8))
-			{
-				if (BattleEngine->Initialize())
-				{
-					BattleEngine->Execute();
-				}
-			}
-#endif
-
 // test the dialogue system by pressing SPACE and clear it with BACKSPACE
 #if 1
 			if (InputDevice->KeyPressed(KEY::Key_Space))
@@ -143,43 +209,192 @@ namespace GAME
 
 			while (allegroTimerSpeedCounter > 0)
 			{
-				// if the dialogue is not undefined
-				if (DIALOGUE::Undefined != dialogueMessage_->GetState())
+				// depending on the current state of the game, we update different things
+				switch(GetState())
 				{
-					// update only the dialogue logic
-					dialogueMessage_->Update(false /* set to true if you want delayed output printing */ );
-				}
-				else
-				{
-					// update the game logic
-					Update();
-					stepsUntilAmbush_ -= stepsTaken_;
-					stepsTaken_ = 0;
-					if (stepsUntilAmbush_ <= 0)
+					case GAMESTATE::World:
 					{
-						if (BattleEngine->Initialize())
+						// game world processing takes place
+
+						// if there is game dialogue to process
+						if (DIALOGUE::Undefined != dialogueMessage_->GetState())
 						{
-							BattleEngine->Execute();
+							// update the dialogue system
+							dialogueMessage_->Update(false /* set to true if you want delayed output printing */ );
 						}
-						stepsUntilAmbush_ 	= 160;
+						else
+						{
+							// update the main game logic
+							Update();
 
-					}
-				}
+							// handle the 'random' monster ambushes
 
-				starfield_->Update();
+#if 1
+							stepsUntilAmbush_ -= stepsTaken_;
+#endif
+							stepsTaken_ = 0;
+							if (stepsUntilAmbush_ <= 0)
+							{
+								// tell the battle system to initialize
+								BattleEngine->SetState(BATTLE::Initialize);
 
-				gameNPCs_->Update(currentMap_->GetName().c_str());
+								// tell the game to process the battle system on the next update
+								SetState(GAMESTATE::Battle);
 
+								// reset ambush step counter
+								/** TODO:
+								// this should become a random range value based off of
+								// the player's current level (higher player's level, the less monsters ambush you)
+								// this will make leveling up take longer as the player gets stronger
+								// helping to balance out the game
+								*/
+								stepsUntilAmbush_ 	= 160;
+
+							}
+						}
+
+						// update the game's NPCs
+						gameNPCs_->Update(currentMap_->GetName().c_str());
+
+						// all of this will be removed after the 48 hour jam entry
+#if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
+						starfield_->Update();
+#endif
+					} break;
+
+					case GAMESTATE::Battle:
+					{
+						// the external battle system processing takes place
+
+						// update the battle system
+						BattleEngine->Update();
+
+						// has the battle finished?
+						if (BATTLE::Finished == BattleEngine->GetState())
+						{
+							// tell the game to process the game world
+							SetState(GAMESTATE::World);
+						}
+
+					} break;
+
+					case GAMESTATE::Menu:
+					{
+						// the menu system processing takes place
+
+						// update the menu system
+						gameMenu_->Update();
+
+					} break;
+
+					default: break;
+
+				} // end switch
+
+				// decrement the allegro timing var
 				allegroTimerSpeedCounter--;
-			}
 
-			Render();
+			} // end the update while loop
+
+
+			// begin rendering
+			GraphicsDevice->BeginScene(0);
+			microDisplay_->Clear();
+
+			// depending on the current state of the game, we render different things
+			switch(GetState())
+			{
+				case GAMESTATE::World:
+				{
+					// render the main game
+					Render();
+				} break;
+
+				case GAMESTATE::Battle:
+				{
+					// render the battle system
+					BattleEngine->Render();
+				} break;
+
+				case GAMESTATE::Menu:
+				{
+					// render the menu system
+					gameMenu_->Render();
+				} break;
+
+				default: break;
+
+			} // end switch
+
+
+			// we are done rendering
+			// end the scene using special 4x scaling
+			ImageResource* display = GraphicsDevice->GetSecondaryDisplayBuffer();
+			microDisplay_->Blit(
+				display,
+				0, 0,
+				200, 150,
+				0, 0,
+				display->GetWidth(), display->GetHeight());
+
+			// debugging display
+#if defined(ENABLE_DEBUGGING_DISPLAY_INFORMATION)
+			{
+				int camAnchorX 	= 0, camAnchorY = 0;
+				int camWidth 	= 0, camHeight 	= 0;
+				int camWorldX 	= 0, camWorldY 	= 0;
+
+				camera_->GetSize(camWidth, camHeight);
+				camera_->GetWorldPosition(camWorldX, camWorldY);
+				camera_->GetAnchorPosition(camAnchorX, camAnchorY);
+
+				int psx = 0, psy = 0; // player screen X, Y coords
+				int pwx = 0, pwy = 0; // player world X, Y coords
+
+				// get the player screen position
+				gameSprites_->Get(playerSpriteIndex_)->GetScreenPosition(psx, psy);
+
+				// figure the player's world position
+				pwx = psx + camWorldX;
+				pwy = psy + camWorldY;
+
+				int playerTileX = (pwx + 4) / 8;
+				int playerTileY = (pwy + 4) / 8;
+
+				// get the event at the tile to scan
+
+				GameMapLayer* baseLayer = currentMap_->GetGameMapLayer(0);
+
+
+				int eventCode = baseLayer->GetEventAt(playerTileX, playerTileY);
+
+				BitmapFont debugFont;
+				debugFont.Print(display, 4, 80,     "Current Map: (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
+				debugFont.Print(display, 4, 80+8,   "Camera World Pos: %d, %d", camWorldX, camWorldY);
+				debugFont.Print(display, 4, 80+8*2, "Player World Pos: %d, %d", pwx, pwy);
+				debugFont.Print(display, 4, 80+8*3, "Player Screen Pos: %d, %d", psx, psx);
+				debugFont.Print(display, 4, 80+8*4, "Player Tile Pos: %d, %d", playerTileX, playerTileY);
+				debugFont.Print(display, 4, 80+8*5, "Event Code @ Player Tile Pos: %d", eventCode);
+
+				debugFont.Print(display, 4, 80+8*6, "Steps Taken: %d", stepsTaken_);
+				debugFont.Print(display, 4, 80+8*7, "Steps Until Ambush: %d", stepsUntilAmbush_);
+			}
+#endif
+			GraphicsDevice->EndScene();
+
+
 
 			// let the cpu rest to keep from using 100% CPU for no damn reason
 			rest(10);
 		}
 
+
+		// clean up the battle system
+		BattleEngine->Destroy();
+
+		// the game is over, cleanup after our game class -- release pointers, etc
 		Destroy();
+
 	}
 
 	/**************************************************************************/
@@ -263,4 +478,41 @@ namespace GAME
 
 } // end namespace
 
+
+/*#**************************************************************************#*/
+// original update section is being revised
+#if 0
+void UselessDummyFunct2()
+{
+				// if the dialogue is not undefined
+				if (DIALOGUE::Undefined != dialogueMessage_->GetState())
+				{
+					// update only the dialogue logic
+					dialogueMessage_->Update(false /* set to true if you want delayed output printing */ );
+				}
+				else
+				{
+					// update the game logic
+					Update();
+					stepsUntilAmbush_ -= stepsTaken_;
+					stepsTaken_ = 0;
+					if (stepsUntilAmbush_ <= 0)
+					{
+						if (BattleEngine->Initialize())
+						{
+							BattleEngine->Execute();
+						}
+						stepsUntilAmbush_ 	= 160;
+
+					}
+				}
+
+				starfield_->Update();
+
+				gameNPCs_->Update(currentMap_->GetName().c_str());
+
+				allegroTimerSpeedCounter--;
+}
+#endif
+/*#**************************************************************************#*/
 

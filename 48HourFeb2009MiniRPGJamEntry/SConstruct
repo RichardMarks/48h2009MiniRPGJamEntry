@@ -45,9 +45,12 @@ projectConfig['sources'] = Split("""
 	GameNPC.cpp
 	GameNPCManager.cpp
 	GameGUIGaugeWidget.cpp
-	GameBattle.cpp
 	GameBattleSprite.cpp
 	GameBattleSpriteManager.cpp
+	GameBattle.cpp
+	GameBattle_Initialize.cpp
+	GameBattle_Update.cpp
+	GameBattle_Render.cpp
 	GameDialogueMessage.cpp
 	Game.cpp
 	Game_Initialize.cpp

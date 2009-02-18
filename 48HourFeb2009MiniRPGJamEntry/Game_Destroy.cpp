@@ -17,22 +17,28 @@ namespace GAME
 
 		_TMP_DELRES(smallFont_)
 		_TMP_DELRES(largeFont_)
-		_TMP_DELRES(dialogueMessage_)
 		_TMP_DELRES(microDisplay_)
 
 		_TMP_DELRES(playerPortrait_)
+		_TMP_DELRES(windowOverlay_)
 
 		_TMP_DELRES(camera_)
-
-		_TMP_DELRES(windowOverlay_)
-		_TMP_DELRES(lofiOverlay_)
-
 		_TMP_DELRES(gameTiles_)
 		_TMP_DELRES(gameMaps_)
 		_TMP_DELRES(gameSprites_)
 		_TMP_DELRES(gameNPCs_)
+		_TMP_DELRES(gameStateManager_)
+		_TMP_DELRES(dialogueMessage_)
+		_TMP_DELRES(gameMenu_);
 
+
+// all of this will be removed after the 48 hour jam entry
+#if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
+
+		_TMP_DELRES(lofiOverlay_)
 		_TMP_DELRES(starfield_)
+#endif
+
 
 		#undef _TMP_DELRES
 	}

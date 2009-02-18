@@ -83,15 +83,24 @@ namespace GAME
 		camera_->CenterOnSprite(gameSprites_->Get(playerSpriteIndex_));
 
 		windowOverlay_ 	= new ImageResource("data/graphics/game/overlays/mainscreen.png");
-		lofiOverlay_ 	= new ImageResource("data/graphics/game/overlays/lofi.png");
+
 		playerPortrait_ = new ImageResource("data/graphics/portraits/player.png");
 
+		// all of this will be removed after the 48 hour jam entry
+#if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
+
+		lofiOverlay_ 	= new ImageResource("data/graphics/game/overlays/lofi.png");
 		// init the fun starfield
 		int fov[] = { 141, 43, 195, 131 };
 		starfield_ = new Starfield(fov);
+#endif
 
 		stepsTaken_ 		= 0;
 		stepsUntilAmbush_ 	= 160;
+
+		gameStateManager_ = new GAMESTATE::GameStateManager();
+
+		gameMenu_ = new GameMenuManager();
 
 		return true;
 	}

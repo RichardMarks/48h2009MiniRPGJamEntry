@@ -8,21 +8,13 @@
 
 #include "GameLibrary.h"
 
-// comment this out to turn off the debugging display
-#define ENABLE_DEBUGGING_DISPLAY_INFORMATION
-
 namespace GAME
 {
 	void GameSingleton::Render()
 	{
-		// begin rendering
-		GraphicsDevice->BeginScene(0);
-		microDisplay_->Clear();
-
-
-		int camAnchorX = 0, camAnchorY = 0;
-		int camWidth = 0, camHeight = 0;
-		int camWorldX = 0, camWorldY = 0;
+		int camAnchorX 	= 0, camAnchorY = 0;
+		int camWidth 	= 0, camHeight 	= 0;
+		int camWorldX 	= 0, camWorldY 	= 0;
 
 		camera_->GetSize(camWidth, camHeight);
 		camera_->GetWorldPosition(camWorldX, camWorldY);
@@ -52,13 +44,21 @@ namespace GAME
 		// draw the hud
 		playerPortrait_->Blit(microDisplay_, 0, 0, 143, 16, 16, 16);
 
+
+// all of this will be removed after the 48 hour jam entry
+#if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
 		// draw the starfield
 		starfield_->Render(microDisplay_);
+#endif
+
+// all of this will be removed after the 48 hour jam entry
+#if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
+
+		lofiOverlay_->BlitMasked(microDisplay_, 0, 0, 141, 58, 55, 60);
+#endif
 
 		// draw the overlays
 		windowOverlay_->BlitMasked(microDisplay_, 0, 0, 0, 0, 200, 150);
-		lofiOverlay_->BlitMasked(microDisplay_, 0, 0, 141, 58, 55, 60);
-
 
 		// handle any region clear requests
 		if (requestToClearDialogueRegion_)
@@ -67,52 +67,6 @@ namespace GAME
 			requestToClearDialogueRegion_ = false;
 		}
 
-		// we are done rendering
-		// end the scene using special 4x scaling
-		ImageResource* display = GraphicsDevice->GetSecondaryDisplayBuffer();
-		microDisplay_->Blit(
-			display,
-			0, 0,
-			200, 150,
-			0, 0,
-			display->GetWidth(), display->GetHeight());
-
-		// debugging display
-#if defined(ENABLE_DEBUGGING_DISPLAY_INFORMATION)
-		{
-			int psx = 0, psy = 0; // player screen X, Y coords
-			int pwx = 0, pwy = 0; // player world X, Y coords
-
-			// get the player screen position
-			gameSprites_->Get(playerSpriteIndex_)->GetScreenPosition(psx, psy);
-
-			// figure the player's world position
-			pwx = psx + camWorldX;
-			pwy = psy + camWorldY;
-
-			int playerTileX = (pwx + 4) / 8;
-			int playerTileY = (pwy + 4) / 8;
-
-			// get the event at the tile to scan
-
-			GameMapLayer* baseLayer = currentMap_->GetGameMapLayer(0);
-
-
-			int eventCode = baseLayer->GetEventAt(playerTileX, playerTileY);
-
-			BitmapFont debugFont;
-			debugFont.Print(display, 4, 80,     "Current Map: (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
-			debugFont.Print(display, 4, 80+8,   "Camera World Pos: %d, %d", camWorldX, camWorldY);
-			debugFont.Print(display, 4, 80+8*2, "Player World Pos: %d, %d", pwx, pwy);
-			debugFont.Print(display, 4, 80+8*3, "Player Screen Pos: %d, %d", psx, psx);
-			debugFont.Print(display, 4, 80+8*4, "Player Tile Pos: %d, %d", playerTileX, playerTileY);
-			debugFont.Print(display, 4, 80+8*5, "Event Code @ Player Tile Pos: %d", eventCode);
-
-			debugFont.Print(display, 4, 80+8*6, "Steps Taken: %d", stepsTaken_);
-			debugFont.Print(display, 4, 80+8*7, "Steps Until Ambush: %d", stepsUntilAmbush_);
-		}
-#endif
-		GraphicsDevice->EndScene();
 	}
 
 } // end namespace

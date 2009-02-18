@@ -41,6 +41,9 @@
 		<Unit filename="GameBattleSprite.h" />
 		<Unit filename="GameBattleSpriteManager.cpp" />
 		<Unit filename="GameBattleSpriteManager.h" />
+		<Unit filename="GameBattle_Initialize.cpp" />
+		<Unit filename="GameBattle_Render.cpp" />
+		<Unit filename="GameBattle_Update.cpp" />
 		<Unit filename="GameCamera.cpp" />
 		<Unit filename="GameCamera.h" />
 		<Unit filename="GameDialogueMessage.cpp" />

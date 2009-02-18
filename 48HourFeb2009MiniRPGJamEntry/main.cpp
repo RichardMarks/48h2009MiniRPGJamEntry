@@ -9,9 +9,15 @@
 
 int main(int argc, char* argv[])
 {
+	// if the game engine initializes
 	if (GAME::GameSingleton::GetInstance()->Initialize(argc, argv))
 	{
-		GAME::GameSingleton::GetInstance()->Execute();
+		// if the battle system initializes
+		if (GAME::BattleEngineSingleton::GetInstance()->Initialize())
+		{
+			// start the game processing
+			GAME::GameSingleton::GetInstance()->Execute();
+		}
 	}
 
 	return 0;

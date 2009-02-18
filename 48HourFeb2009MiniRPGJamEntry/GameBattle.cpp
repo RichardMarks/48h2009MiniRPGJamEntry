@@ -10,6 +10,124 @@
 
 namespace GAME
 {
+	namespace BATTLE
+	{
+		Reward::Reward() :
+			rewardType_(ExperienceReward),
+			amount_(0),
+			itemIndex_(-1),
+			skillIndex_(-1)
+		{
+		}
+
+		/**********************************************************************/
+
+		Reward::~Reward()
+		{
+		}
+
+		/**********************************************************************/
+
+		void Reward::Set(RewardType rewardType, unsigned int amount, int itemIndex, int skillIndex)
+		{
+			rewardType_ 	= rewardType;
+			amount_ 		= amount;
+			itemIndex_ 		= itemIndex;
+			skillIndex_ 	= skillIndex;
+		}
+
+		/**********************************************************************/
+
+		RewardType Reward::GetRewardType() const
+		{
+			return rewardType_;
+		}
+
+		/**********************************************************************/
+
+		unsigned long Reward::GetAmount() const
+		{
+			return amount_;
+		}
+
+		/**********************************************************************/
+
+		int Reward::GetItemIndex() const
+		{
+			return itemIndex_;
+		}
+
+		/**********************************************************************/
+
+		int Reward::GetSkillIndex() const
+		{
+			return skillIndex_;
+		}
+
+		/**********************************************************************/
+
+		Combatant::Combatant()
+		{
+		}
+
+		/**********************************************************************/
+
+		Combatant::~Combatant()
+		{
+		}
+
+	} // end namespace
+
+	/**************************************************************************/
+
+	BattleEngineSingleton* BattleEngineSingleton::GetInstance()
+	{
+		static BattleEngineSingleton instance;
+		return &instance;
+	}
+
+	/**************************************************************************/
+
+	BattleEngineSingleton::BattleEngineSingleton() { /* do not put code here */ }
+
+	/**************************************************************************/
+
+	BattleEngineSingleton::~BattleEngineSingleton() { /* do not put code here */ }
+
+	/**************************************************************************/
+
+
+	/**************************************************************************/
+
+	void BattleEngineSingleton::Destroy()
+	{
+		// clean up
+	}
+
+	/**************************************************************************/
+
+	void BattleEngineSingleton::SetState(BATTLE::BattleState state)
+	{
+		state_ = state;
+	}
+
+	/**************************************************************************/
+
+	BATTLE::BattleState BattleEngineSingleton::GetState() const
+	{
+		return state_;
+	}
+
+
+} // end namespace
+
+
+
+
+// original implementation of the battle sysytem kept for reference material
+#if 0
+namespace GAME
+{
 	BattleEngineSingleton* BattleEngineSingleton::GetInstance()
 	{
 		static BattleEngineSingleton instance;
@@ -613,5 +731,6 @@ namespace GAME
 	{
 	}
 } // end namespace
+#endif
 
 
