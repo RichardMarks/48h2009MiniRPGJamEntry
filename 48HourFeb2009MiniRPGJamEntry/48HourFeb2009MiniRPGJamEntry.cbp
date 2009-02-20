@@ -88,6 +88,8 @@
 		<Unit filename="GameMapSprite.h" />
 		<Unit filename="GameMapSpriteManager.cpp" />
 		<Unit filename="GameMapSpriteManager.h" />
+		<Unit filename="GameMap_Editors.cpp" />
+		<Unit filename="GameMap_Editors.h" />
 		<Unit filename="GameNPC.cpp" />
 		<Unit filename="GameNPC.h" />
 		<Unit filename="GameNPCManager.cpp" />

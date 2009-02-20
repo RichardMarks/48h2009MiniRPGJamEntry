@@ -19,7 +19,7 @@ namespace ENGINE
 {
 	// forward declare classes we need
 	class ImageResource;
-	
+
 	/**
 	 * \namespace ENGINE::KEY
 	 * \brief key enumerations for the keyboard interface module
@@ -48,7 +48,7 @@ namespace ENGINE
 			Mod_Accent3		= 0x4000,
 			Mod_Accent4		= 0x8000
 		};
-	
+
 		/**
 		 * \enum KEY::VirtualKey
 		 * \brief virtual-key codes for every key we could ever need
@@ -182,11 +182,11 @@ namespace ENGINE
 			Key_ScrollLock	= 0x7C,
 			Key_NumLock		= 0x7D,
 			Key_CapsLock	= 0x7E,
-			Key_Max			= 0x7F		
+			Key_Max			= 0x7F
 		};
-		
+
 	} // end namespace
-	
+
 	/**
 	 * \namespace ENGINE::AXIS
 	 * \brief enumerations for devices that move on any of 3 cardinal axes
@@ -204,31 +204,31 @@ namespace ENGINE
 			Axis_Z = 0x3
 		};
 	} // end namespace
-	
+
 	//! bitmask for the InputDeviceSingleton::Initialize() function. -- initialize the keyboard
 	const unsigned int INIT_KEYBOARD 		= 0x0001;
-	
+
 	//! bitmask for the InputDeviceSingleton::Initialize() function -- initialize the mouse
 	const unsigned int INIT_MOUSE			= 0x0002;
-	
+
 	//! bitmask for the InputDeviceSingleton::Initialize() function -- initialize the joystick
 	const unsigned int INIT_JOYSTICK		= 0x0004;
-	
+
 	//! bitmask for the InputDeviceSingleton::Initialize() function -- initialize all devices
 	const unsigned int INIT_ALLDEVICES 		= 0x0007;
-	
+
 	//! bitmask for the InputDeviceSingleton::Update() function. -- update the keyboard
 	const unsigned int UPDATE_KEYBOARD 		= 0x0001;
-	
+
 	//! bitmask for the InputDeviceSingleton::Update() function -- update the mouse
 	const unsigned int UPDATE_MOUSE			= 0x0002;
-	
+
 	//! bitmask for the InputDeviceSingleton::Update() function -- update the joystick
 	const unsigned int UPDATE_JOYSTICK		= 0x0004;
-	
+
 	//! bitmask for the InputDeviceSingleton::Update() function -- update all devices
 	const unsigned int UPDATE_ALLDEVICES 	= 0x0007;
-	
+
 	/**
 	 * \class InputDeviceSingleton
 	 * \brief Interface to the input devices; keyboard, mouse, and joystick
@@ -238,60 +238,60 @@ namespace ENGINE
 	class InputDeviceSingleton
 	{
 	public:
-		
+
 		/**
 		 * \return a pointer to the input device singleton
 		 */
 		static InputDeviceSingleton* GetInstance();
-		
+
 		/**
 		 * default destructor - De-allocates any allocated memory
 		 */
 		~InputDeviceSingleton();
-		
+
 		/**
 		 * Installs the input device drivers on the first call.
 		 * You need to call this at least once before you can use the other methods.
 		 * @param initMask is a bitmask to say what devices to initialize. possible values are INIT_KEYBOARD, INIT_MOUSE, INIT_JOYSTICK, INIT_ALLDEVICES
 		 */
 		void Initialize(unsigned int initMask = INIT_ALLDEVICES);
-		
+
 		/**
 		 * Updates all input devices so that the device data is current
 		 * If you do not pass a parameter, then all devices will be updated.
 		 * @param updateMask is a bitmask to say what devices to update. possible values are UPDATE_KEYBOARD, UPDATE_MOUSE, UPDATE_JOYSTICK, UPDATE_ALLDEVICES
 		 */
 		void Update(unsigned int updateMask = UPDATE_ALLDEVICES);
-		
+
 		////////////////////////////////////////////////////////////////////////
 		//                  END OF COMMON INTERFACE
 		////////////////////////////////////////////////////////////////////////
-		
-		
-		
+
+
+
 		// keyboard functionality
-		
+
 		/**
 		 * Checks for a key being pressed in a non-repeating manner.
 		 * @param keyCode is the virtual-key code constant such as KEY::Key_Escape to check
 		 * /return true if the key was presssed, false if not
 		 */
 		bool KeyPressed(KEY::VirtualKey keyCode);
-		
+
 		/**
 		 * Checks that a key is currently being pressed down in a repeating manner.
 		 * @param keyCode is the virtual-key code constant such as KEY::Key_Left to check
 		 * \return true if the key is currently down, and false if not
 		 */
 		bool KeyDown(KEY::VirtualKey keyCode);
-		
+
 		/**
 		 * Checks that a key is currently not being pressed down in a repeating manner.
 		 * @param keyCode is the virtual-key code constant such as KEY::Key_Left to check
 		 * \return true if the key is currently up, and false if it is down
 		 */
 		bool KeyUp(KEY::VirtualKey keyCode);
-		
+
 		/**
 		 * Checks for a key being pressed in a non-repeating manner.
 		 * Also checks for a modifier such as KEY::Mod_Ctrl
@@ -300,7 +300,7 @@ namespace ENGINE
 		 * /return true if the key was presssed, false if not
 		 */
 		bool KeyPressed(KEY::Modifier modifier, KEY::VirtualKey keyCode);
-		
+
 		/**
 		 * Checks that a key is currently being pressed down in a repeating manner.
 		 * @param modifier is a key modifier bit mask such as KEY::Mod_Ctrl
@@ -308,7 +308,7 @@ namespace ENGINE
 		 * \return true if the key is currently down, and false if not
 		 */
 		bool KeyDown(KEY::Modifier modifier, KEY::VirtualKey keyCode);
-		
+
 		/**
 		 * Checks that a key is currently not being pressed down in a repeating manner.
 		 * @param modifier is a key modifier bit mask such as KEY::Mod_Ctrl
@@ -316,13 +316,13 @@ namespace ENGINE
 		 * \return true if the key is currently up, and false if it is down
 		 */
 		bool KeyUp(KEY::Modifier modifier, KEY::VirtualKey keyCode);
-		
+
 		////////////////////////////////////////////////////////////////////////
 		//                  END OF KEYBOARD INTERFACE
 		////////////////////////////////////////////////////////////////////////
-		
+
 		// mouse functionality
-		
+
 		/**
 		 * Checks to see if the button is currently down
 		 * \returns true if the button is down, false if not
@@ -333,32 +333,32 @@ namespace ENGINE
 		 * \returns true if the button is up, false if not
 		 */
 		bool MouseButtonUp(int button);
-		
+
 		/**
 		 * \return the X pixel coordinate of the mouse pointer
 		 */
 		int MouseX();
-		
+
 		/**
 		 * \return the Y pixel coordinate of the mouse pointer
 		 */
 		int MouseY();
-		
+
 		/**
 		 * \return the mouse wheel position
 		 */
 		int MouseZ();
-		
+
 		/**
-		 * Measures how far the mouse has moved on a given axis since the last call to this function. 
+		 * Measures how far the mouse has moved on a given axis since the last call to this function.
 		 * The returned values will become negative if the mouse is moved left or up.
-		 * The mouse will continue to generate movement mickeys even when it reaches the edge of the screen, 
+		 * The mouse will continue to generate movement mickeys even when it reaches the edge of the screen,
 		 * so this form of input can be useful for games that require an infinite range of mouse movement.
 		 * @param axis is which axis to check. AXIS::Axis_X checks the horizontal motion, AXIS::Axis_Y checks the vertical motion.
 		 * \return the amount of pixels the mouse has moved on a given axis, relative to the last time the function was called
 		 */
 		int MouseMoveRelative(AXIS::Axis axis);
-		
+
 		/**
 		 * Sets the position of the mouse and optionally the mouse wheel.
 		 * @param x is the new horizontal mouse position in pixels.
@@ -366,7 +366,7 @@ namespace ENGINE
 		 * @param z is the new mouse wheel position.
 		 */
 		void MouseSetPosition(int x, int y, int z = 0);
-		
+
 		/**
 		 * Sets the area of the screen within which the mouse can move. Pass the top left corner and the bottom right corner (inclusive)
 		 * @param left is the X coordinate of the upper-left corner in pixels.
@@ -375,7 +375,7 @@ namespace ENGINE
 		 * @param bottom is the Y coordinate of the lower-right corner in pixels.
 		 */
 		void MouseSetRegion(int left, int top, int right, int bottom);
-		
+
 		/**
 		 * Sets the speed of the mouse cursor.
 		 * Larger values of \a speedX and \a speedY represent slower mouse movement. The default for both is 2.
@@ -383,7 +383,7 @@ namespace ENGINE
 		 * @param speedY is the vertical speed of the mouse.
 		 */
 		void MouseSetSpeed(int speedX = 2, int speedY = 2);
-		
+
 		/**
 		 * Changes the image of the mouse cursor.
 		 * You can optionally change the hot-spot of the mouse cursor.\n
@@ -394,27 +394,51 @@ namespace ENGINE
 		 * @param hotSpotY is the Y coordinate of the actual "clicky" point of the mouse cursor in pixels.
 		 */
 		void MouseSetCursorImage(ImageResource* image = 0, int hotSpotX = 0, int hotSpotY = 0);
-		
+
+#ifndef _GED101_PATCH_v1_ADVANCED_MOUSE
+#define _GED101_PATCH_v1_ADVANCED_MOUSE
+
+		/**
+		 * Toggle the mouse cursor being drawn on the screen or not
+		 * @param enabled is a boolean value - set to true to show the mouse cursor on the primary screen
+		 */
+		void MouseDisplayOnScreen(bool enabled = true);
+
+		/**
+		 * Lets you display the mouse cursor on any image resource
+		 * call without any parameters to turn off the mouse cursor completely (same as calling MouseDisplayOnScreen(false))
+		 * @param target is an ImageResource that the mouse cursor will be displayed on
+		 */
+		void MouseDisplayOnSurface(ImageResource* target = 0);
+
+		/**
+		 * Toggle the mouse cursor display to aid in drawing without artifacts
+		 * @param enabled is a boolean value - set to true to show the mouse cursor, false to hide it
+		 */
+		void MouseEnableCursorDisplay(bool enabled = true);
+
+#endif
+
 		////////////////////////////////////////////////////////////////////////
 		//                  END OF MOUSE INTERFACE
 		////////////////////////////////////////////////////////////////////////
-		
+
 		// joystick functionality
-		
+
 		/**
 		 * A mini-program in its own right, this function calibrates the joysticks attached to the
 		 * computer, and saves the calibration data to a file.
 		 * The program will exit to the OS after the calibration is complete.
 		 */
 		void BeginJoystickCalibration();
-		
+
 		/**
 		 * Validate a joystick by ID
 		 * @param joystick is an integer to specify the ID # of the joystick. 0 is the default
 		 * \return true if the passed joystickID is valid.
 		 */
 		static bool JoyExists(int joystick = 0);
-		
+
 		/**
 		 * Validate a joystick button by ID
 		 * @param joystick is an integer to specify the ID # of the joystick.
@@ -422,7 +446,7 @@ namespace ENGINE
 		 * \return true if the passed buttonID is valid.
 		 */
 		static bool JoyButtonExists(int joystick, int button);
-		
+
 		/**
 		 * Validate a joystick stick (the actual thing you hold on to) by ID
 		 * @param joystick is an integer to specify the ID # of the joystick.
@@ -430,9 +454,9 @@ namespace ENGINE
 		 * \return true if the passed stickID is valid.
 		 */
 		static bool JoyStickExists(int joystick, int stick);
-		
+
 		// digital joystick input
-		
+
 		/**
 		 * Checks if a button on the joystick is currently down.
 		 * @param button is an integer to specify the ID # of the joystick button.
@@ -440,7 +464,7 @@ namespace ENGINE
 		 * \return true if the button is down.
 		 */
 		bool JoyButtonDown(int button, int joystick = 0);
-		
+
 		/**
 		 * Checks if a button on the joystick is currently up.
 		 * @param button is an integer to specify the ID # of the joystick button.
@@ -448,7 +472,7 @@ namespace ENGINE
 		 * \return true if the button is up.
 		 */
 		bool JoyButtonUp(int button, int joystick = 0);
-		
+
 		/**
 		 * Check if joystick is pushed up (on a game pad) or forward (on a flight stick)
 		 * @param joystick is an integer to specify the ID # of the joystick.
@@ -456,7 +480,7 @@ namespace ENGINE
 		 * \return true if the joystick stick is pushed up (on a game pad) or forward (on a flight stick)
 		 */
 		bool JoyUp(int joystick = 0, int stick = 0);
-		
+
 		/**
 		 * Check if joystick is pushed down (on a game pad) or back (on a flight stick)
 		 * @param joystick is an integer to specify the ID # of the joystick.
@@ -464,7 +488,7 @@ namespace ENGINE
 		 * \return true if the joystick stick is pushed down (on a game pad) or back (on a flight stick)
 		 */
 		bool JoyDown(int joystick = 0, int stick = 0);
-		
+
 		/**
 		 * Check if joystick is pushed left (on a game pad or on a flight stick)
 		 * @param joystick is an integer to specify the ID # of the joystick.
@@ -472,7 +496,7 @@ namespace ENGINE
 		 * \return true if the joystick stick is pushed left (on a game pad or on a flight stick)
 		 */
 		bool JoyLeft(int joystick = 0, int stick = 0);
-		
+
 		/**
 		 * Check if joystick is pushed right (on a game pad or on a flight stick)
 		 * @param joystick is an integer to specify the ID # of the joystick.
@@ -480,9 +504,9 @@ namespace ENGINE
 		 * \return true if the joystick stick is pushed right (on a game pad or on a flight stick)
 		 */
 		bool JoyRight(int joystick = 0, int stick = 0);
-		
+
 		// analogue joystick input
-		
+
 		/**
 		 * Get analogue joystick input (relative motion of the joystick on a given axis)
 		 * @param axis is the axis to check motion on. Possible values are AXIS::Axis_X, AXIS::Axis_Y, AXIS::Axis_Z.
@@ -491,77 +515,77 @@ namespace ENGINE
 		 * \return the relative position of the joystick motion on a given axis.
 		 */
 		int Joy(AXIS::Axis axis, int stick = 0, int joystick = 0);
-		
+
 		////////////////////////////////////////////////////////////////////////
 		//                  END OF JOYSTICK INTERFACE
 		////////////////////////////////////////////////////////////////////////
-		
+
 	private:
 		// private members should be declared here
-		
+
 		/**
 		 * The keyboard input device initialization function
 		 */
 		void InitializeKeyboard();
-		
+
 		/**
 		 * The mouse input device initialization function
 		 */
 		void InitializeMouse();
-		
+
 		/**
 		 * The joystick input device initialization function
 		 */
 		void InitializeJoystick();
-		
+
 		/**
 		 * The keyboard input device update function
 		 */
 		void UpdateKeyboard();
-		
+
 		/**
 		 * The mouse input device update function
 		 */
 		void UpdateMouse();
-		
+
 		/**
 		 * The joystick input device update function
 		 */
 		void UpdateJoystick();
-		
+
 		/**
 		 * The class constructor is hidden because this is a singleton.
 		 */
 		InputDeviceSingleton();
-		
+
 		/**
 		 * The copy constructor is hidden because the class cannot be copied.
 		 */
 		InputDeviceSingleton(const InputDeviceSingleton& rhs);
-		
+
 		/**
 		 * The assignment operator is hidden because the class cannot be copied.
 		 */
 		InputDeviceSingleton& operator=(const InputDeviceSingleton& rhs);
-		
+
 		/**
 		 * \var key_
 		 * \brief an array of booleans to track if the key is currently up or down
 		 */
 		bool key_[KEY::Key_Max];
-		
+
 		/**
 		 * \var keys_
 		 * \brief an array of booleans to track if a key was pressed (used in non-repeating key handling)
 		 */
 		bool keys_[KEY::Key_Max];
-		
+
 		/**
 		 * \var joystickAvailable_
 		 * \brief this variable is true when we successfully load the joystick calibration data file
 		 */
 		bool joystickAvailable_;
-		
+
 	}; // end class
 
 /**

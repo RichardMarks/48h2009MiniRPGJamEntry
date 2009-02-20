@@ -11,6 +11,12 @@
 // comment this out to turn off the debugging display
 #define ENABLE_DEBUGGING_DISPLAY_INFORMATION
 
+// comment these out to disable in-game editing of maps and events
+#define DEV_ENABLE_MAP_EDITING
+#define DEV_ENABLE_EVENT_EDITING
+
+#include "GameMap_Editors.h"
+
 namespace GAME
 {
 	// this is the simplest way to get the game running the same speed across systems
@@ -186,7 +192,7 @@ namespace GAME
 		while(running)
 		{
 			// update the input device info
-			InputDevice->Update(UPDATE_KEYBOARD);
+			InputDevice->Update(UPDATE_KEYBOARD | UPDATE_MOUSE);
 
 			// exit when the user presses ESC
 			if (InputDevice->KeyPressed(KEY::Key_Escape))
@@ -207,11 +213,60 @@ namespace GAME
 			}
 #endif
 
+
+#if defined(DEV_ENABLE_MAP_EDITING)
+			if (InputDevice->KeyPressed(KEY::Key_F4))
+			{
+				if (GAMESTATE::MapEditor != GetState())
+				{
+					MapEditors->SetMap(currentMap_);
+					MapEditors->SetState(MAPEDITORS::EditingBaseLayer);
+					SetState(GAMESTATE::MapEditor);
+				}
+				else
+				{
+					SetState(GAMESTATE::World);
+				}
+			}
+#endif
+
+#if defined(DEV_ENABLE_EVENT_EDITING)
+			if (InputDevice->KeyPressed(KEY::Key_F8))
+			{
+				if (GAMESTATE::MapEditor != GetState())
+				{
+					MapEditors->SetMap(currentMap_);
+					MapEditors->SetState(MAPEDITORS::EditingEvents);
+					SetState(GAMESTATE::MapEditor);
+				}
+				else
+				{
+					SetState(GAMESTATE::World);
+				}
+			}
+#endif
+
+
+
 			while (allegroTimerSpeedCounter > 0)
 			{
 				// depending on the current state of the game, we update different things
 				switch(GetState())
 				{
+#if defined(DEV_ENABLE_MAP_EDITING)
+					case GAMESTATE::MapEditor:
+					{
+						MapEditors->Update();
+					} break;
+#endif
+
+#if defined(DEV_ENABLE_EVENT_EDITING)
+					case GAMESTATE::EventEditor:
+					{
+						MapEditors->Update();
+					} break;
+#endif
+
 					case GAMESTATE::World:
 					{
 						// game world processing takes place
@@ -304,6 +359,19 @@ namespace GAME
 			// depending on the current state of the game, we render different things
 			switch(GetState())
 			{
+#if defined(DEV_ENABLE_MAP_EDITING)
+				case GAMESTATE::MapEditor:
+				{
+					MapEditors->Render();
+				} break;
+#endif
+
+#if defined(DEV_ENABLE_EVENT_EDITING)
+				case GAMESTATE::EventEditor:
+				{
+					MapEditors->Render();
+				} break;
+#endif
 				case GAMESTATE::World:
 				{
 					// render the main game
@@ -330,12 +398,19 @@ namespace GAME
 			// we are done rendering
 			// end the scene using special 4x scaling
 			ImageResource* display = GraphicsDevice->GetSecondaryDisplayBuffer();
-			microDisplay_->Blit(
-				display,
-				0, 0,
-				200, 150,
-				0, 0,
-				display->GetWidth(), display->GetHeight());
+
+#if defined(DEV_ENABLE_MAP_EDITING)
+			GAMESTATE::StateType state = GetState();
+
+			if (GAMESTATE::MapEditor != state && GAMESTATE::EventEditor != state)
+			{
+#endif
+				microDisplay_->Blit(
+					display,
+					0, 0,
+					200, 150,
+					0, 0,
+					display->GetWidth(), display->GetHeight());
 
 			// debugging display
 #if defined(ENABLE_DEBUGGING_DISPLAY_INFORMATION)
@@ -380,6 +455,14 @@ namespace GAME
 				debugFont.Print(display, 4, 80+8*7, "Steps Until Ambush: %d", stepsUntilAmbush_);
 			}
 #endif
+
+#if defined(DEV_ENABLE_MAP_EDITING)
+			}
+#endif
+
+
+
+
 			GraphicsDevice->EndScene();
 
 
@@ -391,6 +474,9 @@ namespace GAME
 
 		// clean up the battle system
 		BattleEngine->Destroy();
+
+		// clean up the map editors
+		MapEditors->Destroy();
 
 		// the game is over, cleanup after our game class -- release pointers, etc
 		Destroy();

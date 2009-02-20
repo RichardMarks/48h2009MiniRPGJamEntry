@@ -40,7 +40,7 @@ namespace GAME
 			GraphicsDevice_Windowed);
 
 		// setup the input device
-		InputDevice->Initialize(INIT_KEYBOARD);
+		InputDevice->Initialize(INIT_KEYBOARD | INIT_MOUSE);
 
 		// init the timing class
 		GameTimer;

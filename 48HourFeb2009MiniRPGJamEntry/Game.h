@@ -54,6 +54,13 @@ namespace GAME
 
 			/// the game will process the menu system logic
 			Menu,
+
+			/// map editor
+			MapEditor,
+
+			/// event editor
+			EventEditor
+
 		};
 
 		/// a class for managing the state of the game

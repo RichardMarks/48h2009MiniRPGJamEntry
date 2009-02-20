@@ -34,7 +34,7 @@ namespace ENGINE
 	void InputDeviceSingleton::InitializeMouse()
 	{
 		static bool firstCall = true;
-		
+
 		// make sure that we only install the mouse driver once
 		// because this routine possibly may be called multiple times
 		if (firstCall)
@@ -44,14 +44,14 @@ namespace ENGINE
 			{
 				LogFatal("Could not install Allegro Mouse driver!");
 			}
-			
+
 			// first-time-only initialize has finished
 			firstCall = false;
 		}
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void InputDeviceSingleton::UpdateMouse()
 	{
 		if (mouse_needs_poll())
@@ -59,49 +59,49 @@ namespace ENGINE
 			poll_mouse();
 		}
 	}
-	
+
 	/**************************************************************************/
-	
+
 	bool InputDeviceSingleton::MouseButtonDown(int button)
 	{
 		return static_cast<bool>(mouse_b & button);
 	}
-	
+
 	/**************************************************************************/
-	
+
 	bool InputDeviceSingleton::MouseButtonUp(int button)
 	{
 		return static_cast<bool>(!(mouse_b & button));
 	}
-	
+
 	/**************************************************************************/
-	
+
 	int InputDeviceSingleton::MouseX()
 	{
 		return mouse_x;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	int InputDeviceSingleton::MouseY()
 	{
 		return mouse_y;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	int InputDeviceSingleton::MouseZ()
 	{
 		return mouse_z;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	int InputDeviceSingleton::MouseMoveRelative(AXIS::Axis axis)
 	{
 		int x = 0, y = 0;
 		get_mouse_mickeys(&x, &y);
-		
+
 		if (AXIS::Axis_X == axis)
 		{
 			return x;
@@ -111,35 +111,65 @@ namespace ENGINE
 			return y;
 		}
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void InputDeviceSingleton::MouseSetPosition(int x, int y, int z)
 	{
 		position_mouse(x, y);
 		position_mouse_z(z);
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void InputDeviceSingleton::MouseSetRegion(int left, int top, int right, int bottom)
 	{
 		set_mouse_range(left, top, right, bottom);
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void InputDeviceSingleton::MouseSetSpeed(int speedX, int speedY)
 	{
 		set_mouse_speed(speedX, speedY);
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void InputDeviceSingleton::MouseSetCursorImage(ImageResource* image, int hotSpotX, int hotSpotY)
 	{
 		set_mouse_sprite((0 != image) ? image->GetBitmap() : 0);
 		set_mouse_sprite_focus(hotSpotX, hotSpotY);
 	}
-	
+
+#ifdef _GED101_PATCH_v1_ADVANCED_MOUSE
+
+	/**************************************************************************/
+
+	void InputDeviceSingleton::MouseDisplayOnScreen(bool enabled)
+	{
+		show_mouse((enabled) ? screen : 0);
+	}
+
+	/**************************************************************************/
+
+	void InputDeviceSingleton::MouseDisplayOnSurface(ImageResource* target)
+	{
+		show_mouse((0 != target) ? target->GetBitmap() : 0);
+	}
+
+	/**************************************************************************/
+
+	void InputDeviceSingleton::MouseEnableCursorDisplay(bool enabled)
+	{
+		if (enabled)
+		{
+			unscare_mouse();
+			return;
+		}
+		scare_mouse();
+	}
+
+#endif
+
 } // end namespace

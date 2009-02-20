@@ -7,16 +7,22 @@
 
 #include "GameLibrary.h"
 
+#include "GameMap_Editors.h"
+
 int main(int argc, char* argv[])
 {
 	// if the game engine initializes
 	if (GAME::GameSingleton::GetInstance()->Initialize(argc, argv))
 	{
-		// if the battle system initializes
-		if (GAME::BattleEngineSingleton::GetInstance()->Initialize())
+		// if the map editors initialize
+		if (GAME::GameMapEditorsSingleton::GetInstance()->Initialize())
 		{
-			// start the game processing
-			GAME::GameSingleton::GetInstance()->Execute();
+			// if the battle system initializes
+			if (GAME::BattleEngineSingleton::GetInstance()->Initialize())
+			{
+				// start the game processing
+				GAME::GameSingleton::GetInstance()->Execute();
+			}
 		}
 	}
 
