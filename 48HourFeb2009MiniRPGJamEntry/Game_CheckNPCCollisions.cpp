@@ -32,5 +32,33 @@ namespace GAME
 		return false;
 	}
 
+	/**************************************************************************/
+
+	int GameSingleton::CheckNPCCollisions(int tileX, int tileY) const
+	{
+		unsigned int npcCount = gameNPCs_->GetNumNPCs();
+
+		for (unsigned int index = 0; index < npcCount; index++)
+		{
+			// if the npc is not on this map, we skip it
+			if (!gameNPCs_->IsNPCOnMap(index, currentMap_->GetName().c_str())) { continue; }
+
+			// create an invisible sprite to test collisions with at tileX, tileY
+			GameMapSprite* dummy = new GameMapSprite();
+			dummy->SetSize(8, 8);
+			dummy->SetWorldPosition(tileX * 8, tileY * 8);
+
+			// collision?
+			if (dummy->CollidesWith(gameNPCs_->Get(index)->GetSprite()))
+			{
+				if (dummy) { delete dummy; }
+				return index;
+			}
+			if (dummy) { delete dummy; }
+		}
+
+		return -1;
+	}
+
 } // end namespace
 

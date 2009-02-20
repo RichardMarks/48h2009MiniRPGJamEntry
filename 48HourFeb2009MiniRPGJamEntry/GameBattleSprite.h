@@ -120,6 +120,9 @@ namespace GAME
 		/// gets the selected animation sequence
 		BATTLESPRITE::SequenceType GetSequence() const;
 
+		/// gets a pointer to the image resource that holds the frames of the sprite
+		ImageResource* GetFramesImage() const;
+
 	private:
 		GameBattleSprite(const GameBattleSprite& rhs);
 		const GameBattleSprite& operator=(const GameBattleSprite& rhs);

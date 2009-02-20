@@ -41,6 +41,9 @@ namespace GAME
 		void Update(const char* mapName);
 		void Render(const char* mapName, ImageResource* target, int* fov = 0);
 
+		void Pause(unsigned int index);
+		void Resume(unsigned int index);
+
 	private:
 		GameNPCManager(const GameNPCManager& rhs);
 		const GameNPCManager& operator=(const GameNPCManager& rhs);

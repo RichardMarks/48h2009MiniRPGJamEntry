@@ -45,6 +45,9 @@
 #include "GameBattleSprite.h"
 #include "GameBattleSpriteManager.h"
 
+#include "GameBattleScene.h"
+#include "GameBattleSceneManager.h"
+
 #include "Game.h"
 
 #endif

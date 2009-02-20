@@ -123,6 +123,7 @@ namespace GAME
 
 
 	class GameBattleSpriteManager;
+	class GameBattleSceneManager;
 
 	/// the battle system singleton class
 	class BattleEngineSingleton
@@ -162,11 +163,20 @@ namespace GAME
 		/// cleans up the battle system resources -- called in Update when @state_ is BATTLE::EndBattle
 		void DestroyBattleResources();
 
+		/// loads files of the the .battle format to initialize the battle system
+		void LoadBattleFile(const char* battlePath);
+
 		/// the state of the battle system
 		BATTLE::BattleState state_;
 
+		/// holds the list of sprite file names
+		std::vector<std::string> spriteFilenames_;
+
 		/// manages the sprites that are available to the battle system
 		GameBattleSpriteManager* battleSprites_;
+
+		/// manages the scenes that are available to the battle system
+		GameBattleSceneManager* battleScenes_;
 
 		// shared resource pointers -- the game singleton class is responsible for init/destroy these pointers
 

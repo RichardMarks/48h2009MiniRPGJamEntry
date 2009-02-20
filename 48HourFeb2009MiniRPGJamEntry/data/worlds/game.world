@@ -56,6 +56,10 @@ NPCMOTION 1:@@ERRRRSDDDDWLLLLNUUUU
 NPCMOTION 3:@@ERRRRRR_!N!!S!!@WLLLLLL_!S!!N!!
 NPCMOTION 2:@@NUUUUU_!!W!!N!!E!!S!!@DDDDD_!!W!!S!!E!!
 
+#CHATDIR data/chats/
+#NPCCHAT 1:generic_male_hello.chat
+#NPCCHAT 3:generic_female_hello.chat
+
 
 # gameMaps_->AddMap("World", "data/maps/world.map", "data/maps/world.set");
 # gameMaps_->AddMap("Castle Entrance", "data/maps/castle0.map", "data/maps/castle.set");

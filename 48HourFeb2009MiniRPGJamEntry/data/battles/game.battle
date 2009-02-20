@@ -18,6 +18,8 @@ SCENE scene0003.png:CastleDungeon:50,51,52,53,54,55
 
 # SPRITE [file]
 
+SPRITE player.png
+SPRITE antagonist.png
 SPRITE hellheads.png
 SPRITE lardguy.png
 SPRITE ringofire.png
@@ -32,10 +34,23 @@ COMBATANT 4:32:32:8:20:CastleDungeon
 
 # COMBATANTANIM [combatant-id]:[state]:[first-frame]:[last-frame]
 
-COMBATANTANIM 1:Idle:0,1
-COMBATANTANIM 1:Attack:2
-COMBATANTANIM 1:Damaged:3,4
-COMBATANTANIM 1:Special:5,6
+# The states are all unused by default, so you MUST define them for each combatant.
+#
+#    * Idle - the combatant is sitting idle
+#    * Attack - the combatant is attacking
+#    * Defend - the combatant is defending
+#    * Special - the combatant is using its special ability
+#    * Injured - the combatant is being injured by another combatant
+#    * Dying - the combatant is dying
+# The first-frame and last-frame should be frame index values starting from 1
+# that specify the starting and ending frames for the animation sequence.
+
+COMBATANTANIM 1:Idle:1:2
+COMBATANTANIM 1:Attack:3:4
+COMBATANTANIM 1:Defend:2:2
+COMBATANTANIM 1:Special:4:4
+COMBATANTANIM 1:Injured:5:5
+COMBATANTANIM 1:Dying:6:6
 
 # COMBATANTLOGIC [combatant-id]:[battle-logic-string]
 

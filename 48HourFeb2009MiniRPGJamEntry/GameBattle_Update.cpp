@@ -24,8 +24,8 @@ namespace GAME
 
 			case BATTLE::InBattle:
 			{
-				// panic key is backspace for debugging
-				if (InputDevice->KeyPressed(KEY::Key_Backspace))
+				// panic key is enter for debugging
+				if (InputDevice->KeyPressed(KEY::Key_Enter))
 				{
 					// set state to endbattle so we can exit cleanly
 					SetState(BATTLE::EndBattle);

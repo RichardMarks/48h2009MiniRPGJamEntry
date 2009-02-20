@@ -19,36 +19,39 @@ namespace ENGINE
 namespace GAME
 {
 	using ENGINE::ImageResource;
-	
+
 	class GameMapSprite;
-	
+
 	class GameNPC
 	{
 	public:
 		GameNPC(GameMapSprite* sprite, int speed = 1, const char* motionData = "");
-		
+
 		~GameNPC();
-		
+
 		void Update();
 		void Render(ImageResource* target);
-		
+
 		GameMapSprite* GetSprite() const;
-		
+
 		void SetMotionData(const char* motionData = "");
 		void SetSpeed(int speed = 1);
-		
+
 		void GetSpeed(int& storageSpeed);
 		void GetMotionData(std::string& storageMotionData);
-		
+
 		void ResetMotionDataCounter(int position = 0);
-		
+
+		void Pause();
+		void Resume();
+
 	private:
 		GameNPC(const GameNPC& rhs);
 		const GameNPC& operator=(const GameNPC& rhs);
-		
+
 	private:
 		GameMapSprite* sprite_; // the animated sprite of the NPC
-		
+
 		int speed_;
 		std::string motionData_;
 		int motionDataCounter_;
@@ -58,8 +61,9 @@ namespace GAME
 		int framesIdle_;
 		bool handlingMotion_;
 		int logicTimer_;
+		bool paused_;
 	};
-	
+
 } // end namespace
 #endif
 

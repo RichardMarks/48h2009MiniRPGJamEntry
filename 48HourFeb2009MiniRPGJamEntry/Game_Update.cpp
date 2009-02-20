@@ -76,12 +76,153 @@ namespace GAME
 			playerTileY = (pwy + 4) / 8; \
 			CheckMapEvents(playerTileX, playerTileY);
 
+		// handle player / NPC interactions
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+		// reset the NPC data if it exists
+		if (npcInteractionData_.npcBusy_)
+		{
+			gameNPCs_->Get(npcInteractionData_.npcIndex_)->GetSprite()->SetFaceDirection(npcInteractionData_.npcFacing_);
+			gameNPCs_->Resume(npcInteractionData_.npcIndex_);
+
+			npcInteractionData_.npcBusy_ 	= false;
+			npcInteractionData_.npcIndex_ 	= 0;
+			npcInteractionData_.npcFacing_ 	= MAPSPRITE::WALK_NORTH_FRAME;
+
+		}
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+		if (InputDevice->KeyPressed(KEY::Key_Enter))
+		{
+			// based on the direction the player is facing
+			int playerFacing;
+			playerSprite->GetFaceDirection(playerFacing);
+			switch(playerFacing)
+			{
+				case MAPSPRITE::WALK_NORTH_FRAME:
+				{
+					// check for an NPC above the player
+					if (playerTileY - 1 >= 0)
+					{
+						int npc = CheckNPCCollisions(playerTileX, playerTileY - 1);
+						if (-1 != npc)
+						{
+							// there is an NPC here
+							fprintf(stderr, "Found NPC #%d at tile %d, %d\n", npc, playerTileX, playerTileY - 1);
+
+							npcInteractionData_.npcIndex_ = static_cast<unsigned int>(npc);
+							npcInteractionData_.npcBusy_ = true;
+
+							// pause it so that its not running away from us!
+							gameNPCs_->Pause(npc);
+
+							// make it face the player (south)
+							gameNPCs_->Get(npc)->GetSprite()->GetFaceDirection(npcInteractionData_.npcFacing_);
+							gameNPCs_->Get(npc)->GetSprite()->SetFaceDirection(MAPSPRITE::WALK_SOUTH_FRAME);
+
+							// do dialogue
+
+						}
+					}
+				} break;
+
+				case MAPSPRITE::WALK_SOUTH_FRAME:
+				{
+					// check for an NPC below the player
+					if (playerTileY + 1 < mapColumns)
+					{
+						int npc = CheckNPCCollisions(playerTileX, playerTileY + 1);
+						if (-1 != npc)
+						{
+							// there is an NPC here
+							fprintf(stderr, "Found NPC #%d at tile %d, %d\n", npc, playerTileX, playerTileY + 1);
+
+							npcInteractionData_.npcIndex_ = static_cast<unsigned int>(npc);
+							npcInteractionData_.npcBusy_ = true;
+
+							// pause it so that its not running away from us!
+							gameNPCs_->Pause(npc);
+
+							// make it face the player (north)
+							gameNPCs_->Get(npc)->GetSprite()->GetFaceDirection(npcInteractionData_.npcFacing_);
+							gameNPCs_->Get(npc)->GetSprite()->SetFaceDirection(MAPSPRITE::WALK_NORTH_FRAME);
+
+							// do dialogue
+
+						}
+					}
+				} break;
+
+				case MAPSPRITE::WALK_EAST_FRAME:
+				{
+					// check for an NPC east of the player
+					if (playerTileX + 1 < mapColumns)
+					{
+						int npc = CheckNPCCollisions(playerTileX + 1, playerTileY);
+						if (-1 != npc)
+						{
+							// there is an NPC here
+							fprintf(stderr, "Found NPC #%d at tile %d, %d\n", npc, playerTileX + 1, playerTileY);
+
+							npcInteractionData_.npcIndex_ = static_cast<unsigned int>(npc);
+							npcInteractionData_.npcBusy_ = true;
+
+							// pause it so that its not running away from us!
+							gameNPCs_->Pause(npc);
+
+							// make it face the player (west)
+							gameNPCs_->Get(npc)->GetSprite()->GetFaceDirection(npcInteractionData_.npcFacing_);
+							gameNPCs_->Get(npc)->GetSprite()->SetFaceDirection(MAPSPRITE::WALK_WEST_FRAME);
+
+							// do dialogue
+
+						}
+					}
+				} break;
+
+				case MAPSPRITE::WALK_WEST_FRAME:
+				{
+					// check for an NPC west of the player
+					if (playerTileX - 1 >= 0)
+					{
+						int npc = CheckNPCCollisions(playerTileX - 1, playerTileY);
+						if (-1 != npc)
+						{
+							// there is an NPC here
+							fprintf(stderr, "Found NPC #%d at tile %d, %d\n", npc, playerTileX - 1, playerTileY);
+
+							npcInteractionData_.npcIndex_ = static_cast<unsigned int>(npc);
+							npcInteractionData_.npcBusy_ = true;
+
+							// pause it so that its not running away from us!
+							gameNPCs_->Pause(npc);
+
+							// make it face the player (east)
+							gameNPCs_->Get(npc)->GetSprite()->GetFaceDirection(npcInteractionData_.npcFacing_);
+							gameNPCs_->Get(npc)->GetSprite()->SetFaceDirection(MAPSPRITE::WALK_EAST_FRAME);
+
+							// do dialogue
+
+						}
+					}
+				} break;
+
+				default: break;
+			}// end switch
+		}
+
 		// handle scrolling / moving the player
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+
 
 		if (InputDevice->KeyDown(KEY::Key_Left))
 		{

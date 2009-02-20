@@ -34,21 +34,8 @@ namespace GAME
 			return false;
 		}
 
-		// init the battle sprite manager
-		battleSprites_ = new GameBattleSpriteManager();
-
-		// load the battle sprites
-/*
-const char* frameImagePathName,
-			int frameWidth, int frameHeight,
-			int frameCount,
-			int frameDelay,
-			int initialFrame = 0
-*/
-		battleSprites_->Add(
-			new GameBattleSprite(
-				"", 32, 32,
-			));
+		// load the battle system configuration file
+		LoadBattleFile("data/battles/game.battle");
 
 		// initially the battle system is not running, so we set the state to finished
 		state_ = BATTLE::Finished;
@@ -174,6 +161,7 @@ const char* frameImagePathName,
 		_TMP_DELRES(battleGaugeOverlay_)
 
 		_TMP_DELRES(battleSprites_)
+		_TMP_DELRES(battleScenes_)
 
 		#undef _TMP_DELRES
 	}

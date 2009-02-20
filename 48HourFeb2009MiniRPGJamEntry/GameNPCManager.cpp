@@ -127,6 +127,26 @@ namespace GAME
 		}
 	}
 
+	/**************************************************************************/
+
+	void GameNPCManager::Pause(unsigned int index)
+	{
+		if (!(index >= npcs_.size()))
+		{
+			npcs_.at(index)->Pause();
+		}
+	}
+
+	/**************************************************************************/
+
+	void GameNPCManager::Resume(unsigned int index)
+	{
+		if (!(index >= npcs_.size()))
+		{
+			npcs_.at(index)->Resume();
+		}
+	}
+
 } // end namespace
 
 

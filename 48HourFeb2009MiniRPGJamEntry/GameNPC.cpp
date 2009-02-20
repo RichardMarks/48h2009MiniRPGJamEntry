@@ -20,32 +20,35 @@ namespace GAME
 		distanceWalked_(0),
 		framesIdle_(0),
 		handlingMotion_(false),
-		logicTimer_(1)
+		logicTimer_(1),
+		paused_(false)
 	{
 	}
-	
+
 	/**************************************************************************/
-	
+
 	GameNPC::~GameNPC()
 	{
 		motionData_ = "";
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameNPC::Update()
 	{
+		if (paused_) { return; }
+
 		sprite_->Update();
-		
+
 		if (0 == --logicTimer_)
 		{
 			sprite_->GetFrameDelay(logicTimer_); logicTimer_ /= 2;
-		
+
 			// do we have special motion data?
 			if (motionData_.size())
 			{
 				// handle it
-			
+
 				// if we are not already handling a motion, then lets get the next motion
 				if (!handlingMotion_)
 				{
@@ -54,12 +57,12 @@ namespace GAME
 					{
 						motionDataCounter_ = 0;
 					}
-			
+
 					// handle the current motion data
 					char currentMotion = motionData_.at(motionDataCounter_);
-			
+
 					//fprintf(stderr, "Current Motion: %c\n", currentMotion);
-			
+
 					switch(currentMotion)
 					{
 					// face direction changes
@@ -67,25 +70,25 @@ namespace GAME
 					case 'S': { sprite_->SetFaceDirection(MAPSPRITE::WALK_SOUTH_FRAME); } break;
 					case 'W': { sprite_->SetFaceDirection(MAPSPRITE::WALK_EAST_FRAME); } break;
 					case 'E': { sprite_->SetFaceDirection(MAPSPRITE::WALK_WEST_FRAME); } break;
-			
+
 					// walking directions
 					case 'U': { distanceWalked_ = 0; walking_ = true; walkingDirection_ = 0; handlingMotion_ = true; } break;
 					case 'D': { distanceWalked_ = 0; walking_ = true; walkingDirection_ = 1; handlingMotion_ = true; } break;
 					case 'L': { distanceWalked_ = 0; walking_ = true; walkingDirection_ = 2; handlingMotion_ = true; } break;
 					case 'R': { distanceWalked_ = 0; walking_ = true; walkingDirection_ = 3; handlingMotion_ = true; } break;
-			
+
 					// animation handlers
 					case '@': { sprite_->Animate(true); } break;
 					case '_': { sprite_->Animate(false); } break;
 					case '!': { framesIdle_ = 0; walking_ = false; handlingMotion_ = true; } break;
-			
+
 					default: break;
 					}
 				}
 				else
 				{
 					// we are handling a motion
-				
+
 					if (walking_)
 					{
 						// we are walking
@@ -95,24 +98,24 @@ namespace GAME
 							distanceWalked_ = 0;
 							handlingMotion_ = false;
 						}
-					
+
 						int worldX = 0, worldY = 0;
 						sprite_->GetWorldPosition(worldX, worldY);
-						
+
 						int spriteTileX = (worldX + 4) / 8;
 						int spriteTileY = (worldY + 4) / 8;
-						
+
 						GameMapLayer* baseLayer = GameSingleton::GetInstance()->GetMap()->GetGameMapLayer(0);
-		
+
 						int mapRows 	= baseLayer->GetNumRows();
 						int mapColumns 	= baseLayer->GetNumColumns();
-						
+
 						switch(walkingDirection_)
 						{
-						case 0: 
+						case 0:
 						{
 							bool canMoveNorth = (baseLayer->GetEventAt(spriteTileX, (spriteTileY > 0) ? spriteTileY - 1 : 0) == 0xFF) ? false : true;
-							
+
 							if (canMoveNorth) { worldY--; }
 							else
 							{
@@ -121,12 +124,12 @@ namespace GAME
 								handlingMotion_ = false;
 							}
 						} break; // North
-						
-						
-						case 1: 
-						{ 
+
+
+						case 1:
+						{
 							bool canMoveSouth = (baseLayer->GetEventAt(spriteTileX, (spriteTileY < mapRows - 1) ? spriteTileY + 1 : mapRows - 1) == 0xFF) ? false : true;
-							
+
 							if (canMoveSouth) { worldY++; }
 							else
 							{
@@ -135,11 +138,11 @@ namespace GAME
 								handlingMotion_ = false;
 							}
 						} break; // South
-						
-						case 2: 
+
+						case 2:
 						{
 							bool canMoveEast = (baseLayer->GetEventAt((spriteTileX < mapColumns - 1) ? spriteTileX + 1 : mapColumns - 1, spriteTileY) == 0xFF) ? false : true;
-							
+
 							if (canMoveEast) { worldX++; }
 							else
 							{
@@ -147,13 +150,13 @@ namespace GAME
 								distanceWalked_ = 0;
 								handlingMotion_ = false;
 							}
-							
+
 						} break; // East
-						
-						case 3: 
+
+						case 3:
 						{
 							bool canMoveEast = (baseLayer->GetEventAt((spriteTileX > 0) ? spriteTileX - 1 : 0, spriteTileY) == 0xFF) ? false : true;
-							
+
 							if (canMoveEast) { worldX--; }
 							else
 							{
@@ -161,12 +164,12 @@ namespace GAME
 								distanceWalked_ = 0;
 								handlingMotion_ = false;
 							}
-							
+
 						} break; // West
-					
+
 						default: break;
 						}
-						
+
 						sprite_->SetWorldPosition(worldX, worldY);
 					}
 					else
@@ -183,57 +186,71 @@ namespace GAME
 			}
 		}
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameNPC::Render(ImageResource* target)
 	{
 		sprite_->Render(target);
 	}
-	
+
 	/**************************************************************************/
-	
+
 	GameMapSprite* GameNPC::GetSprite() const
 	{
 		return sprite_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameNPC::SetMotionData(const char* motionData)
 	{
 		motionData_ = motionData;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameNPC::SetSpeed(int speed)
 	{
 		speed_ = speed;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameNPC::GetSpeed(int& storageSpeed)
 	{
 		storageSpeed = speed_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameNPC::GetMotionData(std::string& storageMotionData)
 	{
 		storageMotionData = motionData_;
 	}
-	
+
 	/**************************************************************************/
-	
+
 	void GameNPC::ResetMotionDataCounter(int position)
 	{
 		position = (position < 0) ? 0 : position;
 		motionDataCounter_ = (static_cast<unsigned int>(position) < motionData_.size()) ? position : 0;
 	}
-	
+
+	/**************************************************************************/
+
+	void GameNPC::Pause()
+	{
+		paused_ = true;
+	}
+
+	/**************************************************************************/
+
+	void GameNPC::Resume()
+	{
+		paused_ = false;
+	}
+
 } // end namespace
 
 

@@ -177,11 +177,31 @@ namespace GAME
 
 	private:
 
+		/// a small structure for holding data about the NPC that is being interacted with
+		struct NPCInteractionData
+		{
+			/// the index into the gameNPCs_ of the NPC that we are interacting with
+			unsigned int npcIndex_;
+
+			/// the direction that the NPC was facing before we interacted with it
+			int npcFacing_;
+
+			/// is the NPC currently in use? (busy)
+			bool npcBusy_;
+
+			NPCInteractionData() : npcIndex_(0) , npcFacing_(0), npcBusy_(false) {}
+		};
+
+		NPCInteractionData npcInteractionData_;
+
 		/// checks the current map at the location specified for events
 		void CheckMapEvents(int scanX, int scanY);
 
 		/// returns true if there is a collision between the player sprite and any npc on the current map
 		bool CheckNPCCollisions() const;
+
+		/// returns > -1 if there is no NPC on the specified tile on the current map; and the index number of the NPC if there is
+		int CheckNPCCollisions(int tileX, int tileY) const;
 
 		/// releases all the pointers allocated for the game
 		void Destroy();
@@ -241,6 +261,9 @@ namespace GAME
 
 		/// number of steps to initiate a random monster encounter
 		int stepsUntilAmbush_;
+
+		/// the folder that npc chat files are stored
+		std::string npcChatDirectory_;
 
 /*#**************************************************************************#*/
 

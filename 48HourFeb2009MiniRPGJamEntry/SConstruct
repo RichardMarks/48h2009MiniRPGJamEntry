@@ -47,8 +47,11 @@ projectConfig['sources'] = Split("""
 	GameGUIGaugeWidget.cpp
 	GameBattleSprite.cpp
 	GameBattleSpriteManager.cpp
+	GameBattleScene.cpp
+	GameBattleSceneManager.cpp
 	GameBattle.cpp
 	GameBattle_Initialize.cpp
+	GameBattle_BattleLoader.cpp
 	GameBattle_Update.cpp
 	GameBattle_Render.cpp
 	GameDialogueMessage.cpp
