@@ -88,7 +88,7 @@ namespace GAME
 		tiles_ 			= game->GetTilesetManager();
 		maps_			= game->GetMapManager();
 
-		mapPanel_ 		= new ImageResource();
+		SetMap(game->GetMap());
 
 		cameraX_ = 0;
 		cameraY_ = 0;
@@ -111,10 +111,10 @@ namespace GAME
 
 	void GameMapEditorsSingleton::Update()
 	{
-		ImageResource* display = GraphicsDevice->GetSecondaryDisplayBuffer();
+		//ImageResource* display = GraphicsDevice->GetSecondaryDisplayBuffer();
 
-		int displayWidth = display->GetWidth();
-		int displayHeight = display->GetHeight();
+		//int displayWidth = display->GetWidth();
+		//int displayHeight = display->GetHeight();
 
 /*#**************************************************************************#*/
 

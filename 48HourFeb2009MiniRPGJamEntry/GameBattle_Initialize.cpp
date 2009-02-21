@@ -35,7 +35,7 @@ namespace GAME
 		}
 
 		// load the battle system configuration file
-		LoadBattleFile("data/battles/game.battle");
+		// LoadBattleFile("data/battles/game.battle");
 
 		// initially the battle system is not running, so we set the state to finished
 		state_ = BATTLE::Finished;
