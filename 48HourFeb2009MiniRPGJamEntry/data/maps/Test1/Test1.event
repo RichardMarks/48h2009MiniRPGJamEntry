@@ -1,0 +1,3 @@
+# define some events
+# EVENT [file]:[map-name]:[x-tile]:[y-tile]:[armed (true|false)]:[persists (true|false)]
+

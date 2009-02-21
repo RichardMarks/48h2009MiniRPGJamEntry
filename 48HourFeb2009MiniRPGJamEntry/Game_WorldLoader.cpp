@@ -10,11 +10,6 @@
 
 // few defines for changing available commands
 #define _WORLD_LOADER_VERBOSE
-#define _WORLD_FORMAT_VERSION_2
-
-#if defined(_WORLD_FORMAT_VERSION_2)
-
-#endif
 
 namespace GAME
 {
@@ -36,11 +31,6 @@ namespace GAME
 		gameMaps_ = new GameMapManager(gameTiles_);
 		gameSprites_ = new GameMapSpriteManager();
 		gameNPCs_ = new GameNPCManager();
-
-		std::string tilesetDirectory = "";
-		std::string mapDirectory = "";
-		std::string spritesDirectory = "";
-
 
 		// read each line into a vector of std strings
 		std::vector<std::string> fileLines;
@@ -100,6 +90,8 @@ namespace GAME
 		// close the file
 		fclose(fp);
 
+	/**************************************************************************/
+
 		// for each line, parse it
 		unsigned int lineCount = fileLines.size();
 
@@ -119,22 +111,26 @@ namespace GAME
 				std::string& commandToken  = tokens.at(0);
 				std::string& paramsToken = tokens.at(1);
 
-				// fprintf(stderr, "\tToken 1: \"%s\"\n\tToken 2: \"%s\"\n", commandToken.c_str(), paramsToken.c_str());
-
 				if ("TILESDIR" == commandToken)
 				{
 #if defined(_WORLD_LOADER_VERBOSE)
 					fprintf(stderr, "\tTiles are expected to be stored in %s\n\n", paramsToken.c_str());
 #endif
-					tilesetDirectory = paramsToken.c_str();
+					SetTilesDirectory(paramsToken.c_str());
 				}
+
+	/**************************************************************************/
+
 				else if ("MAPSDIR" == commandToken)
 				{
 #if defined(_WORLD_LOADER_VERBOSE)
 					fprintf(stderr, "\tMaps are expected to be stored in %s\n\n", paramsToken.c_str());
 #endif
-					mapDirectory = paramsToken.c_str();
+					SetMapsDirectory(paramsToken.c_str());
 				}
+
+	/**************************************************************************/
+
 				else if ("START" == commandToken)
 				{
 #if defined(_WORLD_LOADER_VERBOSE)
@@ -143,14 +139,17 @@ namespace GAME
 					currentMap_ = gameMaps_->Get(paramsToken.c_str());
 				}
 
-#if defined(_WORLD_FORMAT_VERSION_2)
+	/**************************************************************************/
+
 				else if ("SPRITESDIR" == commandToken)
 				{
 #if defined(_WORLD_LOADER_VERBOSE)
 					fprintf(stderr, "\tSprites are expected to be stored in %s\n\n", paramsToken.c_str());
 #endif
-					spritesDirectory = paramsToken.c_str();
+					SetSpritesDirectory(paramsToken.c_str());
 				}
+
+	/**************************************************************************/
 
 				else if ("PLAYER" == commandToken)
 				{
@@ -187,6 +186,8 @@ namespace GAME
 					}
 				}
 
+	/**************************************************************************/
+
 				else if ("NPCSPEED" == commandToken)
 				{
 					// NPCSPEED [npc-num]:[speed]
@@ -215,6 +216,9 @@ namespace GAME
 						gameNPCs_->Get(npcNum - 1)->SetSpeed(npcSpeed);
 					}
 				}
+
+	/**************************************************************************/
+
 				else if ("NPCMOTION" == commandToken)
 				{
 					// NPCMOTION [npc-num]:[motion-data]
@@ -243,6 +247,8 @@ namespace GAME
 						gameNPCs_->Get(npcNum - 1)->SetMotionData(motionData.c_str());
 					}
 				}
+
+	/**************************************************************************/
 
 				else if ("WARP" == commandToken)
 				{
@@ -297,7 +303,7 @@ namespace GAME
 					}
 				}
 
-
+	/**************************************************************************/
 
 				else if ("NPC" == commandToken)
 				{
@@ -346,6 +352,8 @@ namespace GAME
 					}
 				}
 
+	/**************************************************************************/
+
 				else if ("SPRITE" == commandToken)
 				{
 					// SPRITE [file]:[width]:[height]:[frames]:[delay]
@@ -385,7 +393,7 @@ namespace GAME
 							spriteWidth, spriteHeight);
 #endif
 						// add the sprite to the manager
-						spriteFile = spritesDirectory + spriteFile;
+						spriteFile = GetSpritesDirectory() + spriteFile;
 
 						gameSprites_->Add(
 							new GameMapSprite(spriteFile.c_str(), spriteWidth, spriteHeight, spriteFrames, spriteDelay, 0)
@@ -394,8 +402,7 @@ namespace GAME
 					}
 				}
 
-#endif
-
+	/**************************************************************************/
 
 				else if ("TILESET" == commandToken)
 				{
@@ -440,43 +447,54 @@ namespace GAME
 
 #endif
 						// add the tileset to the manager
-						tilesetFile = tilesetDirectory + tilesetFile;
+						tilesetFile = GetTilesDirectory() + tilesetFile;
 						gameTiles_->Add(tilesetName.c_str(), tilesetFile.c_str(), tileWidth, tileHeight, tileCols, tileRows, tilePadding);
 
 					}
 				}
+
+	/**************************************************************************/
+
 				else if ("MAP" == commandToken)
 				{
 					std::vector<std::string> mapParams = Tokenize(paramsToken, ":");
 					std::string mapName = "";
-					std::string mapFile = "";
 					std::string tilesetName = "";
 
 					unsigned int mapParamCount = mapParams.size();
 
-					if (0x3 != mapParamCount)
+					if (0x2 != mapParamCount)
 					{
 						fprintf(stderr,
 						"*** Syntax Error in %s:line #%04d: Missing Parameters:\n    "
-						"Expected [map-name]:[file]:[tileset-name]\n\n",
+						"Expected [map-name]:[tileset-name]\n\n",
 						worldPath, index + 1);
 					}
 					else
 					{
 						mapName 	= mapParams.at(0);
-						mapFile 	= mapParams.at(1);
-						tilesetName = mapParams.at(2);
+						tilesetName = mapParams.at(1);
 
 #if defined(_WORLD_LOADER_VERBOSE)
+						const char* mapsPath = GetMapsDirectory().c_str();
 						fprintf(stderr,
 							"\tMAP DEFINITION: %s\n"
-							"\tRequires map data file called %s\n"
+							"\tRequires the following map data files:\n"
+							"\t\t%s/%s/%s.map\n"
+							"\t\t%s/%s/%s.collision\n"
+							"\t\t%s/%s/%s.warp\n"
+							"\t\t%s/%s/%s.event\n"
+							"\n"
 							"\tDepends on a Tileset named %s.\n\n",
-							mapName.c_str(), mapFile.c_str(), tilesetName.c_str());
+							mapName.c_str(),
+							mapsPath, mapName.c_str(), mapName.c_str(),
+							mapsPath, mapName.c_str(), mapName.c_str(),
+							mapsPath, mapName.c_str(), mapName.c_str(),
+							mapsPath, mapName.c_str(), mapName.c_str(),
+							tilesetName.c_str());
 #endif
 						// add the map to the manager
-						mapFile = mapDirectory + mapFile;
-						gameMaps_->Add(mapName.c_str(), mapFile.c_str(), tilesetName.c_str());
+						gameMaps_->Add(mapName.c_str(), tilesetName.c_str());
 					}
 				}
 				else

@@ -15,6 +15,8 @@ namespace GAME
 		tilesets_ = tilesetManager;
 	}
 
+	/**************************************************************************/
+
 	GameMapManager::~GameMapManager()
 	{
 		maps_.clear();
@@ -23,21 +25,38 @@ namespace GAME
 
 	/**************************************************************************/
 
-	void GameMapManager::Add(const char* mapName, const char* mapFilePath, const char* tilesetName)
+	void GameMapManager::Add(const char* mapName, const char* tilesetName)
 	{
 		GameMapSTLMapIterator iter;
 
 		if (!((iter = names_.find(mapName)) != names_.end()))
 		{
-			// register the map instance
+			// create the map instance
 			GameMap* mapInstance = new GameMap(tilesets_->Get(tilesetName));
-			mapInstance->LoadMapFromFile(mapFilePath);
+
+			// must name the map instance first, as all loader code needs the name
 			mapInstance->SetName(mapName);
+
+			// get the maps directory from the game singleton
+			const char* mapsPath = GameSingleton::GetInstance()->GetMapsDirectory().c_str();
+
+			// load the .map
+			mapInstance->LoadMapData(mapsPath);
+
+			// load the .collision
+			mapInstance->LoadCollisionData(mapsPath);
+
+			// load the .warp
+			mapInstance->LoadMapWarpData(mapsPath);
+
+			// load the .event
+			mapInstance->LoadEventData(mapsPath);
+
+			// add the map to the maps_ vector
 			maps_.push_back(mapInstance);
 
-			// register the name
+			// register the map name
 			names_[mapName] = static_cast<unsigned int>(maps_.size() - 1);
-			//LogMessage("Registered %s\n", mapName);
 		}
 		else
 		{
@@ -72,18 +91,10 @@ namespace GAME
 		return (static_cast<unsigned int>(index) < maps_.size()) ? maps_.at(index) : 0;
 	}
 
+	/**************************************************************************/
+
 	void GameMapManager::DebugList()
 	{
-#if 0
-		GameMapSTLMapIterator iter;
-
-		for (iter = names_.begin(); iter != names_.end(); iter++)
-		{
-			GameMap* map = maps_.at(static_cast<unsigned int>(iter->second));
-			fprintf(stderr, "Map: %s\n", iter->first.c_str());
-			map->DebugList();
-		}
-#endif
 	}
 
 } // end namespace

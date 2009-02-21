@@ -17,24 +17,24 @@ namespace GAME
 {
 	class GameTileset;
 	class GameMapEvent;
-	
+
 	class GameMap
 	{
 	public:
 		/**
 		 * Creates a new empty game map.
 		 * @param tileSet GameTileset to use.
-		 * @remarks tileSet must remain a valid pointer throughout the lifetime of GameMap.	
-		 *          User is responsible for deallocating tileSet.	 
+		 * @remarks tileSet must remain a valid pointer throughout the lifetime of GameMap.
+		 *          User is responsible for deallocating tileSet.
 		 */
 		GameMap(GameTileset *tileSet);
-		
+
 		/**
 		 * Erases the contents of the current map.
 		 * Does not affect current tileset.
 		 */
 		void Clear();
-		
+
 		/**
 		 * Erases the current map's contents and loads map tile and event data from file.
 		 * The current map data must be compatible with the current tileset, or else,
@@ -42,7 +42,7 @@ namespace GAME
 		 * @param pathname Pathname to the .map file to load.
 		 */
 		void LoadMapFromFile(const char *pathname);
-		
+
 		/**
 		 * Changes the current tile set assoicated with the map.
 		 * This does not automatically switch all the tiles in the current map,
@@ -53,54 +53,91 @@ namespace GAME
 		 * @return Returns the tile set previously assigned to the current map
 		 */
 		GameTileset *SetGameTileset(GameTileset *tileSet);
-		
+
+		GameTileset* GetTileset() const;
+
 		/**
-		 * Creates a new map layer. 
+		 * Creates a new map layer.
 		 * @param cols Number of colums
 		 * @param rows Number of rows
 		 * @return Returns the layer index of the created map layer.
 		 */
 		 int CreateMapLayer(int cols,int rows);
-		 
+
 		 /**
 		  * Returns the MapLayer at index
 		  * @param layerIndex Layer index
 		  * @return Pointer to the map layer, or NULL if @a layerIndex is out of bound.
 		  */
 		 GameMapLayer* GetGameMapLayer(int layerIndex);
-		 
+
 		 /**
 		  * Draws the map.
 		  * @param srcX Source X position given in pixels.
-		  * @param srcY Source Y position given in pixels.		 
+		  * @param srcY Source Y position given in pixels.
 		  * @param destX Destination X position given in pixels.
 		  * @param destY Destination Y position given in pixels.
 		  * @param width Width of the map in pixels to copy. If 0, uses the dest image's width.
 		  * @param height Height of the map in pixels to copy. If 0, uses the dest image's height.
 		  */
 		 void DrawMap(ImageResource *destImage,int srcX = 0,int srcY = 0,int destX = 0,int destY = 0,int width = 0,int height = 0);
-		
-		
+
+
+		void SetTileSolid(int tileX, int tileY, bool isSolid = true);
+		bool IsSolid(int tileX, int tileY) const;
+
+
+/*#**************************************************************************#*/
+
+		// the new map data interface
+
+		/// saves .map
+		void SaveMapData(const char* filePath);
+
+		/// loads .map
+		void LoadMapData(const char* filePath);
+
+		/// saves .collision
+		void SaveCollisionData(const char* filePath);
+
+		/// loads .collision
+		void LoadCollisionData(const char* filePath);
+
+		/// saves .event
+		void SaveEventData(const char* filePath);
+
+		/// loads .event
+		void LoadEventData(const char* filePath);
+
+		/// saves .warp
+		void SaveMapWarpData(const char* filePath);
+
+		/// loads .warp
+		void LoadMapWarpData(const char* filePath);
+
+/*#**************************************************************************#*/
+
+
 		//
-		
+
 		void ClearMapEvents();
 		void AddMapEvent(GameMapEvent* event);
 		GameMapEvent* GetMapEvent(int eventIndex);
 		const int GetID() const;
-		
+
 		void SetName(const char* mapName);
 		std::string GetName() const;
-		
+
 		void DebugList();
-		
+
 		static int totalMapCount; // used for IDs
-		
-	private:		
+
+	private:
 		std::vector<GameMapLayer> layers_;
 		GameTileset *tileSet_;
-		
+
 		std::vector<GameMapEvent*> events_;
-		
+
 		int mapID_;
 		std::string mapName_;
 	}; // end class

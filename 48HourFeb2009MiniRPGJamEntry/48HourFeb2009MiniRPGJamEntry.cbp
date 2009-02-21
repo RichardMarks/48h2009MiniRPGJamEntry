@@ -107,6 +107,7 @@
 		<Unit filename="Game_CheckNPCCollisions.cpp" />
 		<Unit filename="Game_Destroy.cpp" />
 		<Unit filename="Game_Dialogue.cpp" />
+		<Unit filename="Game_DirectoryManagement.cpp" />
 		<Unit filename="Game_Initialize.cpp" />
 		<Unit filename="Game_Render.cpp" />
 		<Unit filename="Game_Starfield.cpp" />

@@ -1,0 +1,2 @@
+# define the map warps
+# WARP [from-map-name]:[from-x]:[from-y]:[to-map-name]:[to-x]:[to-y]:[armed (true|false)]:[persists (true|false)]

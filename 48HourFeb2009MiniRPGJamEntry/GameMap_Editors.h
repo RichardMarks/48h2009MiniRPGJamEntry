@@ -24,8 +24,8 @@ namespace GAME
 			/// we are editing the base layer of the map
 			EditingBaseLayer,
 
-			/// we are editing the object layer of the map
-			EditingObjectLayer,
+			/// we are editing the collision layer of the map
+			EditingCollisionLayer,
 
 			/// we are editing the events on the map
 			EditingEvents,
@@ -66,6 +66,8 @@ namespace GAME
 
 	private:
 
+		void RenderMap();
+
 		// shared resource pointers -- the game singleton class is responsible for init/destroy these pointers
 
 		/// shared resource pointer to the display surface of the game system
@@ -74,16 +76,39 @@ namespace GAME
 		/// a shared resource pointer to the game singleton's current map
 		GameMap* currentMap_;
 
-		// map editor resource pointers -- the map editor is responsible for init/destroy these pointers
-
-		/// the camera used for previewing
+		/// a shared resource pointer to the game singleton's camera
 		GameCamera* camera_;
 
+		/// a shared resource pointer to the game singleton's tileset manager
+		GameTilesetManager* tiles_;
+
+		/// a shared resource pointer to the game singleton's map manager
+		GameMapManager* maps_;
+
+		// map editor resource pointers -- the map editor is responsible for init/destroy these pointers
+
+		/// the camera used by the editor
+		int cameraX_;
+		int cameraY_;
+		int cameraW_;
+		int cameraH_;
+
+		/// the surface that the entire map is rendered on
+		ImageResource* mapPanel_;
+
+		/// the state of the editor
 		MAPEDITORS::EditorState state_;
 
+		/// the position of the mouse
 		int mouseX_;
 		int mouseY_;
+
+		/// have we clicked the mouse? heh heh
 		bool mouseClicked_;
+
+		/// is the mouse button down?
+		bool mouseDown_;
+
 	};
 
 	/// simple define to make it easier to use the map editors singleton

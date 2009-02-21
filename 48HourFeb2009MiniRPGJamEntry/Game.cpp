@@ -220,7 +220,7 @@ namespace GAME
 				if (GAMESTATE::MapEditor != GetState())
 				{
 					MapEditors->SetMap(currentMap_);
-					MapEditors->SetState(MAPEDITORS::EditingBaseLayer);
+					MapEditors->SetState(MAPEDITORS::EditingCollisionLayer);
 					SetState(GAMESTATE::MapEditor);
 				}
 				else

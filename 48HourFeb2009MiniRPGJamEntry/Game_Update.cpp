@@ -56,12 +56,23 @@ namespace GAME
 		*/
 		int playerTileX = (pwx + 4) / 8;
 		int playerTileY = (pwy + 4) / 8;
+
+		/*
 		int collide[] =
 		{
 			(baseLayer->GetEventAt((playerTileX > 0) ? playerTileX - 1 : 0, playerTileY) == 0xFF) ? true : false,
 			(baseLayer->GetEventAt(playerTileX, (playerTileY > 0) ? playerTileY - 1 : 0) == 0xFF) ? true : false,
 			(baseLayer->GetEventAt((playerTileX < mapColumns - 1) ? playerTileX + 1 : mapColumns - 1, playerTileY) == 0xFF) ? true : false,
 			(baseLayer->GetEventAt(playerTileX, (playerTileY < mapRows - 1) ? playerTileY + 1 : mapRows - 1) == 0xFF) ? true : false
+		};
+		*/
+
+		bool collide[] =
+		{
+			currentMap_->IsSolid((playerTileX > 0) ? playerTileX - 1 : 0, playerTileY),
+			currentMap_->IsSolid(playerTileX, (playerTileY > 0) ? playerTileY - 1 : 0),
+			currentMap_->IsSolid((playerTileX < mapColumns - 1) ? playerTileX + 1 : mapColumns - 1, playerTileY),
+			currentMap_->IsSolid(playerTileX, (playerTileY < mapRows - 1) ? playerTileY + 1 : mapRows - 1),
 		};
 
 		// handle events

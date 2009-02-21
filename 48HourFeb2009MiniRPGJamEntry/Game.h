@@ -175,6 +175,24 @@ namespace GAME
 		/// renders the main game
 		void Render();
 
+		/// sets the directory that tiles are stored in
+		void SetTilesDirectory(const char* path);
+
+		/// sets the directory that maps are stored in
+		void SetMapsDirectory(const char* path);
+
+		/// sets the directory that sprites are stored in
+		void SetSpritesDirectory(const char* path);
+
+		/// gets the directory that tiles are stored in
+		std::string GetTilesDirectory() const;
+
+		/// gets the directory that maps are stored in
+		std::string GetMapsDirectory() const;
+
+		/// gets the directory that sprites are stored in
+		std::string GetSpritesDirectory() const;
+
 /*#**************************************************************************#*/
 
 	private:
@@ -269,8 +287,14 @@ namespace GAME
 		/// number of steps to initiate a random monster encounter
 		int stepsUntilAmbush_;
 
-		/// the folder that npc chat files are stored
-		std::string npcChatDirectory_;
+		/// the directory that tiles are stored in
+		std::string tilesDirectory_;
+
+		/// the directory that maps are stored in
+		std::string mapsDirectory_;
+
+		/// the directory that sprites are stored in
+		std::string spritesDirectory_;
 
 /*#**************************************************************************#*/
 

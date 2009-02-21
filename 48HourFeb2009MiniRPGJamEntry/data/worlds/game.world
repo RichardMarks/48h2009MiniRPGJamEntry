@@ -22,14 +22,18 @@ SPRITESDIR data/graphics/game/sprites/
 TILESET Test:testmap_tiles.png:8:8:24:1:1
 
 # define the maps
-MAP Test1:test1.map:Test
-MAP Test2:test2.map:Test
+
+# MAP [map-name]:[tileset-name]
+MAP Test1:Test
+
+#MAP Test1:test1.map:Test
+#MAP Test2:test2.map:Test
 
 # define the map warps
 # WARP [from-map-name]:[from-x]:[from-y]:[to-map-name]:[to-x]:[to-y]:[armed (true|false)]:[persists (true|false)]
 
-WARP Test1:29:13:Test2:2:13:true:true
-WARP Test2:0:13:Test1:26:13:true:true
+#WARP Test1:29:13:Test2:2:13:true:true
+#WARP Test2:0:13:Test1:26:13:true:true
 
 # define the starting location
 START Test1
@@ -37,24 +41,24 @@ START Test1
 # define the sprites
 
 SPRITE player.png:8:8:3:5
-SPRITE npc_adultm.png:8:8:3:15
-SPRITE npc_adultf.png:8:8:3:15
-SPRITE npc_childm.png:8:8:3:9
-SPRITE npc_childf.png:8:8:3:9
-SPRITE npc_guard.png:8:8:3:20
-SPRITE antagonist.png:8:8:3:20
+#SPRITE npc_adultm.png:8:8:3:15
+#SPRITE npc_adultf.png:8:8:3:15
+#SPRITE npc_childm.png:8:8:3:9
+#SPRITE npc_childf.png:8:8:3:9
+#SPRITE npc_guard.png:8:8:3:20
+#SPRITE antagonist.png:8:8:3:20
 
 #define the player
 PLAYER 1:10:10
 
 # define some npcs
-NPC 2:Test1:19:11
-NPC 2:Test2:15:12
-NPC 3:Test1:9:18
+#NPC 2:Test1:19:11
+#NPC 2:Test2:15:12
+#NPC 3:Test1:9:18
 
-NPCMOTION 1:@@ERRRRSDDDDWLLLLNUUUU
-NPCMOTION 3:@@ERRRRRR_!N!!S!!@WLLLLLL_!S!!N!!
-NPCMOTION 2:@@NUUUUU_!!W!!N!!E!!S!!@DDDDD_!!W!!S!!E!!
+#NPCMOTION 1:@@ERRRRSDDDDWLLLLNUUUU
+#NPCMOTION 3:@@ERRRRRR_!N!!S!!@WLLLLLL_!S!!N!!
+#NPCMOTION 2:@@NUUUUU_!!W!!N!!E!!S!!@DDDDD_!!W!!S!!E!!
 
 #CHATDIR data/chats/
 #NPCCHAT 1:generic_male_hello.chat

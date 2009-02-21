@@ -63,7 +63,7 @@ namespace GAME
 			const int numChar = std::strlen(keyMap_);
 			if(cursor_ == numChar) return 1;
 			if(cursor_ == numChar + 1) return -1;
-			if(name_.length() < maxChars_)
+			if(name_.length() < static_cast<unsigned int>(maxChars_))
 			{
 				name_ += keyMap_[cursor_];
 			}

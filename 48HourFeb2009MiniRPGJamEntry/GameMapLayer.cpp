@@ -10,12 +10,17 @@
 
 namespace GAME
 {
-	GameMapLayer::GameMapLayer(GameTileset *tileSet,int cols,int rows) :
-		tiles_(cols * rows), numCols_(cols), numRows_(rows), tileSet_(tileSet)
+	GameMapLayer::GameMapLayer(GameTileset* tileSet, int cols, int rows) :
+		tiles_(cols * rows),
+		numCols_(cols),
+		numRows_(rows),
+		tileSet_(tileSet)
 	{
 	}
 
-	void GameMapLayer::Resize(int cols,int rows)
+	/**************************************************************************/
+
+	void GameMapLayer::Resize(int cols, int rows)
 	{
 		numCols_ = cols;
 		numRows_ = rows;
@@ -23,105 +28,129 @@ namespace GAME
 		tiles_.resize(cols * rows);
 	}
 
+	/**************************************************************************/
+
 	int GameMapLayer::GetNumColumns() const
 	{
 		return numCols_;
 	}
+
+	/**************************************************************************/
 
 	int GameMapLayer::GetNumRows() const
 	{
 		return numRows_;
 	}
 
+	/**************************************************************************/
+
 	int GameMapLayer::GetWidth() const
 	{
 		return numCols_ * tileSet_->GetTileWidth();
 	}
+
+	/**************************************************************************/
 
 	int GameMapLayer::GetHeight() const
 	{
 		return numRows_ * tileSet_->GetTileHeight();
 	}
 
-	void GameMapLayer::PixelToTileIndex(int x,int y,int *col,int *row) const
+	/**************************************************************************/
+
+	void GameMapLayer::PixelToTileIndex(int x, int y, int* col, int* row) const
 	{
 		*col = (x / tileSet_->GetTileWidth());
 		*row = (y / tileSet_->GetTileHeight());
 	}
 
-	int GameMapLayer::GetTileIndexAt(int col,int row) const
+	/**************************************************************************/
+
+	int GameMapLayer::GetTileIndexAt(int col, int row) const
 	{
 		return tiles_[row * numCols_ + col].tileIndex;
 	}
 
-	void GameMapLayer::SetTileIndexAt(int col,int row,int index)
+	/**************************************************************************/
+
+	void GameMapLayer::SetTileIndexAt(int col, int row, int index)
 	{
 		tiles_[row * numCols_ + col].tileIndex = index;
 	}
 
-	int GameMapLayer::GetEventAt(int col,int row) const
+	/**************************************************************************/
+
+	int GameMapLayer::GetEventAt(int col, int row) const
 	{
 		return tiles_[row * numCols_ + col].eventNo;
 	}
 
-	void GameMapLayer::SetEventAt(int col,int row,int event)
+	/**************************************************************************/
+
+	void GameMapLayer::SetEventAt(int col, int row, int event)
 	{
 		tiles_[row * numCols_ + col].eventNo = event;
 	}
+
+	/**************************************************************************/
 
 	std::vector<GameMapLayer::Tile>& GameMapLayer::GetTileData()
 	{
 		return tiles_;
 	}
 
-	void GameMapLayer::DrawLayer(ImageResource *destImage,int srcX,int srcY,int destX,int destY,int width,int height) const
+	/**************************************************************************/
+
+	void GameMapLayer::DrawLayer(ImageResource* destImage, int srcX, int srcY, int destX, int destY, int width, int height) const
 	{
 		// Perform basic clipping
-		if(destX >= destImage->GetWidth()) return;
-		if(destY >= destImage->GetHeight()) return;
-		if(srcX >= GetWidth()) return;
-		if(srcY >= GetHeight()) return;
+		if (destX >= destImage->GetWidth()) return;
+		if (destY >= destImage->GetHeight()) return;
+		if (srcX >= GetWidth()) return;
+		if (srcY >= GetHeight()) return;
 
 		// use (destX2,destY2) to represent the bottom right corner destination
 		int destX2 = destX + width;
 		int destY2 = destY + height;
 
-		if(destX2 < 0) return;
-		if(destY2 < 0) return;
+		if (destX2 < 0) return;
+		if (destY2 < 0) return;
 
-		if(destX < 0)
+		if (destX < 0)
 		{
 			srcX -= destX;
 			destX = 0;
 		}
-		if(destY < 0)
+
+		if (destY < 0)
 		{
 			srcY -= destY;
 			destY = 0;
 		}
-		if(destX2 >= destImage->GetWidth()) destX2 = destImage->GetWidth() - 1;
-		if(destY2 >= destImage->GetHeight()) destY2 = destImage->GetHeight() - 1;
+
+		if (destX2 >= destImage->GetWidth()) destX2 = destImage->GetWidth() - 1;
+		if (destY2 >= destImage->GetHeight()) destY2 = destImage->GetHeight() - 1;
 
 		int srcX2 = srcX + destX2 - destX;
 		int srcY2 = srcY + destY2 - destY;
 
-		if(srcX2 < 0) return;
-		if(srcY2 < 0) return;
+		if (srcX2 < 0) return;
+		if (srcY2 < 0) return;
 
-		if(srcX < 0)
+		if (srcX < 0)
 		{
 			destX -= srcX;
 			srcX = 0;
 		}
 
-		if(srcY < 0)
+		if (srcY < 0)
 		{
 			destY -= srcY;
 			srcY = 0;
 		}
 
-		if(srcX2 >= GetWidth()) srcX2 = GetWidth() - 1;
-		if(srcY2 >= GetHeight()) srcY2 = GetHeight() - 1;
+		if (srcX2 >= GetWidth()) srcX2 = GetWidth() - 1;
+		if (srcY2 >= GetHeight()) srcY2 = GetHeight() - 1;
 
 		width = srcX2 - srcX;
 		height = srcY2 - srcY;

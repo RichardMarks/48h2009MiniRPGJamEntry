@@ -100,6 +100,9 @@ namespace GAME
 
 		gameStateManager_ = new GAMESTATE::GameStateManager();
 
+		// we will start with the map editor
+		SetState(GAMESTATE::MapEditor);
+
 		gameMenu_ = new GameMenuManager();
 
 		return true;
