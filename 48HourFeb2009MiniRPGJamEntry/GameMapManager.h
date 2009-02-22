@@ -32,6 +32,8 @@ namespace GAME
 
 		void DebugList();
 
+		unsigned int GetNumMaps() const;
+
 	private:
 		GameMapManager(const GameMapManager& rhs);
 		const GameMapManager& operator=(const GameMapManager& rhs);

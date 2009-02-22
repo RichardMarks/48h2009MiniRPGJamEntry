@@ -86,6 +86,7 @@ namespace GAME
 		void SetTileSolid(int tileX, int tileY, bool isSolid = true);
 		bool IsSolid(int tileX, int tileY) const;
 
+		bool IsWarp(int tileX, int tileY) const;
 
 /*#**************************************************************************#*/
 

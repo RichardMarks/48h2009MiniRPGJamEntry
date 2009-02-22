@@ -137,6 +137,13 @@ namespace GAME
 
 	/**************************************************************************/
 
+	bool GameMap::IsWarp(int tileX, int tileY) const
+	{
+		return (layers_[0].GetEventAt(tileX, tileY) < 0xFF && layers_[0].GetEventAt(tileX, tileY) > 0x0) ? true : false;
+	}
+
+	/**************************************************************************/
+
 	void GameMap::ClearMapEvents()
 	{
 		events_.clear();

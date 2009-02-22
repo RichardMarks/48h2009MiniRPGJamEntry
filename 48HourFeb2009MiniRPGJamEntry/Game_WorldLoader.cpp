@@ -480,10 +480,10 @@ namespace GAME
 						fprintf(stderr,
 							"\tMAP DEFINITION: %s\n"
 							"\tRequires the following map data files:\n"
-							"\t\t%s/%s/%s.map\n"
-							"\t\t%s/%s/%s.collision\n"
-							"\t\t%s/%s/%s.warp\n"
-							"\t\t%s/%s/%s.event\n"
+							"\t\t%s%s/%s.map\n"
+							"\t\t%s%s/%s.collision\n"
+							"\t\t%s%s/%s.warp\n"
+							"\t\t%s%s/%s.event\n"
 							"\n"
 							"\tDepends on a Tileset named %s.\n\n",
 							mapName.c_str(),

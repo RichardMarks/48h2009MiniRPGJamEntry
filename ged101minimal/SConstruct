@@ -1,6 +1,6 @@
 #
 # SConstruct
-# this scons build script produces a version of the ged101 engine library 
+# this scons build script produces a version of the ged101 engine library
 ################################################################################
 projectConfig = {}
 ################################################################################
@@ -20,9 +20,17 @@ projectConfig['src'] = Split("""
 	./source/InputDevice_Keyboard.cpp
 	./source/InputDevice_Mouse.cpp
 	./source/NameDirectory.cpp
+	./source/GUIListBox.cpp
 	""")
 ################################################################################
-buildEnv = Environment(CCFLAGS = '-g', CPPPATH = ['../','.','./include'])
+buildEnv = Environment(CCFLAGS = '-g', CPPPATH = Split("""
+	../
+	.
+	./include
+	"""))
+
+#buildEnv.ParseConfig('wx-config --cflags')
+
 buildEnv.StaticLibrary('./lib/' + projectConfig['lib'], projectConfig['src'])
 ################################################################################
 

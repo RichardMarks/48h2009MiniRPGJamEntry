@@ -27,6 +27,9 @@ namespace GAME
 			/// we are editing the collision layer of the map
 			EditingCollisionLayer,
 
+			/// we are editing the map warps of the game
+			EditingMapWarps,
+
 			/// we are editing the events on the map
 			EditingEvents,
 
@@ -36,6 +39,7 @@ namespace GAME
 			/// we are previewing the map
 			Previewing
 		};
+
 	} // end namespace
 
 	class GameMap;
@@ -103,11 +107,50 @@ namespace GAME
 		int mouseX_;
 		int mouseY_;
 
-		/// have we clicked the mouse? heh heh
-		bool mouseClicked_;
+		/// have we clicked the left mouse button?
+		bool mouseLBClicked_;
 
-		/// is the mouse button down?
-		bool mouseDown_;
+		/// is the left mouse button down?
+		bool mouseLBDown_;
+
+		/// have we clicked the right mouse button?
+		bool mouseRBClicked_;
+
+		/// is the right mouse button down?
+		bool mouseRBDown_;
+
+		/// when placing map warps, we need to check to see if we have placed the first yet to place the second
+		bool placedFirst_;
+
+
+		/// used internally for placing map warps
+		struct WarpTarget
+		{
+			int worldX_, worldY_, targetMapID_;
+			WarpTarget() :
+				worldX_(0),
+				worldY_(0),
+				targetMapID_(0)
+			{
+			}
+
+			WarpTarget(int worldX, int worldY, int targetMapID) :
+				worldX_(worldX),
+				worldY_(worldY),
+				targetMapID_(targetMapID)
+			{
+			}
+
+			void Copy(WarpTarget& source)
+			{
+				worldX_ 		= source.worldX_;
+				worldY_ 		= source.worldY_;
+				targetMapID_ 	= source.targetMapID_;
+			}
+		};
+
+		WarpTarget warpFrom_;
+		WarpTarget warpTo_;
 
 	};
 

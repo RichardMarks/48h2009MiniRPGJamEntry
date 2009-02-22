@@ -21,7 +21,7 @@
 
 #include <allegro.h>
 
-// include the minimal ged101 headers 
+// include the minimal ged101 headers
 #include "DebugReport.h"
 #include "GraphicsDevice.h"
 #include "ImageResource.h"
@@ -31,6 +31,13 @@
 #include "ImageList.h"
 #include "InputDevice.h"
 #include "GameTimer.h"
+
+#if 0
+// this is purely useless for now -- much needs to be re-thought out.
+#include "NativeGUITextEntry.h"
+#endif
+
+#include "GUIListBox.h"
 
 #if defined(GED101_USE_SIMPLE_NAMESPACES)
 using namespace ENGINE;

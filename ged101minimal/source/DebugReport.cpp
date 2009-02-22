@@ -14,6 +14,8 @@
 
 #include "DebugReport.h"
 
+#include <allegro.h>
+
 /**
  * \file DebugReport.cpp
  * \brief Project Debugging Utility Library - Error Reporting Implementation
@@ -215,6 +217,21 @@ namespace DEBUG
 	DebugReport::DebugReport()
 	{
 		// We NEVER need to create an instance of this class.
+	}
+
+	/**************************************************************************/
+
+	void DebugAllegroGUI::MessageBox(const char* message, const char* caption)
+	{
+		alert(caption, "", message, "OK", 0, KEY_ENTER, 0);
+	}
+
+	/**************************************************************************/
+
+	bool DebugAllegroGUI::YesNo(const char* question, const char* caption)
+	{
+		int result = alert(caption, "", question, "YES", "NO", KEY_ENTER, KEY_ESC);
+		return (0x1 == result) ? true : false;
 	}
 
 } // end namespace

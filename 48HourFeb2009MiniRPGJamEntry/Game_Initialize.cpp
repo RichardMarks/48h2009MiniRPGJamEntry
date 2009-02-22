@@ -100,8 +100,15 @@ namespace GAME
 
 		gameStateManager_ = new GAMESTATE::GameStateManager();
 
-		// we will start with the map editor
-		SetState(GAMESTATE::MapEditor);
+		// we will start with the map editor if the argv[] is -edit
+		if (argc>1)
+		{
+			std::string argvStr = argv[1];
+			if ("-edit" == argvStr)
+			{
+				SetState(GAMESTATE::MapEditor);
+			}
+		}
 
 		gameMenu_ = new GameMenuManager();
 

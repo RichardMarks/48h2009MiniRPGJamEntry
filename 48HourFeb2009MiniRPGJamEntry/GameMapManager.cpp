@@ -97,6 +97,13 @@ namespace GAME
 	{
 	}
 
+	/**************************************************************************/
+
+	unsigned int GameMapManager::GetNumMaps() const
+	{
+		return maps_.size();
+	}
+
 } // end namespace
 
 

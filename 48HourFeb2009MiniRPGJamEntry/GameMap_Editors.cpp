@@ -95,6 +95,12 @@ namespace GAME
 		cameraW_ = 20;
 		cameraH_ = 15;
 
+		mouseLBDown_ 		= false;
+		mouseLBClicked_ 	= false;
+		mouseRBDown_ 		= false;
+		mouseRBClicked_ 	= false;
+		placedFirst_ 		= false;
+
 		return true;
 	}
 
@@ -123,7 +129,8 @@ namespace GAME
 			switch(state_)
 			{
 				case MAPEDITORS::EditingBaseLayer: 		{ state_ = MAPEDITORS::EditingCollisionLayer; } break;
-				case MAPEDITORS::EditingCollisionLayer: { state_ = MAPEDITORS::EditingEvents; } break;
+				case MAPEDITORS::EditingCollisionLayer: { state_ = MAPEDITORS::EditingMapWarps; } break;
+				case MAPEDITORS::EditingMapWarps:		{ state_ = MAPEDITORS::EditingEvents; } break;
 				case MAPEDITORS::EditingEvents: 		{ state_ = MAPEDITORS::SelectingTile; } break;
 				case MAPEDITORS::SelectingTile: 		{ state_ = MAPEDITORS::Previewing; } break;
 				case MAPEDITORS::Previewing: 			{ state_ = MAPEDITORS::EditingBaseLayer; } break;
@@ -201,35 +208,55 @@ namespace GAME
 			// we are editing the collision layer of the map
 			case MAPEDITORS::EditingCollisionLayer:
 			{
-				// only process clicks on the inside of the map panel
-				if (mouseX_ > 3 && mouseX_ < (cameraW_ * 16) - 3 && mouseY_ > 3 && mouseY_ < (cameraH_ * 16) - 3)
+#if 1 /// enable saving collision changes
+				if (InputDevice->KeyPressed(KEY::Key_S))
 				{
+					bool yesNo = DEBUG::DebugAllegroGUI::YesNo("Save Changes?", "Collision Map Editor");
+
+					if (yesNo)
+					{
+						currentMap_->SaveCollisionData(GameSingleton::GetInstance()->GetMapsDirectory().c_str());
+						std::string message = "Saved Collision Data for " + currentMap_->GetName() + ".map";
+						DEBUG::DebugAllegroGUI::MessageBox(message.c_str(), "Collision Map Editor");
+					}
+					else
+					{
+						DEBUG::DebugAllegroGUI::MessageBox("Changes were not saved.", "Collision Map Editor");
+					}
+				}
+#endif
+
+				// only process clicks on the inside of the map panel
+				if (mouseX_ > 0 && mouseX_ < (cameraW_ * 16) && mouseY_ > 0 && mouseY_ < (cameraH_ * 16))
+				{
+
+#if 1 /// enable the mouse-click requirment for placing collision tiles
 					// if we have not clicked already
-					if (!mouseClicked_)
+					if (!mouseLBClicked_)
 					{
 						// check for left mouse button being down
 						if (InputDevice->MouseButtonDown(1))
 						{
 							// its down
-							mouseDown_ = true;
+							mouseLBDown_ = true;
 						}
 
 						if (InputDevice->MouseButtonUp(1))
 						{
 							// its up
-							if (mouseDown_)
+							if (mouseLBDown_)
 							{
 								//fprintf(stderr, "Clicked!\n");
 								// we clicked
-								mouseClicked_ = true;
-								mouseDown_ = false;
+								mouseLBClicked_ = true;
+								mouseLBDown_ = false;
 							}
 						}
 					}
 					else
 					{
 						// we have clicked
-						mouseClicked_ = false;
+						mouseLBClicked_ = false;
 
 						// where did we click?
 						int tileX = cameraX_ + (mouseX_ / 16);
@@ -241,11 +268,103 @@ namespace GAME
 						// update the map panel
 						RenderMap();
 					}
+#endif
 				}
 
 			} break;
 
 /*#**************************************************************************#*/
+
+			// we are editing the map warps of the game
+			case MAPEDITORS::EditingMapWarps:
+			{
+				// only process clicks on the inside of the map panel
+				if (mouseX_ > 0 && mouseX_ < (cameraW_ * 16) && mouseY_ > 0 && mouseY_ < (cameraH_ * 16))
+				{
+#if 1 /// handle the left mouse button code
+					// if we have not clicked already
+					if (!mouseLBClicked_)
+					{
+						// check for left mouse button being down
+						if (InputDevice->MouseButtonDown(1))
+						{
+							// its down
+							mouseLBDown_ = true;
+						}
+
+						if (InputDevice->MouseButtonUp(1))
+						{
+							// its up
+							if (mouseLBDown_)
+							{
+								//fprintf(stderr, "Clicked!\n");
+								// we clicked
+								mouseLBClicked_ = true;
+								mouseLBDown_ = false;
+							}
+						}
+					}
+					else
+					{
+						// we have clicked
+						mouseLBClicked_ = false;
+
+						// where did we click?
+						int tileX = cameraX_ + (mouseX_ / 16);
+						int tileY = cameraY_ + (mouseY_ / 16);
+
+						// we do not place a new warp if there is already a warp at this tile
+						if (!currentMap_->IsWarp(tileX, tileY))
+						{
+							// are we placing the "from" or the "to" warp target?
+							if (!placedFirst_)
+							{
+								// first warp
+								WarpTarget temp(tileX, tileY, currentMap_->GetID());
+								warpFrom_.Copy(temp);
+
+								placedFirst_ = true;
+
+								// show a list of available maps
+								GUIListBox mapList;
+								unsigned int numMaps = maps_->GetNumMaps();
+								for (unsigned int index = 0; index < numMaps; index++)
+								{
+									mapList.Add(maps_->Get(index)->GetName().c_str());
+								}
+								mapList.Show();
+								DEBUG::DebugAllegroGUI::MessageBox(mapList.GetSelection().c_str(), "Map Warp Editor");
+							}
+							else
+							{
+								// second
+								// warpTo_.Copy(WarpTarget(tileX, tileY, targetMap));
+
+								// now really add the warp
+
+
+								placedFirst_ = false;
+							}
+						}
+						else
+						{
+							// tell the user that they cannot place a warp on another warp
+							DEBUG::DebugAllegroGUI::MessageBox("You cannot place warps on top of existing warps!", "Map Warp Editor");
+						}
+
+
+
+						// toggle the solidness of the tile
+						//currentMap_->SetTileSolid(tileX, tileY, !currentMap_->IsSolid(tileX, tileY));
+
+						// update the map panel
+						RenderMap();
+					}
+#endif /// end handle left mouse button
+
+
+				} // end mouse is on map panel
+			} break;
 
 			// we are editing the events on the map
 			case MAPEDITORS::EditingEvents: {} break;
@@ -281,6 +400,7 @@ namespace GAME
 		int mapRows 	= baseLayer->GetNumRows();
 		int mapColumns 	= baseLayer->GetNumColumns();
 
+#if 0 /// disabled debugging text
 		fprintf(stderr,
 			"RenderMap()\n\n"
 			"Map Panel Size in Pixels: %d, %d\n"
@@ -291,6 +411,9 @@ namespace GAME
 			mapColumns, mapRows,
 			cameraX_, cameraY_,
 			cameraW_, cameraH_);
+#endif
+
+		InputDevice->MouseEnableCursorDisplay(false);
 
 		// re-draw the view that the editor's camera can see
 		for (int tileY = cameraY_; tileY < cameraY_ + cameraH_; tileY++)
@@ -319,10 +442,15 @@ namespace GAME
 				if (currentMap_->IsSolid(tileX, tileY))
 				{
 					ColorRGB colorRed(255, 0, 0);
-					mapPanel_->Rect(tilePixelX, tilePixelY, tilePixelX + 7, tilePixelY + 7, colorRed.Get());
+					ImageResource hilight(8, 8, colorRed.Get());
+					hilight.BlitAlpha(mapPanel_, tilePixelX, tilePixelY, 0.5f);
+					mapPanel_->Line(tilePixelX, tilePixelY, tilePixelX + 7, tilePixelY, colorRed.Get());
+					mapPanel_->Line(tilePixelX, tilePixelY, tilePixelX, tilePixelY + 7, colorRed.Get());
 				}
 			}
 		}
+
+		InputDevice->MouseEnableCursorDisplay(true);
 	}
 
 	/**************************************************************************/
@@ -344,6 +472,18 @@ namespace GAME
 			{
 				BitmapFont debugFont;
 				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Editing Base Layer of (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
+			} break;
+
+			case MAPEDITORS::EditingMapWarps:
+			{
+				InputDevice->MouseEnableCursorDisplay(false);
+				mapPanel_->Blit(display, 0, 0, mapPanelW, mapPanelH, 0, 0, mapPanelW * 2, mapPanelH * 2);
+				InputDevice->MouseEnableCursorDisplay(true);
+
+				BitmapFont debugFont;
+				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Editing Map Warps on \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
+				debugFont.Print(display, 1, 12, "Mouse Pos Pixel: (%3d, %3d) Tile:(%3d, %3d)", mouseX_, mouseY_, mouseTileX, mouseTileY);
+
 			} break;
 
 			// we are editing the collision layer of the map

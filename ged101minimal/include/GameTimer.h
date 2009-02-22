@@ -11,7 +11,7 @@
  * \brief Cross-platform high-resolution timer class - Header
  * \author Richard Marks <ccpsceo@gmail.com>
  */
- 
+
 #ifndef __GAMETIMER_H__
 #define __GAMETIMER_H__
 
@@ -32,6 +32,10 @@ struct timeval;
 #else
 // this is for the windows platform
 #define GameTimerMethodReturnType DWORD
+#ifndef DWORD
+	#define DWORD unsigned long
+#endif
+
 #endif
 
 namespace ENGINE
@@ -55,63 +59,63 @@ namespace ENGINE
 	{
 	public:
 		// public members should be declared here
-		
+
 		/**
 		 * \return a pointer to the singleton class
 		 */
 		static GameTimerSingleton* GetInstance();
-		
+
 		/**
 		 * destructor De-allocates any allocated memory
 		 */
 		~GameTimerSingleton();
-		
+
 		/**
 		 * Get the number of microseconds passed since the last call.\n
 		 * There are approximately 1000 microseconds in 1 millisecond.
 		 * \return the number of microseconds passed since the last call.
 		 */
 		GameTimerMethodReturnType GetMicroseconds();
-		
+
 		/**
 		 * Get the number of milliseconds passed since the last call.\n
 		 * There are approximately 1000 milliseconds in 1 second.
 		 * \return the number of milliseconds passed since the last call.
 		 */
 		GameTimerMethodReturnType GetMilliseconds();
-		
+
 		/**
 		 * \return the number of seconds passed since the last call.
 		 */
 		GameTimerMethodReturnType GetSeconds();
-		
+
 	private:
 		// private members should be declared here
 		/**
 		 * default constructor is hidden
 		 */
 		GameTimerSingleton();
-		
+
 		/**
 		 * The copy constructor is hidden
 		 */
 		GameTimerSingleton(const GameTimerSingleton& rhs);
-		
+
 		/**
 		 * The assignment operator is hidden
 		 */
 		GameTimerSingleton& operator=(const GameTimerSingleton& rhs);
-		
+
 		/**
-		 * \var startTime_ 
+		 * \var startTime_
 		 * \brief the time when the timer was created.
 		 */
-		 
+
 		/**
-		 * \var currentTime_ 
+		 * \var currentTime_
 		 * \brief the current time of the timer.
 		 */
-		 
+
 // only non-windows platforms use this
 #if !defined(WIN32)
 		timeval* startTime_;

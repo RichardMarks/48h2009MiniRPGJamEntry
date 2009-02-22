@@ -53,17 +53,17 @@ namespace DEBUG
 		//! just writes a message to log.txt with no line file info or anything
 		DebugReport_SimpleMessage,
 	};
-	
+
 	//! the maximum report length is limited to 4096 characters
-	const unsigned int DBGREP_MAX_REPORT_LENGTH = 0x1000; 
-	
+	const unsigned int DBGREP_MAX_REPORT_LENGTH = 0x1000;
+
 	/**
 	 * \class DebugReportInfo
-	 * \brief A helper class that gives the functionality of a printf-style error reporting function. 
+	 * \brief A helper class that gives the functionality of a printf-style error reporting function.
 	 * \ingroup DebugGroup
 	 * \author Richard Marks <ccpsceo@gmail.com>, Redslash
 	 *
-	 * The class stores the function, file and line information so that it may be used later when calling the real 
+	 * The class stores the function, file and line information so that it may be used later when calling the real
 	 * reporting functions from the DebugReport class.\n
 	 * Many thanks to RedSlash for this contribution.
 	 */
@@ -77,66 +77,66 @@ namespace DEBUG
 		 * @param line is the line number that the report is being made on. This is almost always __LINE__.
 		 */
 		DebugReportInfo(const char* func, const char* file, int line);
-		
+
 		/**
 		 * Formats a report based on the information provided and makes a call to the DebugReport::Log() function.
 		 * @param severity is the report severity level. This can be any of the values DEBUG::DebugReport_Warning, DEBUG::DebugReport_Fatal, DEBUG::DebugReport_Error or DEBUG::DebugReport_Message.
 		 * @param message is the message to be reported. This is a printf-style C-string.
 		 * @param va is an optional number of arguments may be passed here to satisfy the previous printf-style C-string.
-		 */ 
+		 */
 		void PrintLog(ReportSeverityLevel severity, const char* message, va_list va);
-		
+
 		/**
 		 * Makes a call to the DebugReportInfo::PrintLog() function with the DEBUG::DebugReport_Warning severity level.
 		 * @param message is the message to be reported. This is a printf-style C-string.
 		 */
 		void PrintWarning(const char* message, ...);
-		
+
 		/**
 		 * Makes a call to the DebugReportInfo::PrintLog() function with the DEBUG::DebugReport_Error severity level.
 		 * @param message is the message to be reported. This is a printf-style C-string.
 		 */
 		void PrintError(const char* message, ...);
-		
+
 		/**
 		 * Makes a call to the DebugReportInfo::PrintLog() function with the DEBUG::DebugReport_Fatal severity level.
 		 * @param message is the message to be reported. This is a printf-style C-string.
 		 */
 		void PrintFatal(const char* message, ...);
-		
+
 		/**
 		 * Makes a call to the DebugReportInfo::PrintLog() function with the DEBUG::DebugReport_Message severity level.
 		 * @param message is the message to be reported. This is a printf-style C-string.
 		 */
 		void PrintMessage(const char* message, ...);
-		
+
 		/**
 		 * Makes a call to the DebugReportInfo::PrintLog() function with the DEBUG::DebugReport_SimpleMessage severity level.
 		 * @param message is the message to be reported. This is a printf-style C-string.
 		 */
 		void PrintSimpleMessage(const char* message, ...);
-		
+
 	private:
 		/**
 		 * hidden copy constructor
 		 */
 		DebugReportInfo(const DebugReportInfo& rhs);
-		
+
 		/**
 		 * hidden assignment operator
 		 */
 		const DebugReportInfo& operator=(const DebugReportInfo& rhs);
-		
+
 		//! The name of the Function that the report is being made from. Usually the value of __PRETTY_FUNCTION__ or __func__.
 		const char* func_;
-		
+
 		//! The name of the File that the report is being made in. Usually the value of __FILE__.
 		const char* file_;
-		
+
 		//! The line number that the report is being made on. This is almost always __LINE__.
-		int line_; 			
+		int line_;
 	}; // end class
-	
+
 	/**
 	 * \class DebugReport
 	 * \brief Handles the actual report logging functionality of the debug system.
@@ -168,17 +168,45 @@ namespace DEBUG
 		 * hidden constructor
 		 */
 		DebugReport();
-		
+
 		/**
 		 * hidden copy constructor
 		 */
 		DebugReport(const DebugReport& rhs);
-		
+
 		/**
 		 * hidden assignment operator
 		 */
 		const DebugReport& operator=(const DebugReport& rhs);
-		
+
+	}; // end class
+
+	/// a simple class providing static methods that wrap around allegro's alert() function
+	class DebugAllegroGUI
+	{
+	public:
+
+		/// displays a simple message dialog box with a OK button
+		static void MessageBox(const char* message, const char* caption);
+
+		/// displays a question with Yes/No buttons -- returns true if the YES button is clicked
+		static bool YesNo(const char* question, const char* caption);
+
+	private:
+		/**
+		 * hidden constructor
+		 */
+		DebugAllegroGUI();
+
+		/**
+		 * hidden copy constructor
+		 */
+		DebugAllegroGUI(const DebugAllegroGUI& rhs);
+
+		/**
+		 * hidden assignment operator
+		 */
+		const DebugAllegroGUI& operator=(const DebugAllegroGUI& rhs);
 	}; // end class
 
 	/**
@@ -199,7 +227,7 @@ namespace DEBUG
 	#define LogWarning DEBUG::DebugReportInfo(__PRETTY_FUNCTION__, __FILE__, __LINE__).PrintWarning
 	#define LogMessage DEBUG::DebugReportInfo(__PRETTY_FUNCTION__, __FILE__, __LINE__).PrintMessage
 	#define LogSimpleMessage DEBUG::DebugReportInfo("simple", "", 1984).PrintSimpleMessage
-	
+
 } // end namespace
 #endif
 

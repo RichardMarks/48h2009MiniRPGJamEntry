@@ -4,8 +4,9 @@
 ################################################################################
 # a little preparation for building an allegro project
 buildEnv = Environment(CCFLAGS = '-g -Wall')
-buildEnv.ParseConfig('allegro-config --cflags --libs')
 projectConfig = {}
+buildEnv.ParseConfig('allegro-config --cflags --libs')
+
 ################################################################################
 # this is the file name of the executable file to output
 projectConfig['executable'] = 'GameExe'
