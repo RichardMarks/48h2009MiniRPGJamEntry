@@ -21,6 +21,7 @@ projectConfig['src'] = Split("""
 	./source/InputDevice_Mouse.cpp
 	./source/NameDirectory.cpp
 	./source/GUIListBox.cpp
+	./source/GUITextEntryDialog.cpp
 	""")
 ################################################################################
 buildEnv = Environment(CCFLAGS = '-g', CPPPATH = Split("""

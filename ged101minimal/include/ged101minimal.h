@@ -38,6 +38,7 @@
 #endif
 
 #include "GUIListBox.h"
+#include "GUITextEntryDialog.h"
 
 #if defined(GED101_USE_SIMPLE_NAMESPACES)
 using namespace ENGINE;

@@ -68,6 +68,7 @@ projectConfig['sources'] = Split("""
 	Game_Starfield.cpp
 
 	GameMap_Editors.cpp
+	GameMap_Editors_Render.cpp
 	main.cpp
 	""")
 ################################################################################

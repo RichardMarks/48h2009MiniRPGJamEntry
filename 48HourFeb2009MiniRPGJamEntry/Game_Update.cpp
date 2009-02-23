@@ -57,16 +57,6 @@ namespace GAME
 		int playerTileX = (pwx + 4) / 8;
 		int playerTileY = (pwy + 4) / 8;
 
-		/*
-		int collide[] =
-		{
-			(baseLayer->GetEventAt((playerTileX > 0) ? playerTileX - 1 : 0, playerTileY) == 0xFF) ? true : false,
-			(baseLayer->GetEventAt(playerTileX, (playerTileY > 0) ? playerTileY - 1 : 0) == 0xFF) ? true : false,
-			(baseLayer->GetEventAt((playerTileX < mapColumns - 1) ? playerTileX + 1 : mapColumns - 1, playerTileY) == 0xFF) ? true : false,
-			(baseLayer->GetEventAt(playerTileX, (playerTileY < mapRows - 1) ? playerTileY + 1 : mapRows - 1) == 0xFF) ? true : false
-		};
-		*/
-
 		bool collide[] =
 		{
 			currentMap_->IsSolid((playerTileX > 0) ? playerTileX - 1 : 0, playerTileY),
@@ -86,6 +76,41 @@ namespace GAME
 			playerTileX = (pwx + 4) / 8; \
 			playerTileY = (pwy + 4) / 8; \
 			CheckMapEvents(playerTileX, playerTileY);
+
+		#define _TMP_CHECKFORWARPS \
+			if (currentMap_->IsWarp(playerTileX, playerTileY)) { WarpTargetPair* pair = \
+			currentMap_->GetWarpTargetPair(currentMap_->GetWarp(playerTileX, playerTileY)); \
+			GameMapEvent warpEvent(pair->startX_, pair->startY_, pair->startMap_, \
+			GameBasicMapWarp::GetInstance(), true, true, "", pair->endX_, pair->endY_, \
+			pair->endMap_); if (GameBasicMapWarp::GetInstance()->Initialize(&warpEvent)) { \
+			GameBasicMapWarp::GetInstance()->Execute(); }}
+
+#if 0
+//##############################################################################
+/// the check for warps code explained
+			// if the tile that the player is standing on is a warp tile
+			if (currentMap_->IsWarp(playerTileX, playerTileY))
+			{
+				// get the warp target pair data
+				WarpTargetPair* pair = currentMap_->GetWarpTargetPair(currentMap_->GetWarp(playerTileX, playerTileY));
+
+				// create a map warp event init with the warp target pair data
+				GameMapEvent warpEvent(
+					pair->startX_, pair->startY_, pair->startMap_,
+					GameBasicMapWarp::GetInstance(), true, true, "",
+					pair->endX_, pair->endY_, pair->endMap_);
+
+				// if we initialize the event handler with the event successfully
+				if (GameBasicMapWarp::GetInstance()->Initialize(&warpEvent))
+				{
+					// then we execute the event handler to perform our map warp
+					GameBasicMapWarp::GetInstance()->Execute();
+				}
+			}
+//##############################################################################
+
+#endif
+
 
 		// handle player / NPC interactions
 
@@ -255,6 +280,7 @@ namespace GAME
 					}
 
 					_TMP_CHECKFORMAPEVENTS
+					_TMP_CHECKFORWARPS
 				} // end if
 			} // end if
 			else
@@ -272,6 +298,7 @@ namespace GAME
 						}
 
 						_TMP_CHECKFORMAPEVENTS
+						_TMP_CHECKFORWARPS
 					} // end if
 				} // end if
 				else
@@ -291,6 +318,7 @@ namespace GAME
 							}
 
 							_TMP_CHECKFORMAPEVENTS
+							_TMP_CHECKFORWARPS
 						} // end if
 					} // end if
 				} // end else
@@ -322,6 +350,7 @@ namespace GAME
 					}
 
 					_TMP_CHECKFORMAPEVENTS
+					_TMP_CHECKFORWARPS
 				} // end if
 			} // end if
 			else
@@ -339,6 +368,7 @@ namespace GAME
 						}
 
 						_TMP_CHECKFORMAPEVENTS
+						_TMP_CHECKFORWARPS
 					} // end if
 				} // end if
 				else
@@ -358,6 +388,7 @@ namespace GAME
 							}
 
 							_TMP_CHECKFORMAPEVENTS
+							_TMP_CHECKFORWARPS
 						} // end if
 					} // end if
 				} // end else
@@ -389,6 +420,7 @@ namespace GAME
 					}
 
 					_TMP_CHECKFORMAPEVENTS
+					_TMP_CHECKFORWARPS
 				} // end if
 			} // end if
 			else
@@ -406,6 +438,7 @@ namespace GAME
 						}
 
 						_TMP_CHECKFORMAPEVENTS
+						_TMP_CHECKFORWARPS
 					} // end if
 				} // end if
 				else
@@ -425,6 +458,7 @@ namespace GAME
 							}
 
 							_TMP_CHECKFORMAPEVENTS
+							_TMP_CHECKFORWARPS
 						} // end if
 					} // end if
 				} // end else
@@ -456,6 +490,7 @@ namespace GAME
 					}
 
 					_TMP_CHECKFORMAPEVENTS
+					_TMP_CHECKFORWARPS
 				} // end if
 			} // end if
 			else
@@ -473,6 +508,7 @@ namespace GAME
 						}
 
 						_TMP_CHECKFORMAPEVENTS
+						_TMP_CHECKFORWARPS
 					} // end if
 				} // end if
 				else
@@ -492,6 +528,7 @@ namespace GAME
 							}
 
 							_TMP_CHECKFORMAPEVENTS
+							_TMP_CHECKFORWARPS
 						} // end if
 					} // end if
 				} // end else
@@ -504,6 +541,7 @@ namespace GAME
 ////////////////////////////////////////////////////////////////////////////////
 
 		#undef _TMP_CHECKFORMAPEVENTS
+		#undef _TMP_CHECKFORWARPS
 
 		if (
 			InputDevice->KeyUp(KEY::Key_Up) && InputDevice->KeyUp(KEY::Key_Down) &&

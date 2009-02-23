@@ -122,6 +122,12 @@ namespace GAME
 		/// when placing map warps, we need to check to see if we have placed the first yet to place the second
 		bool placedFirst_;
 
+		/// a pointer to hold the previous map pointer when placing warps
+		GameMap* previousMap_;
+
+		/// holds the position of the camera before the map change when adding warps
+		int previousCameraX_;
+		int previousCameraY_;
 
 		/// used internally for placing map warps
 		struct WarpTarget

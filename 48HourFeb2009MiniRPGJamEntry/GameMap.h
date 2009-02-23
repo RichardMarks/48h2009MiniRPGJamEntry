@@ -18,6 +18,52 @@ namespace GAME
 	class GameTileset;
 	class GameMapEvent;
 
+
+/**
+		a map consists of a vector of at least 3 layers
+		a map has a name and an ID #
+		a map holds a list of events
+		a map holds a list of warp target pairs
+*/
+
+	struct WarpTargetPair
+	{
+		int startX_, startY_, startMap_;
+		int endX_, endY_, endMap_;
+
+		WarpTargetPair() :
+			startX_(0),
+			startY_(0),
+			startMap_(0),
+			endX_(0),
+			endY_(0),
+			endMap_(0)
+		{
+		}
+
+		WarpTargetPair(int startX, int startY, int startMap, int endX, int endY, int endMap) :
+			startX_(startX),
+			startY_(startY),
+			startMap_(startMap),
+			endX_(endX),
+			endY_(endY),
+			endMap_(endMap)
+		{
+		}
+
+		void Copy(WarpTargetPair& source)
+		{
+			startX_ 	= source.startX_;
+			startY_ 	= source.startY_;
+			startMap_ 	= source.startMap_;
+			endX_ 		= source.endX_;
+			endY_ 		= source.endY_;
+			endMap_ 	= source.endMap_;
+
+		}
+	};
+
+
 	class GameMap
 	{
 	public:
@@ -40,6 +86,7 @@ namespace GAME
 		 * The current map data must be compatible with the current tileset, or else,
 		 * call SetGameTileset() prior to this call to set the appropriate tileset.
 		 * @param pathname Pathname to the .map file to load.
+		 * @deprecated -- do not use this function use the Load* functions instead
 		 */
 		void LoadMapFromFile(const char *pathname);
 
@@ -54,6 +101,7 @@ namespace GAME
 		 */
 		GameTileset *SetGameTileset(GameTileset *tileSet);
 
+		/// gets a pointer to the tileset used by the map
 		GameTileset* GetTileset() const;
 
 		/**
@@ -82,11 +130,6 @@ namespace GAME
 		  */
 		 void DrawMap(ImageResource *destImage,int srcX = 0,int srcY = 0,int destX = 0,int destY = 0,int width = 0,int height = 0);
 
-
-		void SetTileSolid(int tileX, int tileY, bool isSolid = true);
-		bool IsSolid(int tileX, int tileY) const;
-
-		bool IsWarp(int tileX, int tileY) const;
 
 /*#**************************************************************************#*/
 
@@ -118,6 +161,17 @@ namespace GAME
 
 /*#**************************************************************************#*/
 
+		/// toggles the solidness of the specified tile
+		void SetTileSolid(int tileX, int tileY, bool isSolid = true);
+
+		/// returns true if the specified tile is solid
+		bool IsSolid(int tileX, int tileY) const;
+
+		/// returns true if the specified tile is a warp tile
+		bool IsWarp(int tileX, int tileY) const;
+
+		void SetWarp(int tileX, int tileY, int warpIndex);
+		int GetWarp(int tileX, int tileY) const;
 
 		//
 
@@ -133,7 +187,15 @@ namespace GAME
 
 		static int totalMapCount; // used for IDs
 
+	public:
+		void AddWarpTargetPair(int startX, int startY, int startMap, int endX, int endY, int endMap);
+		WarpTargetPair* GetWarpTargetPair(unsigned int index) const;
+		void ClearWarpTargetPairs();
+		unsigned int GetNumWarpTargetPairs() const;
+
 	private:
+		std::vector<WarpTargetPair*> warps_;
+
 		std::vector<GameMapLayer> layers_;
 		GameTileset *tileSet_;
 

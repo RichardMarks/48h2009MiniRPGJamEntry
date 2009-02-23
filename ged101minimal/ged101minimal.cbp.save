@@ -39,6 +39,7 @@
 		<Unit filename="include/ColorRGB.h" />
 		<Unit filename="include/DebugReport.h" />
 		<Unit filename="include/GUIListBox.h" />
+		<Unit filename="include/GUITextEntryDialog.h" />
 		<Unit filename="include/GameTimer.h" />
 		<Unit filename="include/GraphicsDevice.h" />
 		<Unit filename="include/ImageList.h" />
@@ -51,6 +52,7 @@
 		<Unit filename="source/ColorRGB.cpp" />
 		<Unit filename="source/DebugReport.cpp" />
 		<Unit filename="source/GUIListBox.cpp" />
+		<Unit filename="source/GUITextEntryDialog.cpp" />
 		<Unit filename="source/GameTimer.cpp" />
 		<Unit filename="source/GraphicsDevice.cpp" />
 		<Unit filename="source/ImageList.cpp" />

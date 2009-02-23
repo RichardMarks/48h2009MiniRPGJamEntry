@@ -128,12 +128,12 @@ namespace GAME
 		{
 			switch(state_)
 			{
-				case MAPEDITORS::EditingBaseLayer: 		{ state_ = MAPEDITORS::EditingCollisionLayer; } break;
-				case MAPEDITORS::EditingCollisionLayer: { state_ = MAPEDITORS::EditingMapWarps; } break;
-				case MAPEDITORS::EditingMapWarps:		{ state_ = MAPEDITORS::EditingEvents; } break;
+				case MAPEDITORS::EditingBaseLayer: 		{ state_ = MAPEDITORS::EditingCollisionLayer; RenderMap();} break;
+				case MAPEDITORS::EditingCollisionLayer: { state_ = MAPEDITORS::EditingMapWarps; RenderMap();} break;
+				case MAPEDITORS::EditingMapWarps:		{ state_ = MAPEDITORS::EditingEvents; RenderMap();} break;
 				case MAPEDITORS::EditingEvents: 		{ state_ = MAPEDITORS::SelectingTile; } break;
-				case MAPEDITORS::SelectingTile: 		{ state_ = MAPEDITORS::Previewing; } break;
-				case MAPEDITORS::Previewing: 			{ state_ = MAPEDITORS::EditingBaseLayer; } break;
+				case MAPEDITORS::SelectingTile: 		{ state_ = MAPEDITORS::Previewing; RenderMap();} break;
+				case MAPEDITORS::Previewing: 			{ state_ = MAPEDITORS::EditingBaseLayer; RenderMap();} break;
 				default:break;
 			}
 		}
@@ -278,6 +278,23 @@ namespace GAME
 			// we are editing the map warps of the game
 			case MAPEDITORS::EditingMapWarps:
 			{
+#if 1 /// enable saving map warp changes
+				if (InputDevice->KeyPressed(KEY::Key_S))
+				{
+					bool yesNo = DEBUG::DebugAllegroGUI::YesNo("Save Changes?", "Map Warp Editor");
+
+					if (yesNo)
+					{
+						currentMap_->SaveMapWarpData(GameSingleton::GetInstance()->GetMapsDirectory().c_str());
+						std::string message = "Saved Map Warp Data for " + currentMap_->GetName() + ".map";
+						DEBUG::DebugAllegroGUI::MessageBox(message.c_str(), "Map Warp Editor");
+					}
+					else
+					{
+						DEBUG::DebugAllegroGUI::MessageBox("Changes were not saved.", "Map Warp Editor");
+					}
+				}
+#endif
 				// only process clicks on the inside of the map panel
 				if (mouseX_ > 0 && mouseX_ < (cameraW_ * 16) && mouseY_ > 0 && mouseY_ < (cameraH_ * 16))
 				{
@@ -333,15 +350,57 @@ namespace GAME
 									mapList.Add(maps_->Get(index)->GetName().c_str());
 								}
 								mapList.Show();
-								DEBUG::DebugAllegroGUI::MessageBox(mapList.GetSelection().c_str(), "Map Warp Editor");
+								DEBUG::DebugAllegroGUI::MessageBox("Starting point marked. Please place ending point now.", "Map Warp Editor");
+
+								// save a pointer to the current map
+								previousMap_ = currentMap_;
+
+								// save the camera position
+								previousCameraX_ = cameraX_;
+								previousCameraY_ = cameraY_;
+
+								// load the target map in
+								SetMap(maps_->Get(mapList.GetSelection().c_str()));
 							}
 							else
 							{
 								// second
-								// warpTo_.Copy(WarpTarget(tileX, tileY, targetMap));
+								WarpTarget temp(tileX, tileY, currentMap_->GetID());
+								warpTo_.Copy(temp);
 
-								// now really add the warp
+								char msgbuffer[0x400] = {0};
+								sprintf(msgbuffer, "Added Warp from %s @ (%d, %d) to %s @ (%d, %d)",
+								maps_->Get(warpFrom_.targetMapID_)->GetName().c_str(),
+								warpFrom_.worldX_, warpFrom_.worldY_,
+								maps_->Get(warpTo_.targetMapID_)->GetName().c_str(),
+								warpTo_.worldX_, warpTo_.worldY_);
+								DEBUG::DebugAllegroGUI::MessageBox(msgbuffer, "Map Warp Editor");
 
+								// create the warp bridge
+								previousMap_->SetWarp(warpFrom_.worldX_, warpFrom_.worldY_, previousMap_->GetNumWarpTargetPairs());
+								previousMap_->AddWarpTargetPair(
+									warpFrom_.worldX_,
+									warpFrom_.worldY_,
+									warpFrom_.targetMapID_,
+									warpTo_.worldX_,
+									warpTo_.worldY_,
+									warpTo_.targetMapID_);
+
+								currentMap_->SetWarp(warpTo_.worldX_, warpTo_.worldY_, currentMap_->GetNumWarpTargetPairs());
+								currentMap_->AddWarpTargetPair(
+									warpTo_.worldX_,
+									warpTo_.worldY_,
+									warpTo_.targetMapID_,
+									warpFrom_.worldX_,
+									warpFrom_.worldY_,
+									warpFrom_.targetMapID_);
+
+								// restore the previous map we were on
+								SetMap(previousMap_);
+
+								// restore camera position
+								cameraX_ = previousCameraX_;
+								cameraY_ = previousCameraY_;
 
 								placedFirst_ = false;
 							}
@@ -386,151 +445,6 @@ namespace GAME
 	}
 
 	/**************************************************************************/
-
-	void GameMapEditorsSingleton::RenderMap()
-	{
-		// render the map to the mapPanel_
-
-		// get the tileset of the current map
-		GameTileset* tileset = currentMap_->GetTileset();
-
-		// get the base layer
-		GameMapLayer* baseLayer = currentMap_->GetGameMapLayer(0);
-
-		int mapRows 	= baseLayer->GetNumRows();
-		int mapColumns 	= baseLayer->GetNumColumns();
-
-#if 0 /// disabled debugging text
-		fprintf(stderr,
-			"RenderMap()\n\n"
-			"Map Panel Size in Pixels: %d, %d\n"
-			"Map Size in Tiles: %d, %d\n"
-			"Camera Pos %d, %d\n"
-			"Camera Size %d, %d\n\n",
-			mapPanel_->GetWidth(), mapPanel_->GetHeight(),
-			mapColumns, mapRows,
-			cameraX_, cameraY_,
-			cameraW_, cameraH_);
-#endif
-
-		InputDevice->MouseEnableCursorDisplay(false);
-
-		// re-draw the view that the editor's camera can see
-		for (int tileY = cameraY_; tileY < cameraY_ + cameraH_; tileY++)
-		{
-			for (int tileX = cameraX_; tileX < cameraX_ + cameraW_; tileX++)
-			{
-				// get the tile
-				if (tileX >= mapColumns && tileY >= mapRows)
-				{
-					continue;
-				}
-
-				int tileIndex = baseLayer->GetTileIndexAt(tileX, tileY);
-
-				// draw the tile
-				int tilePixelX = (tileX - cameraX_) * 8;
-				int tilePixelY = (tileY - cameraY_) * 8;
-
-				tileset->GetImageResourceAt(tileIndex)->Blit(
-					mapPanel_,
-					0, 0,
-					tilePixelX,
-					tilePixelY,
-					8, 8);
-
-				if (currentMap_->IsSolid(tileX, tileY))
-				{
-					ColorRGB colorRed(255, 0, 0);
-					ImageResource hilight(8, 8, colorRed.Get());
-					hilight.BlitAlpha(mapPanel_, tilePixelX, tilePixelY, 0.5f);
-					mapPanel_->Line(tilePixelX, tilePixelY, tilePixelX + 7, tilePixelY, colorRed.Get());
-					mapPanel_->Line(tilePixelX, tilePixelY, tilePixelX, tilePixelY + 7, colorRed.Get());
-				}
-			}
-		}
-
-		InputDevice->MouseEnableCursorDisplay(true);
-	}
-
-	/**************************************************************************/
-
-	void GameMapEditorsSingleton::Render()
-	{
-		ImageResource* display = GraphicsDevice->GetSecondaryDisplayBuffer();
-
-		int mapPanelW = mapPanel_->GetWidth();
-		int mapPanelH = mapPanel_->GetHeight();
-
-		int mouseTileX = cameraX_ + (mouseX_ / 16);
-		int mouseTileY = cameraY_ + (mouseY_ / 16);
-
-		switch(state_)
-		{
-			// we are editing the base layer of the map
-			case MAPEDITORS::EditingBaseLayer:
-			{
-				BitmapFont debugFont;
-				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Editing Base Layer of (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
-			} break;
-
-			case MAPEDITORS::EditingMapWarps:
-			{
-				InputDevice->MouseEnableCursorDisplay(false);
-				mapPanel_->Blit(display, 0, 0, mapPanelW, mapPanelH, 0, 0, mapPanelW * 2, mapPanelH * 2);
-				InputDevice->MouseEnableCursorDisplay(true);
-
-				BitmapFont debugFont;
-				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Editing Map Warps on \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
-				debugFont.Print(display, 1, 12, "Mouse Pos Pixel: (%3d, %3d) Tile:(%3d, %3d)", mouseX_, mouseY_, mouseTileX, mouseTileY);
-
-			} break;
-
-			// we are editing the collision layer of the map
-			case MAPEDITORS::EditingCollisionLayer:
-			{
-				// draw the map
-				InputDevice->MouseEnableCursorDisplay(false);
-				mapPanel_->Blit(display, 0, 0, mapPanelW, mapPanelH, 0, 0, mapPanelW * 2, mapPanelH * 2);
-				InputDevice->MouseEnableCursorDisplay(true);
-
-				BitmapFont debugFont;
-				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Editing Collision Layer of (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
-				debugFont.Print(display, 1, 12, "Mouse Pos Pixel: (%3d, %3d) Tile:(%3d, %3d)", mouseX_, mouseY_, mouseTileX, mouseTileY);
-
-
-			} break;
-
-			// we are editing the events on the map
-			case MAPEDITORS::EditingEvents:
-			{
-				BitmapFont debugFont;
-				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Editing Events Layer of (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
-			} break;
-
-			// we are selecting a tile from the tileset browser
-			case MAPEDITORS::SelectingTile:
-			{
-				BitmapFont debugFont;
-				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Select a Tile");
-			} break;
-
-			// we are previewing the map
-			case MAPEDITORS::Previewing:
-			{
-				// draw the map
-				mapPanel_->Blit(display, 0, 0, mapPanelW, mapPanelH, 0, 0, mapPanelW * 2, mapPanelH * 2);
-
-				BitmapFont debugFont;
-				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Previewing Map (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
-
-			} break;
-
-			default: break;
-		} // end switch
-
-		InputDevice->MouseDisplayOnSurface(display);
-	}
 
 } // end namespace
 
