@@ -453,7 +453,7 @@ namespace GAME
 						{
 							// display the warp editor
 
-							GUITextEntryDialog editWarpTextBox(
+							UTILITY::GUI::GUITextEntryDialog editWarpTextBox(
 								"Please enter a new warp definition in the format:\n"
 								"[from-map-name]:[from-x]:[from-y]:[to-map-name]:[to-x]:[to-y]\n"
 								"For example: Town:4:4:World:19:16",
