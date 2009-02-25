@@ -26,6 +26,7 @@ namespace UTILITY
 	/// Contains Allegro GUI Utility Classes
 	namespace GUI
 	{
+		/// A class for easily making a selection from a list of strings with the Allegro GUI
 		class GUIListBox
 		{
 		public:

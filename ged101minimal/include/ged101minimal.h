@@ -5,6 +5,12 @@
 // ged101 minimal headers master inclusion header ()
 // Author: Richard Marks
 
+/**
+ * \file ged101minimal.h
+ * \brief Include this to have access to all the ged101minimal classes - Header
+ * \author Richard Marks <ccpsceo@gmail.com>
+ */
+
 #ifndef __GED101MINIMAL_H__
 #define __GED101MINIMAL_H__
 
