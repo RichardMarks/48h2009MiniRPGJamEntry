@@ -2,7 +2,7 @@
 // CODESTYLE: v2.0
 
 // GUIListBox.h
-// Project: Game Engine Design 101 (ENGINE)
+// Project: Game Engine Design 101 (UTILITY)
 // Author: Richard Marks
 // Purpose: A class for easily making a selection from a list of strings with the Allegro GUI
 
@@ -20,43 +20,66 @@
 
 struct DIALOG;
 
-namespace ENGINE
+/// Contains Utility Classes
+namespace UTILITY
 {
-	class GUIListBox
+	/// Contains Allegro GUI Utility Classes
+	namespace GUI
 	{
-	public:
-		GUIListBox();
+		class GUIListBox
+		{
+		public:
+			/// constructor
+			GUIListBox();
 
-		GUIListBox(std::vector<std::string>& items);
+			/// alternate constructor
+			GUIListBox(std::vector<std::string>& items);
 
-		~GUIListBox();
+			/// destructor
+			~GUIListBox();
 
-		void Show();
+			/// displays the listbox window
+			void Show();
 
-		void Clear();
+			/// clears the listbox of all items
+			void Clear();
 
-		void Set(std::vector<std::string>& items);
+			/// sets the listbox items
+			void Set(std::vector<std::string>& items);
 
-		void Add(const char* item);
+			/// adds an item to the listbox
+			void Add(const char* item);
 
-		std::string GetSelection();
+			/// gets the selected item
+			std::string GetSelection();
 
-	private:
-		GUIListBox(const GUIListBox& rhs);
-		const GUIListBox& operator=(const GUIListBox& rhs);
+		private:
+			/// hidden copy constructor
+			GUIListBox(const GUIListBox& rhs);
 
-	private:
+			/// hidden assignment operator
+			const GUIListBox& operator=(const GUIListBox& rhs);
 
-		void InitDialog();
+		private:
 
-		static char* ListBoxHandler(int index, int* itemCount);
+			/// inits the allegro @dialog_ structure
+			void InitDialog();
 
-		static std::vector<std::string> itemVector_;
+			/// the callback function for the list box
+			static char* ListBoxHandler(int index, int* itemCount);
 
-		DIALOG* internalDialog_;
+			/// the real listbox contents
+			static std::vector<std::string> itemVector_;
 
-		bool init_;
-	};
+			/// the allegro dialog structure
+			DIALOG* internalDialog_;
+
+			/// is the dialog initialized?
+			bool init_;
+
+		}; // end class
+
+	} // end namespace
 
 } // end namespace
 #endif

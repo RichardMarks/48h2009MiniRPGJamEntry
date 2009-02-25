@@ -22,6 +22,7 @@ projectConfig['src'] = Split("""
 	./source/NameDirectory.cpp
 	./source/GUIListBox.cpp
 	./source/GUITextEntryDialog.cpp
+	./source/GUIMessageBox.cpp
 	""")
 ################################################################################
 buildEnv = Environment(CCFLAGS = '-g', CPPPATH = Split("""

@@ -2,9 +2,9 @@
 // CODESTYLE: v2.0
 
 // GUITextEntryDialog.h
-// Project: Game Engine Design 101 (ENGINE)
+// Project: Game Engine Design 101 (UTILITY)
 // Author: Richard Marks
-// Purpose: A class for easily making a selection from a list of strings with the Allegro GUI
+// Purpose: A class for easily getting text input from the user with the Allegro GUI
 
 /**
  * \file GUITextEntryDialog.h
@@ -20,56 +20,62 @@
 
 struct DIALOG;
 
-namespace ENGINE
+/// Contains Utility Classes
+namespace UTILITY
 {
-	/// A class for easily getting text input from the user with the Allegro GUI
-	class GUITextEntryDialog
+	/// Contains Allegro GUI Utility Classes
+	namespace GUI
 	{
-	public:
-		/// default constructor
-		GUITextEntryDialog(const char* prompt = "Enter your text below.",
-			const char* windowCaption = "Enter Text - ged101 GUI",
-			const char* buttonCaption = "OK");
+		/// A class for easily getting text input from the user with the Allegro GUI
+		class GUITextEntryDialog
+		{
+		public:
+			/// default constructor
+			GUITextEntryDialog(const char* prompt = "Enter your text below.",
+				const char* windowCaption = "Enter Text - ged101 GUI",
+				const char* buttonCaption = "OK");
 
-		/// default destructor
-		~GUITextEntryDialog();
+			/// default destructor
+			~GUITextEntryDialog();
 
-		/// displays the dialog
-		void Show();
+			/// displays the dialog
+			void Show();
 
-		/// returns the value entered into the text edit field control
-		std::string GetText();
+			/// returns the value entered into the text edit field control
+			std::string GetText();
 
-	private:
-		/// hidden copy constructor
-		GUITextEntryDialog(const GUITextEntryDialog& rhs);
+		private:
+			/// hidden copy constructor
+			GUITextEntryDialog(const GUITextEntryDialog& rhs);
 
-		/// hidden assignment operator
-		const GUITextEntryDialog& operator=(const GUITextEntryDialog& rhs);
+			/// hidden assignment operator
+			const GUITextEntryDialog& operator=(const GUITextEntryDialog& rhs);
 
-	private:
+		private:
 
-		/// tokenizes a string -- this really needs to be stuck in a utility class since we use it so much!
-		std::vector<std::string> Tokenize(const std::string& source, const std::string& delimiters);
+			/// tokenizes a string -- this really needs to be stuck in a utility class since we use it so much!
+			std::vector<std::string> Tokenize(const std::string& source, const std::string& delimiters);
 
-		/// initializaes the allegro dialog
-		void InitDialog();
+			/// initializaes the allegro dialog
+			void InitDialog();
 
-		/// the allegro dialog
-		DIALOG* internalDialog_;
+			/// the allegro dialog
+			DIALOG* internalDialog_;
 
-		/// a static text buffer to hold entered text
-		char internalTextBuffer_[0x401]; // 1024 characters should be more than enough! (+ 1 for allegro d_edit_proc)
+			/// a static text buffer to hold entered text
+			char internalTextBuffer_[0x401]; // 1024 characters should be more than enough! (+ 1 for allegro d_edit_proc)
 
-		/// the caption of the window
-		std::string windowCaption_;
+			/// the caption of the window
+			std::string windowCaption_;
 
-		/// the caption on the "OK" button
-		std::string buttonCaption_;
+			/// the caption on the "OK" button
+			std::string buttonCaption_;
 
-		/// the lines of text in the dialog
-		std::vector<std::string> prompts_;
-	}; // end class
+			/// the lines of text in the dialog
+			std::vector<std::string> prompts_;
+		}; // end class
+
+	} // end namespace
 
 } // end namespace
 

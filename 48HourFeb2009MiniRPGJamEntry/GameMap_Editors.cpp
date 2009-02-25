@@ -411,15 +411,73 @@ namespace GAME
 							DEBUG::DebugAllegroGUI::MessageBox("You cannot place warps on top of existing warps!", "Map Warp Editor");
 						}
 
-
-
-						// toggle the solidness of the tile
-						//currentMap_->SetTileSolid(tileX, tileY, !currentMap_->IsSolid(tileX, tileY));
-
 						// update the map panel
 						RenderMap();
 					}
 #endif /// end handle left mouse button
+
+#if 1 /// handle the right mouse button code
+					// if we have not clicked already
+					if (!mouseRBClicked_)
+					{
+						// check for left mouse button being down
+						if (InputDevice->MouseButtonDown(2))
+						{
+							// its down
+							mouseRBDown_ = true;
+						}
+
+						if (InputDevice->MouseButtonUp(2))
+						{
+							// its up
+							if (mouseRBDown_)
+							{
+								//fprintf(stderr, "Clicked!\n");
+								// we clicked
+								mouseRBClicked_ = true;
+								mouseRBDown_ = false;
+							}
+						}
+					}
+					else
+					{
+						// we have clicked
+						mouseRBClicked_ = false;
+
+						// where did we click?
+						int tileX = cameraX_ + (mouseX_ / 16);
+						int tileY = cameraY_ + (mouseY_ / 16);
+
+						// if there is a warp here, we edit it
+						if (currentMap_->IsWarp(tileX, tileY))
+						{
+							// display the warp editor
+
+							GUITextEntryDialog editWarpTextBox(
+								"Please enter a new warp definition in the format:\n"
+								"[from-map-name]:[from-x]:[from-y]:[to-map-name]:[to-x]:[to-y]\n"
+								"For example: Town:4:4:World:19:16",
+								"Map Warp Editor");
+
+							editWarpTextBox.Show();
+
+							// did the user enter a value?
+							if ("" == editWarpTextBox.GetText())
+							{
+								// remove the warp
+								DEBUG::DebugAllegroGUI::MessageBox("TODO: remove the Map Warp", "Map Warp Editor");
+							}
+							else
+							{
+								// update the warp
+								DEBUG::DebugAllegroGUI::MessageBox("TODO: Update the Map Warp", "Map Warp Editor");
+							}
+						}
+
+						// update the map panel
+						RenderMap();
+					}
+#endif /// end handle right mouse button
 
 
 				} // end mouse is on map panel

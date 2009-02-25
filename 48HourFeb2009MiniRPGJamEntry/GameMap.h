@@ -188,9 +188,13 @@ namespace GAME
 		static int totalMapCount; // used for IDs
 
 	public:
+
 		void AddWarpTargetPair(int startX, int startY, int startMap, int endX, int endY, int endMap);
+
 		WarpTargetPair* GetWarpTargetPair(unsigned int index) const;
+
 		void ClearWarpTargetPairs();
+
 		unsigned int GetNumWarpTargetPairs() const;
 
 	private:
