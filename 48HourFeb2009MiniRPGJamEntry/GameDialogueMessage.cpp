@@ -10,6 +10,118 @@
 
 namespace GAME
 {
+	namespace DIALOGUE
+	{
+		DialoguePage::DialoguePage()
+		{
+		}
+
+		/**************************************************************************/
+
+		DialoguePage::~DialoguePage()
+		{
+			Clear();
+		}
+
+		/**************************************************************************/
+
+		void DialoguePage::Clear()
+		{
+			lines_.clear();
+		}
+
+		/**************************************************************************/
+
+		void DialoguePage::AddLine(const char* lineContent)
+		{
+			lines_.push_back(lineContent);
+		}
+
+		/**************************************************************************/
+
+		std::string DialoguePage::GetLine(unsigned int lineIndex)
+		{
+			return (lineIndex < lines_.size()) ? lines_.at(lineIndex) : "";
+		}
+
+		/**************************************************************************/
+
+		unsigned int DialoguePage::GetNumLines() const
+		{
+			return lines_.size();
+		}
+
+		/**************************************************************************/
+
+		/**************************************************************************/
+		Dialogue::Dialogue()
+		{
+		}
+
+		/**************************************************************************/
+
+		Dialogue::~Dialogue()
+		{
+			Clear();
+		}
+
+		/**************************************************************************/
+
+		void Dialogue::Clear()
+		{
+			unsigned int pageCount = pages_.size();
+
+			for (unsigned int index = 0; index < pageCount; index++)
+			{
+				if (0 != pages_.at(index))
+				{
+					delete pages_[index];
+					pages_[index] = 0;
+				}
+			}
+
+			pages_.clear();
+		}
+
+		/**************************************************************************/
+
+		void Dialogue::AddLine(const char* lineContent)
+		{
+			// if there are no pages in the dialogue, add the first page
+			if (!pages_.size())
+			{
+				pages_.push_back(new DialoguePage());
+			}
+			else
+			{
+				// if the current (last) page is full, then we must add another page
+				if (pages_.at(pages_.size() - 1)->GetNumLines() == LINES_PER_PAGE)
+				{
+					pages_.push_back(new DialoguePage());
+				}
+			}
+
+			// add the line to the current (last) page in the dialogue
+			pages_.at(pages_.size() - 1)->AddLine(lineContent);
+		}
+
+		/**************************************************************************/
+
+		DialoguePage* Dialogue::GetPage(unsigned int pageIndex)
+		{
+			return (pageIndex < pages_.size()) ? pages_.at(pageIndex) : 0;
+		}
+
+		/**************************************************************************/
+
+		unsigned int Dialogue::GetNumPages() const
+		{
+			return pages_.size();
+		}
+	} // end namespace
+
+	/**************************************************************************/
+
 	GameDialogueMessage::GameDialogueMessage() :
 		currentState_(DIALOGUE::Undefined),
 		smallFont_(0),
@@ -37,9 +149,10 @@ namespace GAME
 
 	/**************************************************************************/
 
-	void GameDialogueMessage::Initialize(const char* message, BitmapFont* smallFont, bool useDualFonts, BitmapFont* largeFont)
+	void GameDialogueMessage::Initialize(const std::vector<std::string>& message, BitmapFont* smallFont, bool useDualFonts, BitmapFont* largeFont)
 	{
 		// initalize the dialogue data structure
+		ResetDialogue();
 		MessageToDialogue(message);
 
 		// set the fonts to use
@@ -113,6 +226,7 @@ namespace GAME
 				else
 				{
 					// we are using only the small font
+					smallFont_->Print(target, 4, 93 + (currentLine_ * smallFont_->GetLetterHeight()), "%s", dialogue_.GetPage(currentPage_)->GetLine(currentLine_).c_str());
 				}
 			} break;
 
@@ -134,43 +248,21 @@ namespace GAME
 
 	/**************************************************************************/
 
-	void GameDialogueMessage::MessageToDialogue(const char* message)
+	void GameDialogueMessage::MessageToDialogue(const std::vector<std::string>& message)
 	{
-		// TODO: Implement the message ripper code
-
-		// cut message into lines (taking into account any '\n' characters)
-		std::string fullText = message;
-		std::vector<std::string> fullTextLines = GameSingleton::GetInstance()->Tokenize(fullText, "\n");
-#if 1
-		unsigned int lineCount = fullTextLines.size();
-		unsigned int index = 0;
-		fprintf(stderr, "There are %d new-lines in the fullText:\n", lineCount);
-
-		for (index = 0; index < lineCount; index++)
+		dialogue_.Clear();
+		unsigned int messageLineCount = message.size();
+		for (unsigned int index = 0; index < messageLineCount; index++)
 		{
-			fprintf(stderr, "\tLine %04d: \"%s\"\n", index + 1, fullTextLines.at(index).c_str());
+			dialogue_.AddLine(message.at(index).c_str());
 		}
-
-		// cut each line in fullTextLines into 21-character lines
-		// making sure that we don't break any words
-#endif
-		// create pages from the lines
-
-		// init the dialogue data counter variables
 	}
 
 	/**************************************************************************/
 
 	void GameDialogueMessage::ResetDialogue()
 	{
-		// for each page, clear out the lines vector proper
-		for (unsigned int index = 0; index < pageCount_; index++)
-		{
-			dialogue_.pages_.at(index)->lines_.clear();
-		}
-
-		// clear the pages vector proper
-		dialogue_.pages_.clear();
+		dialogue_.Clear();
 
 		// reset the dialogue data counter variables
 		pageCount_ 		= 0;
@@ -188,7 +280,7 @@ namespace GAME
 
 			// update the new page info
 			currentLine_ 	= 0;
-			lineCount_ 		= dialogue_.pages_.at(currentPage_)->lines_.size();
+			lineCount_ 		= dialogue_.GetPage(currentPage_)->GetNumLines();
 
 		}
 		else
@@ -208,7 +300,7 @@ namespace GAME
 
 			// update the new line info
 			currentChar_ 	= 0;
-			charCount_ 		= dialogue_.pages_.at(currentPage_)->lines_.at(currentLine_).size();
+			charCount_ 		= dialogue_.GetPage(currentPage_)->GetLine(currentLine_).size();
 		}
 		else
 		{

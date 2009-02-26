@@ -246,6 +246,9 @@
 		<Unit filename="data/battles/game.battle">
 			<Option virtualFolder="Data Files/" />
 		</Unit>
+		<Unit filename="data/dialogue/test.dialogue">
+			<Option virtualFolder="Data Files/" />
+		</Unit>
 		<Unit filename="data/events/demo.event">
 			<Option virtualFolder="Data Files/" />
 		</Unit>

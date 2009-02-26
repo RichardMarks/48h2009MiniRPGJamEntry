@@ -5,7 +5,7 @@
 		<Option title="ged101minimal" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="SCONS BUILD SCRIPTS/;Core/;Core/Graphics/;Core/Debug/;Core/Utility/GUI/;Core/System/;Core/Input/;" />
+		<Option virtualFolders="SCONS BUILD SCRIPTS/;Core/;Core/Graphics/;Core/Debug/;Core/Utility/GUI/;Core/System/;Core/Input/;Core/Utility/Configuration/;Core/Utility/Parsing/;Core/Utility/Time/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="libged101minimal" prefix_auto="1" extension_auto="1" />
@@ -50,6 +50,9 @@
 		<Unit filename="include/GUIListBox.h">
 			<Option virtualFolder="Core/Utility/GUI/" />
 		</Unit>
+		<Unit filename="include/GUIMessageBox.h">
+			<Option virtualFolder="Core/Utility/GUI/" />
+		</Unit>
 		<Unit filename="include/GUITextEntryDialog.h">
 			<Option virtualFolder="Core/Utility/GUI/" />
 		</Unit>
@@ -71,6 +74,18 @@
 		<Unit filename="include/NameDirectory.h">
 			<Option virtualFolder="Core/System/" />
 		</Unit>
+		<Unit filename="include/Settings.h">
+			<Option virtualFolder="Core/Utility/Configuration/" />
+		</Unit>
+		<Unit filename="include/StringTokenizer.h">
+			<Option virtualFolder="Core/Utility/Parsing/" />
+		</Unit>
+		<Unit filename="include/TextFileParser.h">
+			<Option virtualFolder="Core/Utility/Parsing/" />
+		</Unit>
+		<Unit filename="include/TimeStamp.h">
+			<Option virtualFolder="Core/Utility/Time/" />
+		</Unit>
 		<Unit filename="include/ged101minimal.h">
 			<Option virtualFolder="Core/" />
 		</Unit>
@@ -84,6 +99,9 @@
 			<Option virtualFolder="Core/Debug/" />
 		</Unit>
 		<Unit filename="source/GUIListBox.cpp">
+			<Option virtualFolder="Core/Utility/GUI/" />
+		</Unit>
+		<Unit filename="source/GUIMessageBox.cpp">
 			<Option virtualFolder="Core/Utility/GUI/" />
 		</Unit>
 		<Unit filename="source/GUITextEntryDialog.cpp">
@@ -115,6 +133,18 @@
 		</Unit>
 		<Unit filename="source/NameDirectory.cpp">
 			<Option virtualFolder="Core/System/" />
+		</Unit>
+		<Unit filename="source/Settings.cpp">
+			<Option virtualFolder="Core/Utility/Configuration/" />
+		</Unit>
+		<Unit filename="source/StringTokenizer.cpp">
+			<Option virtualFolder="Core/Utility/Parsing/" />
+		</Unit>
+		<Unit filename="source/TextFileParser.cpp">
+			<Option virtualFolder="Core/Utility/Parsing/" />
+		</Unit>
+		<Unit filename="source/TimeStamp.cpp">
+			<Option virtualFolder="Core/Utility/Time/" />
 		</Unit>
 		<Extensions>
 			<code_completion />

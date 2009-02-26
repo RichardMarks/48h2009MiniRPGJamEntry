@@ -20,9 +20,15 @@ projectConfig['src'] = Split("""
 	./source/InputDevice_Keyboard.cpp
 	./source/InputDevice_Mouse.cpp
 	./source/NameDirectory.cpp
+
 	./source/GUIListBox.cpp
 	./source/GUITextEntryDialog.cpp
 	./source/GUIMessageBox.cpp
+
+	./source/StringTokenizer.cpp
+	./source/TextFileParser.cpp
+	./source/TimeStamp.cpp
+	./source/Settings.cpp
 	""")
 ################################################################################
 buildEnv = Environment(CCFLAGS = '-g', CPPPATH = Split("""
@@ -30,8 +36,6 @@ buildEnv = Environment(CCFLAGS = '-g', CPPPATH = Split("""
 	.
 	./include
 	"""))
-
-#buildEnv.ParseConfig('wx-config --cflags')
 
 buildEnv.StaticLibrary('./lib/' + projectConfig['lib'], projectConfig['src'])
 ################################################################################

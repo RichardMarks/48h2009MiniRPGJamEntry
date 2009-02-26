@@ -14,41 +14,73 @@
 #ifndef __GED101MINIMAL_H__
 #define __GED101MINIMAL_H__
 
-// include the common headers
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <cstdarg>
-#include <cmath>
-#include <string>
-#include <vector>
-#include <map>
-#include <algorithm>
+	// include the common headers
+	#if !defined(GED101_NO_COMMON_HEADERS)
+		// C++ C-style library
+		#include <cstdio>
+		#include <cstdlib>
+		#include <cstring>
+		#include <cstdarg>
+		#include <cmath>
+		#include <cctype>
+		#include <ctime>
 
-#include <allegro.h>
+		// STL
+		#include <string>
+		#include <vector>
+		#include <map>
+		#include <algorithm>
+	#endif
 
-// include the minimal ged101 headers
-#include "DebugReport.h"
-#include "GraphicsDevice.h"
-#include "ImageResource.h"
-#include "ColorRGB.h"
-#include "BitmapFont.h"
-#include "NameDirectory.h"
-#include "ImageList.h"
-#include "InputDevice.h"
-#include "GameTimer.h"
+	// include allegro
+	#include <allegro.h>
 
-#if 0
-// this is purely useless for now -- much needs to be re-thought out.
-#include "NativeGUITextEntry.h"
-#endif
+	// include the ged101 headers
 
-#include "GUIListBox.h"
-#include "GUITextEntryDialog.h"
+	// DEBUGGING
+	#if !defined(GED101_NO_DEBUG_HEADERS)
+		#include "DebugReport.h"
+	#endif
 
-#if defined(GED101_USE_SIMPLE_NAMESPACES)
-using namespace ENGINE;
-#endif
+	// GRAPHICS
+	#if !defined(GED101_NO_GRAPHICS_HEADERS)
+		#include "GraphicsDevice.h"
+		#include "ColorRGB.h"
+		#include "ImageResource.h"
+		#include "BitmapFont.h"
+		#include "ImageList.h"
+	#endif
+
+	// GUI
+	#if !defined(GED101_NO_GUI_HEADERS)
+		#include "GUIListBox.h"
+		#include "GUITextEntryDialog.h"
+		#include "GUIMessageBox.h"
+	#endif
+
+	// UTILITY
+	#if !defined(GED101_NO_UTILITY_HEADERS)
+		#include "Settings.h"
+		#include "TimeStamp.h"
+		#include "StringTokenizer.h"
+		#include "TextFileParser.h"
+	#endif
+
+	// INPUT
+	#if !defined(GED101_NO_INPUT_HEADERS)
+		#include "InputDevice.h"
+	#endif
+
+	// SYSTEM
+	#if !defined(GED101_NO_SYSTEM_HEADERS)
+		#include "GameTimer.h"
+		#include "NameDirectory.h"
+	#endif
+
+	// fully qualified namespace
+	#if defined(GED101_USE_SIMPLE_NAMESPACES)
+		using namespace ENGINE;
+	#endif
 
 #endif
 

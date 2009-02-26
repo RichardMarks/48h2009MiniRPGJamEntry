@@ -26,12 +26,6 @@ namespace GAME
 	/// constants and enumerations for the dialogue system
 	namespace DIALOGUE
 	{
-		/// maximum characters per line
-		const int LINE_LENGTH 		= 21;
-
-		/// maximum lines per page
-		const int LINES_PER_PAGE 	= 6;
-
 		/// the possible states the dialogue system can be in
 		enum DialogueState
 		{
@@ -50,7 +44,74 @@ namespace GAME
 			/// the dialogue system is finished, there are no more pages to print, press spacebar to end the dialogue
 			Finished
 		};
+
+	/**************************************************************************/
+
+		/// a page in the dialogue system is a list of strings
+		class DialoguePage
+		{
+		public:
+			DialoguePage();
+			~DialoguePage();
+
+			/// clears the page
+			void Clear();
+
+			/// adds a line to the page
+			void AddLine(const char* lineContent);
+
+			/// gets the specified @lineIndex or an empty string "" if out of range
+			std::string GetLine(unsigned int lineIndex);
+
+			/// gets the number of lines in the page
+			unsigned int GetNumLines() const;
+
+		private:
+			DialoguePage(const DialoguePage& rhs);
+			const DialoguePage& operator=(const DialoguePage& rhs);
+
+		private:
+			std::vector<std::string> lines_;
+		};
+
+	/**************************************************************************/
+
+		/// maximum characters per line
+		const unsigned int LINE_LENGTH       = 21;
+
+		/// maximum lines per page
+		const unsigned int LINES_PER_PAGE    = 6;
+
+		/// a dialogue is a list of pages
+		class Dialogue
+		{
+		public:
+			Dialogue();
+			~Dialogue();
+
+			/// clears the dialogue
+			void Clear();
+
+			/// adds a line to the dialogue, and as needed adds new pages
+			void AddLine(const char* lineContent);
+
+			/// gets a pointer to the specified @pageIndex or zero if out of range
+			DialoguePage* GetPage(unsigned int pageIndex);
+
+			/// gets the number of pages in the dialogue
+			unsigned int GetNumPages() const;
+
+		private:
+			Dialogue(const Dialogue& rhs);
+			const Dialogue& operator=(const Dialogue& rhs);
+
+		private:
+			std::vector<DialoguePage*> pages_;
+		};
+
 	} // end namespace
+
+	/**************************************************************************/
 
 	/// the dialogue system class
 	class GameDialogueMessage
@@ -61,7 +122,7 @@ namespace GAME
 		~GameDialogueMessage();
 
 		/// initializes the dialogue system with data
-		void Initialize(const char* message, BitmapFont* smallFont, bool useDualFonts = false, BitmapFont* largeFont = 0);
+		void Initialize(const std::vector<std::string>& message, BitmapFont* smallFont, bool useDualFonts = false, BitmapFont* largeFont = 0);
 
 		/// updates the dialogue
 		void Update(bool useDelay_ = true);
@@ -77,7 +138,7 @@ namespace GAME
 		const GameDialogueMessage& operator=(const GameDialogueMessage& rhs);
 
 		/// fills the @dialogue_ structure with pages & lines
-		void MessageToDialogue(const char* message);
+		void MessageToDialogue(const std::vector<std::string>& message);
 
 		/// clears the @dialogue_ structure of all lines and pages
 		void ResetDialogue();
@@ -93,24 +154,11 @@ namespace GAME
 
 	private:
 
-		/// a page in the dialogue system is a list of strings
-		struct DialoguePage
-		{
-			std::vector<std::string> lines_;
-		};
-
-		/// a dialogue is a list of pages
-		struct Dialogue
-		{
-			std::vector<DialoguePage*> pages_;
-
-		};
-
 		/// the state of the dialogue system
 		DIALOGUE::DialogueState currentState_;
 
 		/// the dialogue data structure
-		Dialogue dialogue_;
+		DIALOGUE::Dialogue dialogue_;
 
 		/// the fonts to use in rendering the dialogue; the dialogue system does NOT delete these pointers
 		BitmapFont* smallFont_;
