@@ -90,9 +90,6 @@ namespace GAME
 #if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
 
 		lofiOverlay_ 	= new ImageResource("data/graphics/game/overlays/lofi.png");
-		// init the fun starfield
-		int fov[] = { 141, 43, 195, 131 };
-		starfield_ = new Starfield(fov);
 #endif
 
 		stepsTaken_ 		= 0;

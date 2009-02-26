@@ -88,6 +88,9 @@ namespace GAME
 		tiles_ 			= game->GetTilesetManager();
 		maps_			= game->GetMapManager();
 
+		ColorRGB magicPink(255, 0, 255);
+		mapPanelOverlay_ = new ImageResource(GraphicsDevice->GetDisplayWidth(), GraphicsDevice->GetDisplayHeight(), magicPink.Get());
+
 		SetMap(game->GetMap());
 
 		cameraX_ = 0;
@@ -109,6 +112,8 @@ namespace GAME
 	void GameMapEditorsSingleton::Destroy()
 	{
 		if (mapPanel_) { delete mapPanel_; }
+
+		if (mapPanelOverlay_) { delete mapPanelOverlay_; }
 
 		InputDevice->MouseDisplayOnScreen(false);
 	}
@@ -343,7 +348,7 @@ namespace GAME
 								placedFirst_ = true;
 
 								// show a list of available maps
-								GUIListBox mapList;
+								UTILITY::GUI::GUIListBox mapList;
 								unsigned int numMaps = maps_->GetNumMaps();
 								for (unsigned int index = 0; index < numMaps; index++)
 								{

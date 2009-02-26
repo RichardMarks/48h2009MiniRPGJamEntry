@@ -5,7 +5,7 @@
 		<Cursor position="3571" topLine="127" />
 	</File>
 	<File name="Game.h" open="0" top="0" tabpos="2">
-		<Cursor position="5326" topLine="215" />
+		<Cursor position="1083" topLine="0" />
 	</File>
 	<File name="GameBasicMapWarp.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="128" topLine="0" />
@@ -27,6 +27,9 @@
 	</File>
 	<File name="GameBattleSpriteManager.h" open="0" top="0" tabpos="3">
 		<Cursor position="714" topLine="3" />
+	</File>
+	<File name="GameBattle_BattleLoader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1472" topLine="57" />
 	</File>
 	<File name="GameBattle_Initialize.cpp" open="0" top="0" tabpos="6">
 		<Cursor position="1065" topLine="3" />

@@ -6,6 +6,30 @@
 // Author: Richard Marks
 // Purpose: the primary game singleton class
 
+/**
+ * @mainpage
+ * The primary goal of this project is to build a mini-rpg game during the 48-hour game making jam.
+ * Second to that goal is to design and implement a reusable tile-based rpg game engine based on the ged101minimal code base.
+ *
+ * The game engine should be comprised of
+ * - smooth-scrolling camera-based tile-map rendering system
+ * - real-time enemy-encounter (battle) system
+ * - dynamically extendable game menu system
+ * - animated / scripted NPC system
+ * - scripted game events system
+ * - built-in game content editors
+ *
+ *
+ * The aforementioned smooth-scrolling camera-based tile-map rendering system should be able to support
+ * - maps of nearly any dimension
+ * - tiles of 8x8, 16x16, 24x24, 32x32, and 64x64 sizes
+ * - "zoomed" rendering at x1, x2, x3, x4 zoom levels
+ * - multiple layers of tiles
+ * - tile-based collision
+ * - a single tile-set per map
+ * - a near unlimited number of maps
+ */
+
 #ifndef __GAME_H__
 #define __GAME_H__
 
@@ -23,6 +47,7 @@ namespace ENGINE
 	class BitmapFont;
 }
 
+/// all game related classes are contained within this namespace
 namespace GAME
 {
 	using ENGINE::ImageResource;
@@ -67,7 +92,10 @@ namespace GAME
 		class GameStateManager
 		{
 		public:
+			/// constructor
 			GameStateManager();
+
+			/// destructor
 			~GameStateManager();
 
 			/// sets the state
@@ -77,7 +105,10 @@ namespace GAME
 			StateType GetState() const;
 
 		private:
+			/// hidden copy constructor
 			GameStateManager(const GameStateManager& rhs);
+
+			/// hidden assignment operator
 			const GameStateManager& operator=(const GameStateManager& rhs);
 
 		private:
@@ -93,11 +124,24 @@ namespace GAME
 	class GameMenuManager
 	{
 	public:
+		/// constructor
 		GameMenuManager();
+
+		/// destructor
 		~GameMenuManager();
+
+		/// updates the menu system
 		void Update();
+
+		/// renders the menu system
 		void Render();
+
 	private:
+		/// hidden copy constructor
+		GameMenuManager(const GameMenuManager& rhs);
+
+		/// hidden assignment operator
+		const GameMenuManager& operator=(const GameMenuManager& rhs);
 	};
 
 	/// the main game class
@@ -196,8 +240,13 @@ namespace GAME
 /*#**************************************************************************#*/
 
 	private:
+		/// hidden constructor
 		GameSingleton();
+
+		/// hidden copy constructor
 		GameSingleton(const GameSingleton& rhs);
+
+		/// hidden assignment operator
 		const GameSingleton& operator=(const GameSingleton& rhs);
 
 	private:
@@ -214,9 +263,11 @@ namespace GAME
 			/// is the NPC currently in use? (busy)
 			bool npcBusy_;
 
+			/// constructor
 			NPCInteractionData() : npcIndex_(0) , npcFacing_(0), npcBusy_(false) {}
 		};
 
+		/// used for NPC interations
 		NPCInteractionData npcInteractionData_;
 
 		/// checks the current map at the location specified for events
@@ -303,34 +354,6 @@ namespace GAME
 
 		/// the 48 hour LOFI jam logo
 		ImageResource* lofiOverlay_;
-
-		/// really basic starfield code for the lofi logo area just to add something cool to distract the player LOL
-		struct Star
-		{
-			int screenX_, screenY_;
-			int speedY_;
-			int color_;
-		};
-
-		/// a basic starfield class
-		class Starfield
-		{
-		public:
-			/// expects an array of 4 ints defining the left, top, right, and bottom clipping planes
-			Starfield(int* fov, int count = 50, int maxSpeed = 2);
-			~Starfield();
-
-			void Update();
-			void Render(ImageResource* target);
-
-		private:
-			int* fov_;
-			Star* stars_;
-			int starCount_;
-		};
-
-		/// the starfield instance for the lofi logo area
-		Starfield* starfield_;
 #endif
 	};
 

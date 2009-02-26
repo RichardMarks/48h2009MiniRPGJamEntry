@@ -77,28 +77,65 @@ namespace GAME
 					}
 				}
 
-				// draw a little blue circle on warp tiles
-				if (MAPEDITORS::EditingMapWarps == state_)
+
+			}
+		}
+
+		InputDevice->MouseEnableCursorDisplay(true);
+	}
+
+	/**************************************************************************/
+
+	void GameMapEditorsSingleton::RenderMapWarpIDs()
+	{
+		// get the base layer
+		GameMapLayer* baseLayer = currentMap_->GetGameMapLayer(0);
+
+		int mapRows 	= baseLayer->GetNumRows();
+		int mapColumns 	= baseLayer->GetNumColumns();
+
+		InputDevice->MouseEnableCursorDisplay(false);
+
+		// re-draw the view that the editor's camera can see
+		for (int tileY = cameraY_; tileY < cameraY_ + cameraH_; tileY++)
+		{
+			for (int tileX = cameraX_; tileX < cameraX_ + cameraW_; tileX++)
+			{
+				// get the tile
+				if (tileX >= mapColumns && tileY >= mapRows)
 				{
-					if (currentMap_->IsWarp(tileX, tileY))
-					{
-						ColorRGB colorBlue(0, 0, 255);
-						ColorRGB colorWhite(255, 255, 255);
+					continue;
+				}
 
-						ImageResource hilight(8, 8, colorWhite.Get());
-						hilight.Circle(4, 4, 4, colorBlue.Get(), true);
+				// draw the tile
+				int tilePixelX = (tileX - cameraX_) * 16;
+				int tilePixelY = (tileY - cameraY_) * 16;
 
-						hilight.BlitAlpha(mapPanel_, tilePixelX, tilePixelY, 0.5f);
+				// draw a little blue circle on warp tiles
 
-						BitmapFont t; t.Print(mapPanel_,
-						tilePixelX, tilePixelY, "%d", currentMap_->GetWarp(tileX, tileY));
+				if (currentMap_->IsWarp(tileX, tileY))
+				{
+					ColorRGB colorBlue(0, 0, 255);
+					ColorRGB colorWhite(255, 255, 255);
 
-					}
+					ImageResource hilight(16, 16, colorWhite.Get());
+					hilight.Circle(8, 8, 8, colorBlue.Get(), true);
+
+					hilight.BlitAlpha(mapPanelOverlay_, tilePixelX, tilePixelY, 0.5f);
+
+					BitmapFont t; t.Print(mapPanelOverlay_,
+					tilePixelX, tilePixelY, "%d", currentMap_->GetWarp(tileX, tileY));
 				}
 			}
 		}
 
 		InputDevice->MouseEnableCursorDisplay(true);
+	}
+
+	/**************************************************************************/
+
+	void GameMapEditorsSingleton::RenderEventIDs()
+	{
 	}
 
 	/**************************************************************************/
@@ -113,19 +150,31 @@ namespace GAME
 		int mouseTileX = cameraX_ + (mouseX_ / 16);
 		int mouseTileY = cameraY_ + (mouseY_ / 16);
 
+		ColorRGB magicPink(255, 0, 255);
+		mapPanelOverlay_->Clear(magicPink.Get());
+
 		switch(state_)
 		{
 			// we are editing the base layer of the map
 			case MAPEDITORS::EditingBaseLayer:
 			{
+				InputDevice->MouseEnableCursorDisplay(false);
+				mapPanel_->Blit(display, 0, 0, mapPanelW, mapPanelH, 0, 0, mapPanelW * 2, mapPanelH * 2);
+				InputDevice->MouseEnableCursorDisplay(true);
+
 				BitmapFont debugFont;
 				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Editing Base Layer of (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
+
 			} break;
 
 			case MAPEDITORS::EditingMapWarps:
 			{
 				InputDevice->MouseEnableCursorDisplay(false);
 				mapPanel_->Blit(display, 0, 0, mapPanelW, mapPanelH, 0, 0, mapPanelW * 2, mapPanelH * 2);
+
+				RenderMapWarpIDs();
+				mapPanelOverlay_->BlitMasked(display, 0, 0, 0, 0, mapPanelOverlay_->GetWidth(), mapPanelOverlay_->GetHeight());
+
 				InputDevice->MouseEnableCursorDisplay(true);
 
 				BitmapFont debugFont;
@@ -152,6 +201,13 @@ namespace GAME
 			// we are editing the events on the map
 			case MAPEDITORS::EditingEvents:
 			{
+				InputDevice->MouseEnableCursorDisplay(false);
+				mapPanel_->Blit(display, 0, 0, mapPanelW, mapPanelH, 0, 0, mapPanelW * 2, mapPanelH * 2);
+				InputDevice->MouseEnableCursorDisplay(true);
+
+				RenderEventIDs();
+				mapPanelOverlay_->BlitMasked(display, 0, 0, 0, 0, mapPanelOverlay_->GetWidth(), mapPanelOverlay_->GetHeight());
+
 				BitmapFont debugFont;
 				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Editing Events Layer of (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
 			} break;

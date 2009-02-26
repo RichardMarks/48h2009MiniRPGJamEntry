@@ -284,9 +284,11 @@ namespace GAME
 
 							// handle the 'random' monster ambushes
 
+#if !defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
 #if 1
 							stepsUntilAmbush_ -= stepsTaken_;
 #endif
+
 							stepsTaken_ = 0;
 							if (stepsUntilAmbush_ <= 0)
 							{
@@ -306,15 +308,11 @@ namespace GAME
 								stepsUntilAmbush_ 	= 160;
 
 							}
+#endif
 						}
 
 						// update the game's NPCs
 						gameNPCs_->Update(currentMap_->GetName().c_str());
-
-						// all of this will be removed after the 48 hour jam entry
-#if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
-						starfield_->Update();
-#endif
 					} break;
 
 					case GAMESTATE::Battle:
@@ -563,42 +561,3 @@ namespace GAME
 	/**************************************************************************/
 
 } // end namespace
-
-
-/*#**************************************************************************#*/
-// original update section is being revised
-#if 0
-void UselessDummyFunct2()
-{
-				// if the dialogue is not undefined
-				if (DIALOGUE::Undefined != dialogueMessage_->GetState())
-				{
-					// update only the dialogue logic
-					dialogueMessage_->Update(false /* set to true if you want delayed output printing */ );
-				}
-				else
-				{
-					// update the game logic
-					Update();
-					stepsUntilAmbush_ -= stepsTaken_;
-					stepsTaken_ = 0;
-					if (stepsUntilAmbush_ <= 0)
-					{
-						if (BattleEngine->Initialize())
-						{
-							BattleEngine->Execute();
-						}
-						stepsUntilAmbush_ 	= 160;
-
-					}
-				}
-
-				starfield_->Update();
-
-				gameNPCs_->Update(currentMap_->GetName().c_str());
-
-				allegroTimerSpeedCounter--;
-}
-#endif
-/*#**************************************************************************#*/
-

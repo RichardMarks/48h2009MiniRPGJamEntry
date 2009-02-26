@@ -36,7 +36,6 @@ namespace GAME
 #if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
 
 		_TMP_DELRES(lofiOverlay_)
-		_TMP_DELRES(starfield_)
 #endif
 
 

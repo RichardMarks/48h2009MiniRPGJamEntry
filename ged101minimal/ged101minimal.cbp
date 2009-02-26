@@ -5,6 +5,7 @@
 		<Option title="ged101minimal" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
+		<Option virtualFolders="SCONS BUILD SCRIPTS/;Core/;Core/Graphics/;Core/Debug/;Core/Utility/GUI/;Core/System/;Core/Input/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="libged101minimal" prefix_auto="1" extension_auto="1" />
@@ -34,35 +35,87 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="SConstruct" />
-		<Unit filename="include/BitmapFont.h" />
-		<Unit filename="include/ColorRGB.h" />
-		<Unit filename="include/DebugReport.h" />
-		<Unit filename="include/GUIListBox.h" />
-		<Unit filename="include/GUITextEntryDialog.h" />
-		<Unit filename="include/GameTimer.h" />
-		<Unit filename="include/GraphicsDevice.h" />
-		<Unit filename="include/ImageList.h" />
-		<Unit filename="include/ImageResource.h" />
-		<Unit filename="include/InputDevice.h" />
-		<Unit filename="include/NameDirectory.h" />
-		<Unit filename="include/NativeGUITextEntry.h" />
-		<Unit filename="include/ged101minimal.h" />
-		<Unit filename="source/BitmapFont.cpp" />
-		<Unit filename="source/ColorRGB.cpp" />
-		<Unit filename="source/DebugReport.cpp" />
-		<Unit filename="source/GUIListBox.cpp" />
-		<Unit filename="source/GUITextEntryDialog.cpp" />
-		<Unit filename="source/GameTimer.cpp" />
-		<Unit filename="source/GraphicsDevice.cpp" />
-		<Unit filename="source/ImageList.cpp" />
-		<Unit filename="source/ImageResource.cpp" />
-		<Unit filename="source/InputDevice.cpp" />
-		<Unit filename="source/InputDevice_Joystick.cpp" />
-		<Unit filename="source/InputDevice_Keyboard.cpp" />
-		<Unit filename="source/InputDevice_Mouse.cpp" />
-		<Unit filename="source/NameDirectory.cpp" />
-		<Unit filename="source/NativeGUITextEntry.cpp" />
+		<Unit filename="SConstruct">
+			<Option virtualFolder="SCONS BUILD SCRIPTS/" />
+		</Unit>
+		<Unit filename="include/BitmapFont.h">
+			<Option virtualFolder="Core/Graphics/" />
+		</Unit>
+		<Unit filename="include/ColorRGB.h">
+			<Option virtualFolder="Core/Graphics/" />
+		</Unit>
+		<Unit filename="include/DebugReport.h">
+			<Option virtualFolder="Core/Debug/" />
+		</Unit>
+		<Unit filename="include/GUIListBox.h">
+			<Option virtualFolder="Core/Utility/GUI/" />
+		</Unit>
+		<Unit filename="include/GUITextEntryDialog.h">
+			<Option virtualFolder="Core/Utility/GUI/" />
+		</Unit>
+		<Unit filename="include/GameTimer.h">
+			<Option virtualFolder="Core/System/" />
+		</Unit>
+		<Unit filename="include/GraphicsDevice.h">
+			<Option virtualFolder="Core/Graphics/" />
+		</Unit>
+		<Unit filename="include/ImageList.h">
+			<Option virtualFolder="Core/Graphics/" />
+		</Unit>
+		<Unit filename="include/ImageResource.h">
+			<Option virtualFolder="Core/Graphics/" />
+		</Unit>
+		<Unit filename="include/InputDevice.h">
+			<Option virtualFolder="Core/Input/" />
+		</Unit>
+		<Unit filename="include/NameDirectory.h">
+			<Option virtualFolder="Core/System/" />
+		</Unit>
+		<Unit filename="include/ged101minimal.h">
+			<Option virtualFolder="Core/" />
+		</Unit>
+		<Unit filename="source/BitmapFont.cpp">
+			<Option virtualFolder="Core/Graphics/" />
+		</Unit>
+		<Unit filename="source/ColorRGB.cpp">
+			<Option virtualFolder="Core/Graphics/" />
+		</Unit>
+		<Unit filename="source/DebugReport.cpp">
+			<Option virtualFolder="Core/Debug/" />
+		</Unit>
+		<Unit filename="source/GUIListBox.cpp">
+			<Option virtualFolder="Core/Utility/GUI/" />
+		</Unit>
+		<Unit filename="source/GUITextEntryDialog.cpp">
+			<Option virtualFolder="Core/Utility/GUI/" />
+		</Unit>
+		<Unit filename="source/GameTimer.cpp">
+			<Option virtualFolder="Core/System/" />
+		</Unit>
+		<Unit filename="source/GraphicsDevice.cpp">
+			<Option virtualFolder="Core/Graphics/" />
+		</Unit>
+		<Unit filename="source/ImageList.cpp">
+			<Option virtualFolder="Core/Graphics/" />
+		</Unit>
+		<Unit filename="source/ImageResource.cpp">
+			<Option virtualFolder="Core/Graphics/" />
+		</Unit>
+		<Unit filename="source/InputDevice.cpp">
+			<Option virtualFolder="Core/Input/" />
+		</Unit>
+		<Unit filename="source/InputDevice_Joystick.cpp">
+			<Option virtualFolder="Core/Input/" />
+		</Unit>
+		<Unit filename="source/InputDevice_Keyboard.cpp">
+			<Option virtualFolder="Core/Input/" />
+		</Unit>
+		<Unit filename="source/InputDevice_Mouse.cpp">
+			<Option virtualFolder="Core/Input/" />
+		</Unit>
+		<Unit filename="source/NameDirectory.cpp">
+			<Option virtualFolder="Core/System/" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />

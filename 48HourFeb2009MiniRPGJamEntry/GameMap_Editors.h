@@ -72,6 +72,9 @@ namespace GAME
 
 		void RenderMap();
 
+		void RenderMapWarpIDs();
+		void RenderEventIDs();
+
 		// shared resource pointers -- the game singleton class is responsible for init/destroy these pointers
 
 		/// shared resource pointer to the display surface of the game system
@@ -99,6 +102,9 @@ namespace GAME
 
 		/// the surface that the entire map is rendered on
 		ImageResource* mapPanel_;
+
+		/// the map warp ID #s and event ID #s are printed on this
+		ImageResource* mapPanelOverlay_;
 
 		/// the state of the editor
 		MAPEDITORS::EditorState state_;

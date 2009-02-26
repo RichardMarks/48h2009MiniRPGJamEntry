@@ -44,13 +44,6 @@ namespace GAME
 		// draw the hud
 		playerPortrait_->Blit(microDisplay_, 0, 0, 143, 16, 16, 16);
 
-
-// all of this will be removed after the 48 hour jam entry
-#if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
-		// draw the starfield
-		starfield_->Render(microDisplay_);
-#endif
-
 // all of this will be removed after the 48 hour jam entry
 #if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
 

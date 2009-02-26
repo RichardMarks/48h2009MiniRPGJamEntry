@@ -13,9 +13,6 @@
 	<File name="include/GUIListBox.h" open="0" top="0" tabpos="0">
 		<Cursor position="609" topLine="0" />
 	</File>
-	<File name="include/GUIMessageBox.h" open="0" top="0" tabpos="0">
-		<Cursor position="547" topLine="0" />
-	</File>
 	<File name="include/GUITextEntryDialog.h" open="0" top="0" tabpos="0">
 		<Cursor position="435" topLine="0" />
 	</File>
@@ -36,9 +33,6 @@
 	</File>
 	<File name="source/GUIListBox.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="4177" topLine="0" />
-	</File>
-	<File name="source/GUIMessageBox.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="518" topLine="0" />
 	</File>
 	<File name="source/GUITextEntryDialog.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="299" topLine="6" />

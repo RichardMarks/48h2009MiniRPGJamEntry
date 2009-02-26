@@ -65,7 +65,6 @@ projectConfig['sources'] = Split("""
 	Game_WorldLoader.cpp
 	Game_CheckNPCCollisions.cpp
 	Game_Dialogue.cpp
-	Game_Starfield.cpp
 
 	GameMap_Editors.cpp
 	GameMap_Editors_Render.cpp

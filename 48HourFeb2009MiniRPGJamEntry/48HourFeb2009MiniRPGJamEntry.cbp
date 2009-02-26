@@ -6,6 +6,7 @@
 		<Option makefile_is_custom="1" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
+		<Option virtualFolders="Battle System/;Game World System/;Game Code/;Built-In Game Editor System/;SCONS BUILD SCRIPTS/;Game Code/Base Classes/;Dialogue System/;Data Files/;Character Name Entry System/;Game World System/Map Events/;Game World System/Camera/;Game World System/Map Structure/;Game World System/Managers/;Game World System/Map Objects/;Game World System/Tileset/;Battle System/Battle Objects/;Battle System/Scene/;Battle System/Entities/;Battle System/Managers/;" />
 		<MakeCommands>
 			<Build command="scons" />
 			<CompileFile command="" />
@@ -50,75 +51,210 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Game.cpp" />
-		<Unit filename="Game.h" />
-		<Unit filename="GameBasicMapWarp.cpp" />
-		<Unit filename="GameBasicMapWarp.h" />
-		<Unit filename="GameBattle.cpp" />
-		<Unit filename="GameBattle.h" />
-		<Unit filename="GameBattleScene.cpp" />
-		<Unit filename="GameBattleScene.h" />
-		<Unit filename="GameBattleSceneManager.cpp" />
-		<Unit filename="GameBattleSceneManager.h" />
-		<Unit filename="GameBattleSprite.cpp" />
-		<Unit filename="GameBattleSprite.h" />
-		<Unit filename="GameBattleSpriteManager.cpp" />
-		<Unit filename="GameBattleSpriteManager.h" />
-		<Unit filename="GameBattle_BattleLoader.cpp" />
-		<Unit filename="GameBattle_Initialize.cpp" />
-		<Unit filename="GameBattle_Render.cpp" />
-		<Unit filename="GameBattle_Update.cpp" />
-		<Unit filename="GameCamera.cpp" />
-		<Unit filename="GameCamera.h" />
-		<Unit filename="GameDialogueMessage.cpp" />
-		<Unit filename="GameDialogueMessage.h" />
-		<Unit filename="GameGUIGaugeWidget.cpp" />
-		<Unit filename="GameGUIGaugeWidget.h" />
-		<Unit filename="GameLibrary.h" />
-		<Unit filename="GameMap.cpp" />
-		<Unit filename="GameMap.h" />
-		<Unit filename="GameMapEvent.cpp" />
-		<Unit filename="GameMapEvent.h" />
-		<Unit filename="GameMapEventHandler.h" />
-		<Unit filename="GameMapLayer.cpp" />
-		<Unit filename="GameMapLayer.h" />
-		<Unit filename="GameMapManager.cpp" />
-		<Unit filename="GameMapManager.h" />
-		<Unit filename="GameMapSprite.cpp" />
-		<Unit filename="GameMapSprite.h" />
-		<Unit filename="GameMapSpriteManager.cpp" />
-		<Unit filename="GameMapSpriteManager.h" />
-		<Unit filename="GameMap_Editors.cpp" />
-		<Unit filename="GameMap_Editors.h" />
-		<Unit filename="GameMap_Editors_Render.cpp" />
-		<Unit filename="GameNPC.cpp" />
-		<Unit filename="GameNPC.h" />
-		<Unit filename="GameNPCManager.cpp" />
-		<Unit filename="GameNPCManager.h" />
-		<Unit filename="GameNameEntry.cpp" />
-		<Unit filename="GameNameEntry.h" />
-		<Unit filename="GameObject.cpp" />
-		<Unit filename="GameObject.h" />
-		<Unit filename="GameSprite.cpp" />
-		<Unit filename="GameSprite.h" />
-		<Unit filename="GameTileset.cpp" />
-		<Unit filename="GameTileset.h" />
-		<Unit filename="GameTilesetManager.cpp" />
-		<Unit filename="GameTilesetManager.h" />
-		<Unit filename="Game_CheckNPCCollisions.cpp" />
-		<Unit filename="Game_Destroy.cpp" />
-		<Unit filename="Game_Dialogue.cpp" />
-		<Unit filename="Game_DirectoryManagement.cpp" />
-		<Unit filename="Game_Initialize.cpp" />
-		<Unit filename="Game_Render.cpp" />
-		<Unit filename="Game_Starfield.cpp" />
-		<Unit filename="Game_Update.cpp" />
-		<Unit filename="Game_WorldLoader.cpp" />
-		<Unit filename="SConstruct" />
-		<Unit filename="data/battles/game.battle" />
-		<Unit filename="data/events/demo.event" />
-		<Unit filename="data/worlds/game.world" />
-		<Unit filename="main.cpp" />
+		<Unit filename="Game.cpp">
+			<Option virtualFolder="Game Code/" />
+		</Unit>
+		<Unit filename="Game.h">
+			<Option virtualFolder="Game Code/" />
+		</Unit>
+		<Unit filename="GameBasicMapWarp.cpp">
+			<Option virtualFolder="Game World System/Map Events/" />
+		</Unit>
+		<Unit filename="GameBasicMapWarp.h">
+			<Option virtualFolder="Game World System/Map Events/" />
+		</Unit>
+		<Unit filename="GameBattle.cpp">
+			<Option virtualFolder="Battle System/" />
+		</Unit>
+		<Unit filename="GameBattle.h">
+			<Option virtualFolder="Battle System/" />
+		</Unit>
+		<Unit filename="GameBattleScene.cpp">
+			<Option virtualFolder="Battle System/Scene/" />
+		</Unit>
+		<Unit filename="GameBattleScene.h">
+			<Option virtualFolder="Battle System/Scene/" />
+		</Unit>
+		<Unit filename="GameBattleSceneManager.cpp">
+			<Option virtualFolder="Battle System/Managers/" />
+		</Unit>
+		<Unit filename="GameBattleSceneManager.h">
+			<Option virtualFolder="Battle System/Managers/" />
+		</Unit>
+		<Unit filename="GameBattleSprite.cpp">
+			<Option virtualFolder="Battle System/Battle Objects/" />
+		</Unit>
+		<Unit filename="GameBattleSprite.h">
+			<Option virtualFolder="Battle System/Battle Objects/" />
+		</Unit>
+		<Unit filename="GameBattleSpriteManager.cpp">
+			<Option virtualFolder="Battle System/Managers/" />
+		</Unit>
+		<Unit filename="GameBattleSpriteManager.h">
+			<Option virtualFolder="Battle System/Managers/" />
+		</Unit>
+		<Unit filename="GameBattle_BattleLoader.cpp">
+			<Option virtualFolder="Battle System/" />
+		</Unit>
+		<Unit filename="GameBattle_Initialize.cpp">
+			<Option virtualFolder="Battle System/" />
+		</Unit>
+		<Unit filename="GameBattle_Render.cpp">
+			<Option virtualFolder="Battle System/" />
+		</Unit>
+		<Unit filename="GameBattle_Update.cpp">
+			<Option virtualFolder="Battle System/" />
+		</Unit>
+		<Unit filename="GameCamera.cpp">
+			<Option virtualFolder="Game World System/Camera/" />
+		</Unit>
+		<Unit filename="GameCamera.h">
+			<Option virtualFolder="Game World System/Camera/" />
+		</Unit>
+		<Unit filename="GameDialogueMessage.cpp">
+			<Option virtualFolder="Dialogue System/" />
+		</Unit>
+		<Unit filename="GameDialogueMessage.h">
+			<Option virtualFolder="Dialogue System/" />
+		</Unit>
+		<Unit filename="GameGUIGaugeWidget.cpp">
+			<Option virtualFolder="Battle System/Battle Objects/" />
+		</Unit>
+		<Unit filename="GameGUIGaugeWidget.h">
+			<Option virtualFolder="Battle System/Battle Objects/" />
+		</Unit>
+		<Unit filename="GameLibrary.h">
+			<Option virtualFolder="Game Code/" />
+		</Unit>
+		<Unit filename="GameMap.cpp">
+			<Option virtualFolder="Game World System/Map Structure/" />
+		</Unit>
+		<Unit filename="GameMap.h">
+			<Option virtualFolder="Game World System/Map Structure/" />
+		</Unit>
+		<Unit filename="GameMapEvent.cpp">
+			<Option virtualFolder="Game World System/Map Events/" />
+		</Unit>
+		<Unit filename="GameMapEvent.h">
+			<Option virtualFolder="Game World System/Map Events/" />
+		</Unit>
+		<Unit filename="GameMapEventHandler.h">
+			<Option virtualFolder="Game World System/Map Events/" />
+		</Unit>
+		<Unit filename="GameMapLayer.cpp">
+			<Option virtualFolder="Game World System/Map Structure/" />
+		</Unit>
+		<Unit filename="GameMapLayer.h">
+			<Option virtualFolder="Game World System/Map Structure/" />
+		</Unit>
+		<Unit filename="GameMapManager.cpp">
+			<Option virtualFolder="Game World System/Managers/" />
+		</Unit>
+		<Unit filename="GameMapManager.h">
+			<Option virtualFolder="Game World System/Managers/" />
+		</Unit>
+		<Unit filename="GameMapSprite.cpp">
+			<Option virtualFolder="Game World System/Map Objects/" />
+		</Unit>
+		<Unit filename="GameMapSprite.h">
+			<Option virtualFolder="Game World System/Map Objects/" />
+		</Unit>
+		<Unit filename="GameMapSpriteManager.cpp">
+			<Option virtualFolder="Game World System/Managers/" />
+		</Unit>
+		<Unit filename="GameMapSpriteManager.h">
+			<Option virtualFolder="Game World System/Managers/" />
+		</Unit>
+		<Unit filename="GameMap_Editors.cpp">
+			<Option virtualFolder="Built-In Game Editor System/" />
+		</Unit>
+		<Unit filename="GameMap_Editors.h">
+			<Option virtualFolder="Built-In Game Editor System/" />
+		</Unit>
+		<Unit filename="GameMap_Editors_Render.cpp">
+			<Option virtualFolder="Built-In Game Editor System/" />
+		</Unit>
+		<Unit filename="GameNPC.cpp">
+			<Option virtualFolder="Game World System/Map Objects/" />
+		</Unit>
+		<Unit filename="GameNPC.h">
+			<Option virtualFolder="Game World System/Map Objects/" />
+		</Unit>
+		<Unit filename="GameNPCManager.cpp">
+			<Option virtualFolder="Game World System/Managers/" />
+		</Unit>
+		<Unit filename="GameNPCManager.h">
+			<Option virtualFolder="Game World System/Managers/" />
+		</Unit>
+		<Unit filename="GameNameEntry.cpp">
+			<Option virtualFolder="Character Name Entry System/" />
+		</Unit>
+		<Unit filename="GameNameEntry.h">
+			<Option virtualFolder="Character Name Entry System/" />
+		</Unit>
+		<Unit filename="GameObject.cpp">
+			<Option virtualFolder="Game Code/Base Classes/" />
+		</Unit>
+		<Unit filename="GameObject.h">
+			<Option virtualFolder="Game Code/Base Classes/" />
+		</Unit>
+		<Unit filename="GameSprite.cpp">
+			<Option virtualFolder="Game Code/Base Classes/" />
+		</Unit>
+		<Unit filename="GameSprite.h">
+			<Option virtualFolder="Game Code/Base Classes/" />
+		</Unit>
+		<Unit filename="GameTileset.cpp">
+			<Option virtualFolder="Game World System/Tileset/" />
+		</Unit>
+		<Unit filename="GameTileset.h">
+			<Option virtualFolder="Game World System/Tileset/" />
+		</Unit>
+		<Unit filename="GameTilesetManager.cpp">
+			<Option virtualFolder="Game World System/Managers/" />
+		</Unit>
+		<Unit filename="GameTilesetManager.h">
+			<Option virtualFolder="Game World System/Managers/" />
+		</Unit>
+		<Unit filename="Game_CheckNPCCollisions.cpp">
+			<Option virtualFolder="Game Code/" />
+		</Unit>
+		<Unit filename="Game_Destroy.cpp">
+			<Option virtualFolder="Game Code/" />
+		</Unit>
+		<Unit filename="Game_Dialogue.cpp">
+			<Option virtualFolder="Dialogue System/" />
+		</Unit>
+		<Unit filename="Game_DirectoryManagement.cpp">
+			<Option virtualFolder="Game Code/" />
+		</Unit>
+		<Unit filename="Game_Initialize.cpp">
+			<Option virtualFolder="Game Code/" />
+		</Unit>
+		<Unit filename="Game_Render.cpp">
+			<Option virtualFolder="Game Code/" />
+		</Unit>
+		<Unit filename="Game_Update.cpp">
+			<Option virtualFolder="Game Code/" />
+		</Unit>
+		<Unit filename="Game_WorldLoader.cpp">
+			<Option virtualFolder="Game Code/" />
+		</Unit>
+		<Unit filename="SConstruct">
+			<Option virtualFolder="SCONS BUILD SCRIPTS/" />
+		</Unit>
+		<Unit filename="data/battles/game.battle">
+			<Option virtualFolder="Data Files/" />
+		</Unit>
+		<Unit filename="data/events/demo.event">
+			<Option virtualFolder="Data Files/" />
+		</Unit>
+		<Unit filename="data/worlds/game.world">
+			<Option virtualFolder="Data Files/" />
+		</Unit>
+		<Unit filename="main.cpp">
+			<Option virtualFolder="Game Code/" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />
