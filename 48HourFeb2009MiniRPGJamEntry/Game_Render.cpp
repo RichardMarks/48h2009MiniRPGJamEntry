@@ -44,7 +44,7 @@ namespace GAME
 		if ("true" == gameSettings_->Get("enable_screen_overlays"))
 		{
 			// draw the hud
-			playerPortrait_->Blit(microDisplay_, 0, 0, 143, 16, 16, 16);
+			playerPortrait_->Blit(microDisplay_, 0, 0, 143, 16, playerPortrait_->GetWidth(), playerPortrait_->GetHeight());
 
 // all of this will be removed after the 48 hour jam entry
 #if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
@@ -53,7 +53,7 @@ namespace GAME
 #endif
 
 			// draw the overlays
-			windowOverlay_->BlitMasked(microDisplay_, 0, 0, 0, 0, 200, 150);
+			windowOverlay_->BlitMasked(microDisplay_, 0, 0, 0, 0, windowOverlay_->GetWidth(), windowOverlay_->GetHeight());
 		}
 
 		// handle any region clear requests

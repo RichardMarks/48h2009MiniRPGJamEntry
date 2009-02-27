@@ -246,6 +246,18 @@
 		<Unit filename="data/battles/game.battle">
 			<Option virtualFolder="Data Files/" />
 		</Unit>
+		<Unit filename="data/dialogue/generic_female_hello.dialogue">
+			<Option virtualFolder="Data Files/" />
+		</Unit>
+		<Unit filename="data/dialogue/generic_female_hello2.dialogue">
+			<Option virtualFolder="Data Files/" />
+		</Unit>
+		<Unit filename="data/dialogue/generic_female_hello3.dialogue">
+			<Option virtualFolder="Data Files/" />
+		</Unit>
+		<Unit filename="data/dialogue/generic_male_hello.dialogue">
+			<Option virtualFolder="Data Files/" />
+		</Unit>
 		<Unit filename="data/dialogue/test.dialogue">
 			<Option virtualFolder="Data Files/" />
 		</Unit>

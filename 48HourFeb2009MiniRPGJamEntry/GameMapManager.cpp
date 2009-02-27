@@ -38,7 +38,9 @@ namespace GAME
 			mapInstance->SetName(mapName);
 
 			// get the maps directory from the game singleton
-			const char* mapsPath = GameSingleton::GetInstance()->GetMapsDirectory().c_str();
+			std::string mapsPath = static_cast<std::string>(
+				GameSingleton::GetInstance()->GetSetting("data_path") +
+					GameSingleton::GetInstance()->GetSetting("map_path")).c_str();
 
 			// grab the setting from the game instance
 			bool enableVerboseStartup = ("true" == GameSingleton::GetInstance()->GetSetting("enable_verbose_startup")) ? true : false;
@@ -53,28 +55,28 @@ namespace GAME
 				LogSimpleMessage("Loading Map Layout for \"%s\" ...", mapName);
 			}
 			// load the .map
-			mapInstance->LoadMapData(mapsPath);
+			mapInstance->LoadMapData(mapsPath.c_str());
 
 			if (enableVerboseStartup)
 			{
 				LogSimpleMessage("Loading Map Collision Data for \"%s\" ...", mapName);
 			}
 			// load the .collision
-			mapInstance->LoadCollisionData(mapsPath);
+			mapInstance->LoadCollisionData(mapsPath.c_str());
 
 			if (enableVerboseStartup)
 			{
 				LogSimpleMessage("Loading Map Warp Data for \"%s\" ...", mapName);
 			}
 			// load the .warp
-			mapInstance->LoadMapWarpData(mapsPath);
+			mapInstance->LoadMapWarpData(mapsPath.c_str());
 
 			if (enableVerboseStartup)
 			{
 				LogSimpleMessage("Loading Map Event Data for \"%s\" ...", mapName);
 			}
 			// load the .event
-			mapInstance->LoadEventData(mapsPath);
+			mapInstance->LoadEventData(mapsPath.c_str());
 
 			// add the map to the maps_ vector
 			maps_.push_back(mapInstance);

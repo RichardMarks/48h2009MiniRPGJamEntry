@@ -29,84 +29,30 @@ namespace GAME
 			LogSimpleMessage("Loading World...");
 		}
 
-		FILE* fp = fopen(worldPath, "r");
-		if (!fp) { LogFatal("Cannot load world: %s!", worldPath); return; }
+		std::vector<std::string> fileLines = UTILITY::PARSING::TextFileParser::Execute(worldPath, "#");
+		unsigned int lineCount = fileLines.size();
 
-		// delete the tileset and map managers if they exist
-		if (gameTiles_) { delete gameTiles_; }
-		if (gameMaps_) { delete gameMaps_; }
-		if (gameSprites_) { delete gameSprites_; }
-		if (gameNPCs_) { delete gameNPCs_; }
-
-		// init the tileset and map managers
-		gameTiles_ = new GameTilesetManager();
-		gameMaps_ = new GameMapManager(gameTiles_);
-		gameSprites_ = new GameMapSpriteManager();
-		gameNPCs_ = new GameNPCManager();
-
-		// read each line into a vector of std strings
-		std::vector<std::string> fileLines;
-
-		char buffer[0x1000];
-		while(fgets(buffer, sizeof(buffer), fp))
+		if (!lineCount)
 		{
-			// ignore comments, and empty lines
-			if ('#' == buffer[0])
-			{
-				// ignored
-			}
-			else
-			{
-				unsigned int length = strlen(buffer);
-				bool lineEmpty = true;
-				for (unsigned int p = 0; p < length; p++)
-				{
-					switch(buffer[p])
-					{
-						case ' ':
-						{
-						} break;
-						case '\t':
-						{
-						} break;
-						case '\n':
-						{
-						} break;
-						case '\r':
-						{
-						} break;
-						case '#':
-						{
-							p = length;
-						} break;
-						default:
-						{
-							lineEmpty = false;
-							p = length;
-						} break;
-					}
-				}
-
-				if (!lineEmpty)
-				{
-					// strip ending newline if its there
-					if ('\n' == buffer[length - 1])
-					{
-						buffer[length - 1] = '\0';
-					}
-					fileLines.push_back(buffer);
-				}
-			}
+			LogSimpleMessage("There was a problem loading the World file \"%s\" No valid commands found.");
+			return;
 		}
 
-		// close the file
-		fclose(fp);
+		// delete the managers if they exist
+		if (gameTiles_) 	{ delete gameTiles_; }
+		if (gameMaps_) 		{ delete gameMaps_; }
+		if (gameSprites_) 	{ delete gameSprites_; }
+		if (gameNPCs_) 		{ delete gameNPCs_; }
+
+		// init the managers
+		gameTiles_ 		= new GameTilesetManager();
+		gameMaps_ 		= new GameMapManager(gameTiles_);
+		gameSprites_ 	= new GameMapSpriteManager();
+		gameNPCs_ 		= new GameNPCManager();
 
 	/**************************************************************************/
 
 		// for each line, parse it
-		unsigned int lineCount = fileLines.size();
-
 #if defined(_WORLD_LOADER_VERBOSE)
 		if (enableVerboseStartup)
 		{
@@ -118,7 +64,7 @@ namespace GAME
 		for (unsigned int index = 0; index < lineCount; index++)
 		{
 			std::string& line = fileLines.at(index);
-			std::vector<std::string> tokens = Tokenize(line, " \t");
+			std::vector<std::string> tokens = UTILITY::PARSING::StringTokenizer::Execute(line, " \t");
 			unsigned int tokenCount = tokens.size();
 
 			if (0x2 == tokenCount)
@@ -126,33 +72,7 @@ namespace GAME
 				std::string& commandToken  = tokens.at(0);
 				std::string& paramsToken = tokens.at(1);
 
-				if ("TILESDIR" == commandToken)
-				{
-#if defined(_WORLD_LOADER_VERBOSE)
-					if (enableVerboseStartup)
-					{
-						fprintf(stderr, "\tTiles are expected to be stored in %s\n\n", paramsToken.c_str());
-					}
-#endif
-					SetTilesDirectory(paramsToken.c_str());
-				}
-
-	/**************************************************************************/
-
-				else if ("MAPSDIR" == commandToken)
-				{
-#if defined(_WORLD_LOADER_VERBOSE)
-					if (enableVerboseStartup)
-					{
-						fprintf(stderr, "\tMaps are expected to be stored in %s\n\n", paramsToken.c_str());
-					}
-#endif
-					SetMapsDirectory(paramsToken.c_str());
-				}
-
-	/**************************************************************************/
-
-				else if ("START" == commandToken)
+				if ("START" == commandToken)
 				{
 #if defined(_WORLD_LOADER_VERBOSE)
 					if (enableVerboseStartup)
@@ -165,23 +85,10 @@ namespace GAME
 
 	/**************************************************************************/
 
-				else if ("SPRITESDIR" == commandToken)
-				{
-#if defined(_WORLD_LOADER_VERBOSE)
-					if (enableVerboseStartup)
-					{
-						fprintf(stderr, "\tSprites are expected to be stored in %s\n\n", paramsToken.c_str());
-					}
-#endif
-					SetSpritesDirectory(paramsToken.c_str());
-				}
-
-	/**************************************************************************/
-
 				else if ("PLAYER" == commandToken)
 				{
 					// PLAYER [sprite-num]:[x-tile]:[y-tile]
-					std::vector<std::string> playerDefParams = Tokenize(paramsToken, ":");
+					std::vector<std::string> playerDefParams = UTILITY::PARSING::StringTokenizer::Execute(paramsToken, ":");
 					int spriteNum = 0;
 					int xTile = 0;
 					int yTile = 0;
@@ -221,7 +128,7 @@ namespace GAME
 				else if ("NPCSPEED" == commandToken)
 				{
 					// NPCSPEED [npc-num]:[speed]
-					std::vector<std::string> npcDefParams = Tokenize(paramsToken, ":");
+					std::vector<std::string> npcDefParams = UTILITY::PARSING::StringTokenizer::Execute(paramsToken, ":");
 					int npcNum = 0;
 					int npcSpeed = 0;
 
@@ -255,7 +162,7 @@ namespace GAME
 				else if ("NPCMOTION" == commandToken)
 				{
 					// NPCMOTION [npc-num]:[motion-data]
-					std::vector<std::string> npcDefParams = Tokenize(paramsToken, ":");
+					std::vector<std::string> npcDefParams = UTILITY::PARSING::StringTokenizer::Execute(paramsToken, ":");
 					int npcNum = 0;
 					std::string motionData = "";
 
@@ -286,10 +193,44 @@ namespace GAME
 
 	/**************************************************************************/
 
+				else if ("NPCCHAT" == commandToken)
+				{
+					// NPCCHAT [npc-id]:[dialogue-file]
+					std::vector<std::string> npcDefParams = UTILITY::PARSING::StringTokenizer::Execute(paramsToken, ":");
+					int npcNum = 0;
+					std::string dlgFile = "";
+
+					unsigned int npcDefParamCount = npcDefParams.size();
+					if (0x2 != npcDefParamCount)
+					{
+						fprintf(stderr,
+						"*** Syntax Error in %s:line #%04d: Missing Parameters:\n    "
+						"Expected [npc-id]:[dialogue-file]\n\n",
+						worldPath, index + 1);
+					}
+					else
+					{
+						npcNum 		= atoi(npcDefParams.at(0).c_str());
+						dlgFile 	= npcDefParams.at(1).c_str();
+#if defined(_WORLD_LOADER_VERBOSE)
+						if (enableVerboseStartup)
+						{
+							fprintf(stderr,
+								"\tNPCCHAT DEFINITION:\n"
+								"\tNPC #%d depends on a .dialogue file called \"%s\".\n\n",
+								npcNum, dlgFile.c_str());
+						}
+#endif
+						gameNPCs_->Get(npcNum - 1)->AddDialogueFile(dlgFile.c_str());
+					}
+				}
+
+	/**************************************************************************/
+
 				else if ("NPC" == commandToken)
 				{
 					// NPC [sprite-num]:[map-name]:[x-tile]:[y-tile]
-					std::vector<std::string> npcDefParams = Tokenize(paramsToken, ":");
+					std::vector<std::string> npcDefParams = UTILITY::PARSING::StringTokenizer::Execute(paramsToken, ":");
 					std::string mapName = "";
 					int spriteNum = 0;
 					int xTile = 0;
@@ -341,7 +282,7 @@ namespace GAME
 				else if ("SPRITE" == commandToken)
 				{
 					// SPRITE [file]:[width]:[height]:[frames]:[delay]
-					std::vector<std::string> spriteDefParams = Tokenize(paramsToken, ":");
+					std::vector<std::string> spriteDefParams = UTILITY::PARSING::StringTokenizer::Execute(paramsToken, ":");
 					std::string spriteFile = "";
 					int spriteWidth = 0;
 					int spriteHeight = 0;

@@ -24,9 +24,93 @@ namespace GAME
 			gameSettings_->Set("use_fullscreen", "false");
 			gameSettings_->Set("lock_fps_to", "60");
 
+			// the micro display
+			gameSettings_->Set("micro_screen_width", "200");
+			gameSettings_->Set("micro_screen_height", "150");
+
+			/*
+				data file paths
+
+				ROOT OF ALL DATA FILES
+				data_path - relative to executable
+
+				.WORLD FILES DIRECTORY
+				world_path - relative to data_path
+
+				MAPS DIRECTORY
+				map_path - relative to data_path
+
+				GRAPHICS DIRECTORY
+				graphics_path - relative to data_path
+
+				.DIALOGUE FILES DIRECTORY
+				dialogue_path - relative to data_path
+
+				.BATTLE FILES DIRECTORY
+				battle_path - relative to data_path
+
+
+				TILESET DIRECTORY
+				tiles_path - relative to graphics_path
+
+				GAME SPRITES DIRECTORY
+				game_sprite_path - relative to graphics_path
+
+				BATTLE SPRITES DIRECTORY
+				battle_sprite_path - relative to graphics_path
+
+				BATTLE SCENE IMAGERY DIRECTORY
+				battle_scene_path - relative to graphics_path
+
+				FONT DIRECTORY
+				font_path - relative to graphics_path
+
+				GAME OVERLAY IMAGES DIRECTORY
+				game_overlay_path - relative to graphics_path
+
+				BATTLE OVERLAY IMAGES DIRECTORY
+				battle_overlay_path - relative to graphcis_path
+
+				CHARACTER PORTRAIT IMAGES DIRECTORY
+				portrait_path - relative to graphics_path
+
+
+
+			*/
+
 			gameSettings_->Set("data_path", "data/");
+			gameSettings_->Set("world_path", "worlds/");
+			gameSettings_->Set("map_path", "maps/");
+			gameSettings_->Set("graphics_path", "graphics/");
+			gameSettings_->Set("dialogue_path", "dialogue/");
+			gameSettings_->Set("battle_path", "battles/");
+			gameSettings_->Set("tiles_path", "game/tiles/");
+			gameSettings_->Set("game_sprite_path", "game/sprites/");
+			gameSettings_->Set("battle_sprite_path", "battle/sprites/");
+			gameSettings_->Set("battle_scene_path", "battle/scenes/");
+			gameSettings_->Set("font_path", "fonts/");
+			gameSettings_->Set("game_overlay_path", "game/overlays/");
+			gameSettings_->Set("battle_overlay_path", "battle/overlays/");
+			gameSettings_->Set("portrait_path", "portraits/");
+
+
+
+			// fonts
+			gameSettings_->Set("small_font", "font5x5white.png");
+			gameSettings_->Set("small_font_w", "5");
+			gameSettings_->Set("small_font_h", "5");
+			gameSettings_->Set("large_font", "font8x8white.png");
+			gameSettings_->Set("large_font_w", "8");
+			gameSettings_->Set("large_font_h", "8");
+
+
+
+
+
 			gameSettings_->Set("start_world", "game.world");
 
+			gameSettings_->Set("camera_anchor_x", "1");
+			gameSettings_->Set("camera_anchor_y", "1");
 			gameSettings_->Set("camera_w", "17");
 			gameSettings_->Set("camera_h", "11");
 			gameSettings_->Set("tile_w", "8");
@@ -40,6 +124,17 @@ namespace GAME
 			gameSettings_->Set("enable_screen_overlays", "true");
 
 			gameSettings_->Set("window_caption", "48h Contest LO-Fi Mini-RPG Game Project");
+
+			// cheats haha
+			gameSettings_->Set("enable_cheats", "false");
+			gameSettings_->Set("enable_cheat_infinite_gold", "false");
+			gameSettings_->Set("enable_cheat_infinite_health", "false");
+			gameSettings_->Set("enable_cheat_infinite_magic", "false");
+			gameSettings_->Set("enable_cheat_max_attack", "false");
+			gameSettings_->Set("enable_cheat_max_defense", "false");
+			gameSettings_->Set("enable_cheat_max_strength", "false");
+			gameSettings_->Set("enable_cheat_no_battles", "false");
+
 
 			// load the settings file if it exists
 			if (UTILITY::FILESYSTEM::FileExists::Execute("game.cfg"))
@@ -95,24 +190,103 @@ namespace GAME
 
 		// load fonts
 		smallFont_ = new BitmapFont();
-		if (!smallFont_->Load("data/graphics/fonts/font5x5white.png", 5, 5, 1)) { return false; }
+		if (!smallFont_->Load(
+			static_cast<std::string>(
+				gameSettings_->Get("data_path") +
+					gameSettings_->Get("graphics_path") +
+						gameSettings_->Get("font_path") +
+							gameSettings_->Get("small_font")).c_str(),
+				static_cast<int>(atoi(gameSettings_->Get("small_font_w").c_str())),
+				static_cast<int>(atoi(gameSettings_->Get("small_font_h").c_str())),
+				1))
+		{
+			return false;
+		}
 
 		largeFont_ = new BitmapFont();
-		if (!largeFont_->Load("data/graphics/fonts/font8x8white.png", 8, 8, 1)) { return false; }
+		if (!largeFont_->Load(
+			static_cast<std::string>(
+				gameSettings_->Get("data_path") +
+					gameSettings_->Get("graphics_path") +
+						gameSettings_->Get("font_path") +
+							gameSettings_->Get("large_font")).c_str(),
+				static_cast<int>(atoi(gameSettings_->Get("large_font_w").c_str())),
+				static_cast<int>(atoi(gameSettings_->Get("large_font_h").c_str())),
+				1))
+		{
+			return false;
+		}
+
+		// load the over lays
+		//windowOverlay_ 	= new ImageResource("data/graphics/game/overlays/mainscreen.png");
+		// playerPortrait_ = new ImageResource("data/graphics/portraits/player.png");
+
+		windowOverlay_ = new ImageResource();
+		if (!windowOverlay_->Load(
+			static_cast<std::string>(
+				gameSettings_->Get("data_path") +
+					gameSettings_->Get("graphics_path") +
+						gameSettings_->Get("game_overlay_path") +
+							"mainscreen.png").c_str()
+			))
+		{
+			return false;
+		}
+
+		playerPortrait_ = new ImageResource();
+		if (!playerPortrait_->Load(
+			static_cast<std::string>(
+				gameSettings_->Get("data_path") +
+					gameSettings_->Get("graphics_path") +
+						gameSettings_->Get("portrait_path") +
+							"player.png").c_str()
+			))
+		{
+			return false;
+		}
+
+		// all of this will be removed after the 48 hour jam entry
+#if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
+
+		// lofiOverlay_ 	= new ImageResource("data/graphics/game/overlays/lofi.png");
+		lofiOverlay_ = new ImageResource();
+		if (!lofiOverlay_->Load(
+			static_cast<std::string>(
+				gameSettings_->Get("data_path") +
+					gameSettings_->Get("graphics_path") +
+						gameSettings_->Get("game_overlay_path") +
+							"lofi.png").c_str()
+			))
+		{
+			return false;
+		}
+#endif
+
 
 		// create the dialogue message
 		dialogueMessage_ = new GameDialogueMessage();
 
 		// create the display surface we draw on for implementing the cool 400% scale
-		microDisplay_ = new ImageResource(200, 150);
+		int msw  = static_cast<int>(atoi(gameSettings_->Get("micro_screen_width").c_str()));
+		int msh  = static_cast<int>(atoi(gameSettings_->Get("micro_screen_height").c_str()));
+		microDisplay_ = new ImageResource(
+			(msw > 0) ? (msw < sw) ? msw : 200 : 200,
+			(msh > 0) ? (msh < sh) ? msh : 150 : 150);
 
 		playerSpriteIndex_ = 0;
 
 		//LoadWorldFile("data/worlds/game.world");
-		LoadWorldFile(static_cast<std::string>(gameSettings_->Get("data_path") + "worlds/" + gameSettings_->Get("start_world")).c_str());
+		LoadWorldFile(
+			static_cast<std::string>(
+				gameSettings_->Get("data_path") +
+					gameSettings_->Get("world_path") +
+						gameSettings_->Get("start_world")).c_str());
 
 
 		// create the camera
+
+		int camAX = static_cast<int>(atoi(gameSettings_->Get("camera_anchor_x").c_str()));
+		int camAY = static_cast<int>(atoi(gameSettings_->Get("camera_anchor_y").c_str()));
 
 		int camW = static_cast<int>(atoi(gameSettings_->Get("camera_w").c_str()));
 		int camH = static_cast<int>(atoi(gameSettings_->Get("camera_h").c_str()));
@@ -124,7 +298,7 @@ namespace GAME
 		camH = (camH < 1) ? 11 : (camH > (150 / tileH)) ? 11 : camH;
 
 		camera_ = new GameCamera(
-			1, 1, 			// rendering anchor x, y
+			camAX, camAY, 	// rendering anchor x, y
 			0, 0, 			// world x, y
 			camW * tileW, 	// width in pixels
 			camH * tileH, 	// height in pixels
@@ -136,16 +310,6 @@ namespace GAME
 
 		// center the camera on the player
 		camera_->CenterOnSprite(gameSprites_->Get(playerSpriteIndex_));
-
-		windowOverlay_ 	= new ImageResource("data/graphics/game/overlays/mainscreen.png");
-
-		playerPortrait_ = new ImageResource("data/graphics/portraits/player.png");
-
-		// all of this will be removed after the 48 hour jam entry
-#if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
-
-		lofiOverlay_ 	= new ImageResource("data/graphics/game/overlays/lofi.png");
-#endif
 
 		stepsTaken_ 		= 0;
 		stepsUntilAmbush_ 	= 160;

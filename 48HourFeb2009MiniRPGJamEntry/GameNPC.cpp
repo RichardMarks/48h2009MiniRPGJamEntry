@@ -21,7 +21,8 @@ namespace GAME
 		framesIdle_(0),
 		handlingMotion_(false),
 		logicTimer_(1),
-		paused_(false)
+		paused_(false),
+		currentDialogue_(0)
 	{
 	}
 
@@ -250,6 +251,50 @@ namespace GAME
 	{
 		paused_ = false;
 	}
+
+	/**************************************************************************/
+
+	void GameNPC::AddDialogueFile(const char* fileName)
+	{
+		dialogueFiles_.push_back(fileName);
+	}
+
+	/**************************************************************************/
+
+	std::string GameNPC::GetDialogueFile() const
+	{
+		return dialogueFiles_.at(currentDialogue_);
+	}
+
+	/**************************************************************************/
+
+	void GameNPC::AdvanceToNextDialogueFile()
+	{
+		if (++currentDialogue_ > dialogueFiles_.size() - 1)
+		{
+			currentDialogue_ = 0;
+		}
+
+		if (currentDialogue_ > dialogueFiles_.size() - 1)
+		{
+			currentDialogue_ = 0;
+		}
+	}
+
+	/**************************************************************************/
+
+	void GameNPC::SetDialogueFile(unsigned int index)
+	{
+		currentDialogue_ = (index < dialogueFiles_.size()) ? index : 0;
+	}
+
+	/**************************************************************************/
+
+	unsigned int GameNPC::GetNumDialogueFiles() const
+	{
+		return dialogueFiles_.size();
+	}
+
 
 } // end namespace
 

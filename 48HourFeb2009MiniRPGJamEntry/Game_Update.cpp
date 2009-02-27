@@ -133,7 +133,7 @@ namespace GAME
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-		if (InputDevice->KeyPressed(KEY::Key_Enter))
+		if (InputDevice->KeyPressed(KEY::Key_Enter) || InputDevice->KeyPressed(KEY::Key_Space))
 		{
 			// based on the direction the player is facing
 			int playerFacing;
@@ -149,7 +149,7 @@ namespace GAME
 						if (-1 != npc)
 						{
 							// there is an NPC here
-							fprintf(stderr, "Found NPC #%d at tile %d, %d\n", npc, playerTileX, playerTileY - 1);
+							//fprintf(stderr, "Found NPC #%d at tile %d, %d\n", npc, playerTileX, playerTileY - 1);
 
 							npcInteractionData_.npcIndex_ = static_cast<unsigned int>(npc);
 							npcInteractionData_.npcBusy_ = true;
@@ -161,7 +161,31 @@ namespace GAME
 							gameNPCs_->Get(npc)->GetSprite()->GetFaceDirection(npcInteractionData_.npcFacing_);
 							gameNPCs_->Get(npc)->GetSprite()->SetFaceDirection(MAPSPRITE::WALK_SOUTH_FRAME);
 
-							// do dialogue
+							// do dialogue if there is any
+							unsigned int chats = gameNPCs_->Get(npc)->GetNumDialogueFiles();
+							if (chats)
+							{
+								//LogSimpleMessage("NPC Has Chats");
+								// shuffle the chats
+								for (unsigned int chatInc = 0; chatInc < 1 + rand() % chats; chatInc++)
+								{
+									gameNPCs_->Get(npc)->AdvanceToNextDialogueFile();
+									//LogSimpleMessage("Shuffling Chats");
+								}
+
+								if (DIALOGUE::Undefined == dialogueMessage_->GetState())
+								{
+									//LogSimpleMessage("Loading Chat into Dialogue System...");
+									dialogueMessage_->Initialize(
+										UTILITY::PARSING::TextFileParser::Execute(
+											static_cast<std::string>(
+												gameSettings_->Get("data_path") +
+													gameSettings_->Get("dialogue_path") +
+														gameNPCs_->Get(npc)->GetDialogueFile()).c_str(),
+											"#"),
+										smallFont_, false);
+								}
+							}
 
 						}
 					}
@@ -176,7 +200,7 @@ namespace GAME
 						if (-1 != npc)
 						{
 							// there is an NPC here
-							fprintf(stderr, "Found NPC #%d at tile %d, %d\n", npc, playerTileX, playerTileY + 1);
+							//fprintf(stderr, "Found NPC #%d at tile %d, %d\n", npc, playerTileX, playerTileY + 1);
 
 							npcInteractionData_.npcIndex_ = static_cast<unsigned int>(npc);
 							npcInteractionData_.npcBusy_ = true;
@@ -189,6 +213,31 @@ namespace GAME
 							gameNPCs_->Get(npc)->GetSprite()->SetFaceDirection(MAPSPRITE::WALK_NORTH_FRAME);
 
 							// do dialogue
+							// do dialogue if there is any
+							unsigned int chats = gameNPCs_->Get(npc)->GetNumDialogueFiles();
+							if (chats)
+							{
+								//LogSimpleMessage("NPC Has Chats");
+								// shuffle the chats
+								for (unsigned int chatInc = 0; chatInc < 1 + rand() % chats; chatInc++)
+								{
+									gameNPCs_->Get(npc)->AdvanceToNextDialogueFile();
+									//LogSimpleMessage("Shuffling Chats");
+								}
+
+								if (DIALOGUE::Undefined == dialogueMessage_->GetState())
+								{
+									//LogSimpleMessage("Loading Chat into Dialogue System...");
+									dialogueMessage_->Initialize(
+										UTILITY::PARSING::TextFileParser::Execute(
+											static_cast<std::string>(
+												gameSettings_->Get("data_path") +
+													gameSettings_->Get("dialogue_path") +
+														gameNPCs_->Get(npc)->GetDialogueFile()).c_str(),
+											"#"),
+										smallFont_, false);
+								}
+							}
 
 						}
 					}
@@ -203,7 +252,7 @@ namespace GAME
 						if (-1 != npc)
 						{
 							// there is an NPC here
-							fprintf(stderr, "Found NPC #%d at tile %d, %d\n", npc, playerTileX + 1, playerTileY);
+							//fprintf(stderr, "Found NPC #%d at tile %d, %d\n", npc, playerTileX + 1, playerTileY);
 
 							npcInteractionData_.npcIndex_ = static_cast<unsigned int>(npc);
 							npcInteractionData_.npcBusy_ = true;
@@ -216,6 +265,31 @@ namespace GAME
 							gameNPCs_->Get(npc)->GetSprite()->SetFaceDirection(MAPSPRITE::WALK_WEST_FRAME);
 
 							// do dialogue
+							// do dialogue if there is any
+							unsigned int chats = gameNPCs_->Get(npc)->GetNumDialogueFiles();
+							if (chats)
+							{
+								//LogSimpleMessage("NPC Has Chats");
+								// shuffle the chats
+								for (unsigned int chatInc = 0; chatInc < 1 + rand() % chats; chatInc++)
+								{
+									gameNPCs_->Get(npc)->AdvanceToNextDialogueFile();
+									//LogSimpleMessage("Shuffling Chats");
+								}
+
+								if (DIALOGUE::Undefined == dialogueMessage_->GetState())
+								{
+									//LogSimpleMessage("Loading Chat into Dialogue System...");
+									dialogueMessage_->Initialize(
+										UTILITY::PARSING::TextFileParser::Execute(
+											static_cast<std::string>(
+												gameSettings_->Get("data_path") +
+													gameSettings_->Get("dialogue_path") +
+														gameNPCs_->Get(npc)->GetDialogueFile()).c_str(),
+											"#"),
+										smallFont_, false);
+								}
+							}
 
 						}
 					}
@@ -230,7 +304,7 @@ namespace GAME
 						if (-1 != npc)
 						{
 							// there is an NPC here
-							fprintf(stderr, "Found NPC #%d at tile %d, %d\n", npc, playerTileX - 1, playerTileY);
+							//fprintf(stderr, "Found NPC #%d at tile %d, %d\n", npc, playerTileX - 1, playerTileY);
 
 							npcInteractionData_.npcIndex_ = static_cast<unsigned int>(npc);
 							npcInteractionData_.npcBusy_ = true;
@@ -243,6 +317,31 @@ namespace GAME
 							gameNPCs_->Get(npc)->GetSprite()->SetFaceDirection(MAPSPRITE::WALK_EAST_FRAME);
 
 							// do dialogue
+							// do dialogue if there is any
+							unsigned int chats = gameNPCs_->Get(npc)->GetNumDialogueFiles();
+							if (chats)
+							{
+								//LogSimpleMessage("NPC Has Chats");
+								// shuffle the chats
+								for (unsigned int chatInc = 0; chatInc < 1 + rand() % chats; chatInc++)
+								{
+									gameNPCs_->Get(npc)->AdvanceToNextDialogueFile();
+									//LogSimpleMessage("Shuffling Chats");
+								}
+
+								if (DIALOGUE::Undefined == dialogueMessage_->GetState())
+								{
+									//LogSimpleMessage("Loading Chat into Dialogue System...");
+									dialogueMessage_->Initialize(
+										UTILITY::PARSING::TextFileParser::Execute(
+											static_cast<std::string>(
+												gameSettings_->Get("data_path") +
+													gameSettings_->Get("dialogue_path") +
+														gameNPCs_->Get(npc)->GetDialogueFile()).c_str(),
+											"#"),
+										smallFont_, false);
+								}
+							}
 
 						}
 					}

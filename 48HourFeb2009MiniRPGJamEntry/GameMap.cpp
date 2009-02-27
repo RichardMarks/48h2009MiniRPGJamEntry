@@ -72,7 +72,7 @@ namespace GAME
 		FILE* fp = fopen(mapFileName.c_str(), "rb");
 		if (!fp)
 		{
-			LogFatal("Could not open %s for reading.\n", mapFileName.c_str());
+			LogFatal("Could not open \"%s\" for reading.\n", mapFileName.c_str());
 		}
 
 		// read the dimensions of the map
@@ -149,13 +149,18 @@ namespace GAME
 		// build file name string
 		// for a map named "Test1" the file path is
 		// data/maps/Test1/Test1.collision
-		std::string mapFileName = filePath + mapName_ + "/" + mapName_ + ".collision";
+		std::string mapFileName = static_cast<std::string>(
+			filePath +
+				mapName_ +
+					"/" +
+						mapName_ +
+							".collision");
 
 		// open the file
 		FILE* fp = fopen(mapFileName.c_str(), "rb");
 		if (!fp)
 		{
-			LogFatal("Could not open %s for reading.\n", mapFileName.c_str());
+			LogFatal("Could not open \"%s\" for reading.\n", mapFileName.c_str());
 		}
 
 		// get a pointer to the base map layer
@@ -296,7 +301,7 @@ namespace GAME
 		FILE* fp = fopen(mapFileName.c_str(), "rb");
 		if (!fp)
 		{
-			LogFatal("Could not open %s for reading.\n", mapFileName.c_str());
+			LogFatal("Could not open \"%s\" for reading.\n", mapFileName.c_str());
 		}
 
 		// get a pointer to the base map layer

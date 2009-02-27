@@ -201,7 +201,7 @@ namespace GAME
 			}
 
 // test the dialogue system by pressing SPACE
-#if 1
+#if 0
 			if (InputDevice->KeyPressed(KEY::Key_Space))
 			{
 				if (GAMESTATE::World == GetState())
