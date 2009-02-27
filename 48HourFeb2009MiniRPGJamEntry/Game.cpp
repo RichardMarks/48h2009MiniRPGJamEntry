@@ -204,7 +204,10 @@ namespace GAME
 #if 1
 			if (InputDevice->KeyPressed(KEY::Key_Space))
 			{
-				Dialogue("Castle Guard:         Halt! Who goes there? You are not allowed in this area! Be Gone!");
+				if (GAMESTATE::World == GetState())
+				{
+					Dialogue("");
+				}
 			}
 
 			if (InputDevice->KeyPressed(KEY::Key_Backspace))

@@ -60,6 +60,13 @@ namespace GAME
 			requestToClearDialogueRegion_ = false;
 		}
 
+		// render dialogues if there are any
+		if (DIALOGUE::Undefined != dialogueMessage_->GetState())
+		{
+			// update the dialogue system
+			dialogueMessage_->Render(microDisplay_);
+		}
+
 	}
 
 } // end namespace

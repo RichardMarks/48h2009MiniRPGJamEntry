@@ -125,7 +125,7 @@ namespace GAME
 		void Initialize(const std::vector<std::string>& message, BitmapFont* smallFont, bool useDualFonts = false, BitmapFont* largeFont = 0);
 
 		/// updates the dialogue
-		void Update(bool useDelay_ = true);
+		void Update(bool useDelay = true);
 
 		/// renders the dialogue
 		void Render(ImageResource* target);
@@ -193,6 +193,9 @@ namespace GAME
 
 		/// number of characters in the current line
 		unsigned int charCount_;
+
+		/// have we printed the lines ?
+		bool waitingToAdvance_;
 	};
 
 } // end namespace
