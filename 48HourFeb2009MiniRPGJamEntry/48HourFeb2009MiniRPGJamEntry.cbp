@@ -6,7 +6,7 @@
 		<Option makefile_is_custom="1" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="Battle System/;Game World System/;Game Code/;Built-In Game Editor System/;SCONS BUILD SCRIPTS/;Game Code/Base Classes/;Dialogue System/;Data Files/;Character Name Entry System/;Game World System/Map Events/;Game World System/Camera/;Game World System/Map Structure/;Game World System/Managers/;Game World System/Map Objects/;Game World System/Tileset/;Battle System/Battle Objects/;Battle System/Scene/;Battle System/Entities/;Battle System/Managers/;" />
+		<Option virtualFolders="Battle System/;Game World System/;Game Code/;Built-In Game Editor System/;SCONS BUILD SCRIPTS/;Game Code/Base Classes/;Dialogue System/;Data Files/;Character Name Entry System/;Game World System/Map Events/;Game World System/Camera/;Game World System/Map Structure/;Game World System/Managers/;Game World System/Map Objects/;Game World System/Tileset/;Battle System/Battle Objects/;Battle System/Scene/;Battle System/Entities/;Battle System/Managers/;Game Configuration/;" />
 		<MakeCommands>
 			<Build command="scons" />
 			<CompileFile command="" />
@@ -254,6 +254,9 @@
 		</Unit>
 		<Unit filename="data/worlds/game.world">
 			<Option virtualFolder="Data Files/" />
+		</Unit>
+		<Unit filename="game.cfg">
+			<Option virtualFolder="Game Configuration/" />
 		</Unit>
 		<Unit filename="main.cpp">
 			<Option virtualFolder="Game Code/" />

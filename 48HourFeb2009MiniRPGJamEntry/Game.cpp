@@ -200,7 +200,7 @@ namespace GAME
 				running = false;
 			}
 
-// test the dialogue system by pressing SPACE and clear it with BACKSPACE
+// test the dialogue system by pressing SPACE
 #if 1
 			if (InputDevice->KeyPressed(KEY::Key_Space))
 			{
@@ -209,42 +209,24 @@ namespace GAME
 					Dialogue("");
 				}
 			}
-
-			if (InputDevice->KeyPressed(KEY::Key_Backspace))
-			{
-				ClearDialogue();
-			}
 #endif
 
 
 #if defined(DEV_ENABLE_MAP_EDITING)
-			if (InputDevice->KeyPressed(KEY::Key_F4))
+			if ("true" == gameSettings_->Get("enable_game_editors"))
 			{
-				if (GAMESTATE::MapEditor != GetState())
+				if (InputDevice->KeyPressed(KEY::Key_F4))
 				{
-					MapEditors->SetMap(currentMap_);
-					MapEditors->SetState(MAPEDITORS::EditingCollisionLayer);
-					SetState(GAMESTATE::MapEditor);
-				}
-				else
-				{
-					SetState(GAMESTATE::World);
-				}
-			}
-#endif
-
-#if defined(DEV_ENABLE_EVENT_EDITING)
-			if (InputDevice->KeyPressed(KEY::Key_F8))
-			{
-				if (GAMESTATE::MapEditor != GetState())
-				{
-					MapEditors->SetMap(currentMap_);
-					MapEditors->SetState(MAPEDITORS::EditingEvents);
-					SetState(GAMESTATE::MapEditor);
-				}
-				else
-				{
-					SetState(GAMESTATE::World);
+					if (GAMESTATE::MapEditor != GetState())
+					{
+						MapEditors->SetMap(currentMap_);
+						MapEditors->SetState(MAPEDITORS::EditingCollisionLayer);
+						SetState(GAMESTATE::MapEditor);
+					}
+					else
+					{
+						SetState(GAMESTATE::World);
+					}
 				}
 			}
 #endif
@@ -258,13 +240,6 @@ namespace GAME
 				{
 #if defined(DEV_ENABLE_MAP_EDITING)
 					case GAMESTATE::MapEditor:
-					{
-						MapEditors->Update();
-					} break;
-#endif
-
-#if defined(DEV_ENABLE_EVENT_EDITING)
-					case GAMESTATE::EventEditor:
 					{
 						MapEditors->Update();
 					} break;
@@ -366,16 +341,10 @@ namespace GAME
 					MapEditors->Render();
 				} break;
 #endif
-
-#if defined(DEV_ENABLE_EVENT_EDITING)
-				case GAMESTATE::EventEditor:
-				{
-					MapEditors->Render();
-				} break;
-#endif
 				case GAMESTATE::World:
 				{
 					// render the main game
+					InputDevice->MouseDisplayOnScreen(false);
 					Render();
 				} break;
 
@@ -403,7 +372,7 @@ namespace GAME
 #if defined(DEV_ENABLE_MAP_EDITING)
 			GAMESTATE::StateType state = GetState();
 
-			if (GAMESTATE::MapEditor != state && GAMESTATE::EventEditor != state)
+			if (GAMESTATE::MapEditor != state)
 			{
 #endif
 				microDisplay_->Blit(
@@ -413,48 +382,49 @@ namespace GAME
 					0, 0,
 					display->GetWidth(), display->GetHeight());
 
-			// debugging display
+				// debugging display
 #if defined(ENABLE_DEBUGGING_DISPLAY_INFORMATION)
-			{
-				int camAnchorX 	= 0, camAnchorY = 0;
-				int camWidth 	= 0, camHeight 	= 0;
-				int camWorldX 	= 0, camWorldY 	= 0;
+				if ("true" == gameSettings_->Get("enable_general_debugging"))
+				{
+					int camAnchorX 	= 0, camAnchorY = 0;
+					int camWidth 	= 0, camHeight 	= 0;
+					int camWorldX 	= 0, camWorldY 	= 0;
 
-				camera_->GetSize(camWidth, camHeight);
-				camera_->GetWorldPosition(camWorldX, camWorldY);
-				camera_->GetAnchorPosition(camAnchorX, camAnchorY);
+					camera_->GetSize(camWidth, camHeight);
+					camera_->GetWorldPosition(camWorldX, camWorldY);
+					camera_->GetAnchorPosition(camAnchorX, camAnchorY);
 
-				int psx = 0, psy = 0; // player screen X, Y coords
-				int pwx = 0, pwy = 0; // player world X, Y coords
+					int psx = 0, psy = 0; // player screen X, Y coords
+					int pwx = 0, pwy = 0; // player world X, Y coords
 
-				// get the player screen position
-				gameSprites_->Get(playerSpriteIndex_)->GetScreenPosition(psx, psy);
+					// get the player screen position
+					gameSprites_->Get(playerSpriteIndex_)->GetScreenPosition(psx, psy);
 
-				// figure the player's world position
-				pwx = psx + camWorldX;
-				pwy = psy + camWorldY;
+					// figure the player's world position
+					pwx = psx + camWorldX;
+					pwy = psy + camWorldY;
 
-				int playerTileX = (pwx + 4) / 8;
-				int playerTileY = (pwy + 4) / 8;
+					int playerTileX = (pwx + 4) / 8;
+					int playerTileY = (pwy + 4) / 8;
 
-				// get the event at the tile to scan
+					// get the event at the tile to scan
 
-				GameMapLayer* baseLayer = currentMap_->GetGameMapLayer(0);
+					GameMapLayer* baseLayer = currentMap_->GetGameMapLayer(0);
 
 
-				int eventCode = baseLayer->GetEventAt(playerTileX, playerTileY);
+					int eventCode = baseLayer->GetEventAt(playerTileX, playerTileY);
 
-				BitmapFont debugFont;
-				debugFont.Print(display, 4, 80,     "Current Map: (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
-				debugFont.Print(display, 4, 80+8,   "Camera World Pos: %d, %d", camWorldX, camWorldY);
-				debugFont.Print(display, 4, 80+8*2, "Player World Pos: %d, %d", pwx, pwy);
-				debugFont.Print(display, 4, 80+8*3, "Player Screen Pos: %d, %d", psx, psx);
-				debugFont.Print(display, 4, 80+8*4, "Player Tile Pos: %d, %d", playerTileX, playerTileY);
-				debugFont.Print(display, 4, 80+8*5, "Event Code @ Player Tile Pos: %d", eventCode);
+					BitmapFont debugFont;
+					debugFont.Print(display, 4, 80,     "Current Map: (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
+					debugFont.Print(display, 4, 80+8,   "Camera World Pos: %d, %d", camWorldX, camWorldY);
+					debugFont.Print(display, 4, 80+8*2, "Player World Pos: %d, %d", pwx, pwy);
+					debugFont.Print(display, 4, 80+8*3, "Player Screen Pos: %d, %d", psx, psx);
+					debugFont.Print(display, 4, 80+8*4, "Player Tile Pos: %d, %d", playerTileX, playerTileY);
+					debugFont.Print(display, 4, 80+8*5, "Event Code @ Player Tile Pos: %d", eventCode);
 
-				debugFont.Print(display, 4, 80+8*6, "Steps Taken: %d", stepsTaken_);
-				debugFont.Print(display, 4, 80+8*7, "Steps Until Ambush: %d", stepsUntilAmbush_);
-			}
+					debugFont.Print(display, 4, 80+8*6, "Steps Taken: %d", stepsTaken_);
+					debugFont.Print(display, 4, 80+8*7, "Steps Until Ambush: %d", stepsUntilAmbush_);
+				}
 #endif
 
 #if defined(DEV_ENABLE_MAP_EDITING)
@@ -559,6 +529,27 @@ namespace GAME
 	ImageResource* GameSingleton::GetDisplay() const
 	{
 		return microDisplay_;
+	}
+
+	/**************************************************************************/
+
+	void GameSingleton::SetSetting(const char* setting, const char* value)
+	{
+		gameSettings_->Set(setting, value);
+	}
+
+	/**************************************************************************/
+
+	std::string GameSingleton::GetSetting(const char* setting)
+	{
+		return gameSettings_->Get(setting);
+	}
+
+	/**************************************************************************/
+
+	Settings* GameSingleton::GetSettings() const
+	{
+		return gameSettings_;
 	}
 
 	/**************************************************************************/

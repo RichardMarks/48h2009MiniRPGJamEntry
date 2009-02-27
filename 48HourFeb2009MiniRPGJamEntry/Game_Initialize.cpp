@@ -13,6 +13,44 @@ namespace GAME
 
 	bool GameSingleton::Initialize(int argc, char* argv[])
 	{
+		if (!gameSettings_)
+		{
+			gameSettings_ = new UTILITY::CONFIGURATION::Settings();
+
+			// default settings
+			gameSettings_->Set("screen_width", "800");
+			gameSettings_->Set("screen_width", "600");
+			gameSettings_->Set("screen_bpp", "24");
+			gameSettings_->Set("use_fullscreen", "false");
+			gameSettings_->Set("lock_fps_to", "60");
+
+			gameSettings_->Set("data_path", "data/");
+			gameSettings_->Set("start_world", "game.world");
+
+			gameSettings_->Set("camera_w", "17");
+			gameSettings_->Set("camera_h", "11");
+			gameSettings_->Set("tile_w", "8");
+			gameSettings_->Set("tile_h", "8");
+
+			gameSettings_->Set("enable_collision_debugging", "false");
+			gameSettings_->Set("enable_general_debugging", "false");
+			gameSettings_->Set("enable_game_editors", "false");
+			gameSettings_->Set("enable_verbose_startup", "false");
+
+			gameSettings_->Set("enable_screen_overlays", "true");
+
+			gameSettings_->Set("window_caption", "48h Contest LO-Fi Mini-RPG Game Project");
+
+			// load the settings file if it exists
+			if (UTILITY::FILESYSTEM::FileExists::Execute("game.cfg"))
+			{
+				gameSettings_->Load("game.cfg", false /* we do not want to clear the settings before loading the file! */);
+			}
+		}
+
+
+
+
 		// initialize Allegro
 		if (0 != allegro_init())
 		{
@@ -30,14 +68,21 @@ namespace GAME
 		LOCK_FUNCTION(allegroTimerSpeedController);
 		LOCK_FUNCTION(allegroTimer_RenderController);
 
-		install_int_ex(allegroTimerSpeedController, BPS_TO_TIMER(60));
+		install_int_ex(allegroTimerSpeedController, BPS_TO_TIMER(static_cast<int>(atoi(gameSettings_->Get("lock_fps_to").c_str()))));
+
+		int sw  = static_cast<int>(atoi(gameSettings_->Get("screen_width").c_str()));
+		int sh  = static_cast<int>(atoi(gameSettings_->Get("screen_height").c_str()));
+		int bpp = static_cast<int>(atoi(gameSettings_->Get("screen_bpp").c_str()));
 
 		// setup the graphics device
+		// we do not allow under 800 x 600 @ 24 bpp res
 		GraphicsDevice->SetDisplay(
-			800,
-			600,
-			GraphicsDevice_24bit,
-			GraphicsDevice_Windowed);
+			(sw < 800) ? 800 : sw,
+			(sh < 600) ? 600 : sh,
+			(bpp == 32) ? GraphicsDevice_32bit :
+			(bpp == 24) ? GraphicsDevice_24bit :
+			(bpp < 24) ? GraphicsDevice_24bit : GraphicsDevice_24bit,
+			("true" == gameSettings_->Get("use_fullscreen")) ? GraphicsDevice_Fullscreen : GraphicsDevice_Windowed);
 
 		// setup the input device
 		InputDevice->Initialize(INIT_KEYBOARD | INIT_MOUSE);
@@ -46,7 +91,7 @@ namespace GAME
 		GameTimer;
 
 		// set the window title
-		set_window_title("48h Contest LO-Fi Mini-RPG Game Project");
+		set_window_title(gameSettings_->Get("window_caption").c_str());
 
 		// load fonts
 		smallFont_ = new BitmapFont();
@@ -63,17 +108,27 @@ namespace GAME
 
 		playerSpriteIndex_ = 0;
 
-		LoadWorldFile("data/worlds/game.world");
-
+		//LoadWorldFile("data/worlds/game.world");
+		LoadWorldFile(static_cast<std::string>(gameSettings_->Get("data_path") + "worlds/" + gameSettings_->Get("start_world")).c_str());
 
 
 		// create the camera
+
+		int camW = static_cast<int>(atoi(gameSettings_->Get("camera_w").c_str()));
+		int camH = static_cast<int>(atoi(gameSettings_->Get("camera_h").c_str()));
+		int tileW = static_cast<int>(atoi(gameSettings_->Get("tile_w").c_str()));
+		int tileH = static_cast<int>(atoi(gameSettings_->Get("tile_h").c_str()));
+
+		// keep the camera size in check
+		camW = (camW < 1) ? 17 : (camW > (200 / tileW)) ? 17 : camW;
+		camH = (camH < 1) ? 11 : (camH > (150 / tileH)) ? 11 : camH;
+
 		camera_ = new GameCamera(
-			1, 1, 		// rendering anchor x, y
-			0, 0, 		// world x, y
-			17 * 8, 	// width in pixels
-			11 * 8, 	// height in pixels
-			1, 			// camera pan speed
+			1, 1, 			// rendering anchor x, y
+			0, 0, 			// world x, y
+			camW * tileW, 	// width in pixels
+			camH * tileH, 	// height in pixels
+			1, 				// camera pan speed
 			currentMap_->GetGameMapLayer(0)->GetWidth(),
 			currentMap_->GetGameMapLayer(0)->GetHeight()
 			);
@@ -98,12 +153,19 @@ namespace GAME
 		gameStateManager_ = new GAMESTATE::GameStateManager();
 
 		// we will start with the map editor if the argv[] is -edit
-		if (argc>1)
+		if (argc > 1)
 		{
 			std::string argvStr = argv[1];
 			if ("-edit" == argvStr)
 			{
-				SetState(GAMESTATE::MapEditor);
+				if ("true" == gameSettings_->Get("enable_game_editors"))
+				{
+					SetState(GAMESTATE::MapEditor);
+				}
+				else
+				{
+					LogSimpleMessage("Not allowed!");
+				}
 			}
 		}
 

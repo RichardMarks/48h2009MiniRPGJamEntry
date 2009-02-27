@@ -41,17 +41,20 @@ namespace GAME
 		// draw the player
 		gameSprites_->Get(playerSpriteIndex_)->Render(microDisplay_);
 
-		// draw the hud
-		playerPortrait_->Blit(microDisplay_, 0, 0, 143, 16, 16, 16);
+		if ("true" == gameSettings_->Get("enable_screen_overlays"))
+		{
+			// draw the hud
+			playerPortrait_->Blit(microDisplay_, 0, 0, 143, 16, 16, 16);
 
 // all of this will be removed after the 48 hour jam entry
 #if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
 
-		lofiOverlay_->BlitMasked(microDisplay_, 0, 0, 141, 58, 55, 60);
+			lofiOverlay_->BlitMasked(microDisplay_, 0, 0, 141, 58, 55, 60);
 #endif
 
-		// draw the overlays
-		windowOverlay_->BlitMasked(microDisplay_, 0, 0, 0, 0, 200, 150);
+			// draw the overlays
+			windowOverlay_->BlitMasked(microDisplay_, 0, 0, 0, 0, 200, 150);
+		}
 
 		// handle any region clear requests
 		if (requestToClearDialogueRegion_)

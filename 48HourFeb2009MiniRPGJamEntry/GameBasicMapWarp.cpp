@@ -60,6 +60,8 @@ namespace GAME
 			fromMap, fromX, fromY, toMap, toX, toY);
 		#endif
 
+		toX++;
+
 		// change the map if its valid
 		GameMap* newMap = game->GetMapManager()->Get(toMap);
 

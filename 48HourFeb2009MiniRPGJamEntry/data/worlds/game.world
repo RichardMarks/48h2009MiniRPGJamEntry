@@ -41,7 +41,7 @@ START Test1
 # define the sprites
 
 SPRITE player.png:8:8:3:5
-#SPRITE npc_adultm.png:8:8:3:15
+SPRITE npc_adultm.png:8:8:3:15
 #SPRITE npc_adultf.png:8:8:3:15
 #SPRITE npc_childm.png:8:8:3:9
 #SPRITE npc_childf.png:8:8:3:9
@@ -52,11 +52,11 @@ SPRITE player.png:8:8:3:5
 PLAYER 1:10:10
 
 # define some npcs
-#NPC 2:Test1:19:11
+NPC 2:Test1:19:11
 #NPC 2:Test2:15:12
 #NPC 3:Test1:9:18
 
-#NPCMOTION 1:@@ERRRRSDDDDWLLLLNUUUU
+NPCMOTION 1:@@ERRRRSDDDDWLLLLNUUUU
 #NPCMOTION 3:@@ERRRRRR_!N!!S!!@WLLLLLL_!S!!N!!
 #NPCMOTION 2:@@NUUUUU_!!W!!N!!E!!S!!@DDDDD_!!W!!S!!E!!
 

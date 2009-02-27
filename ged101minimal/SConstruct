@@ -29,6 +29,7 @@ projectConfig['src'] = Split("""
 	./source/TextFileParser.cpp
 	./source/TimeStamp.cpp
 	./source/Settings.cpp
+	./source/FileUtilities.cpp
 	""")
 ################################################################################
 buildEnv = Environment(CCFLAGS = '-g', CPPPATH = Split("""

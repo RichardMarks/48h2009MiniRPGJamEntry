@@ -40,15 +40,39 @@ namespace GAME
 			// get the maps directory from the game singleton
 			const char* mapsPath = GameSingleton::GetInstance()->GetMapsDirectory().c_str();
 
+			// grab the setting from the game instance
+			bool enableVerboseStartup = ("true" == GameSingleton::GetInstance()->GetSetting("enable_verbose_startup")) ? true : false;
+
+			if (!enableVerboseStartup)
+			{
+				LogSimpleMessage("Loading Map \"%s\" ...", mapName);
+			}
+
+			if (enableVerboseStartup)
+			{
+				LogSimpleMessage("Loading Map Layout for \"%s\" ...", mapName);
+			}
 			// load the .map
 			mapInstance->LoadMapData(mapsPath);
 
+			if (enableVerboseStartup)
+			{
+				LogSimpleMessage("Loading Map Collision Data for \"%s\" ...", mapName);
+			}
 			// load the .collision
 			mapInstance->LoadCollisionData(mapsPath);
 
+			if (enableVerboseStartup)
+			{
+				LogSimpleMessage("Loading Map Warp Data for \"%s\" ...", mapName);
+			}
 			// load the .warp
 			mapInstance->LoadMapWarpData(mapsPath);
 
+			if (enableVerboseStartup)
+			{
+				LogSimpleMessage("Loading Map Event Data for \"%s\" ...", mapName);
+			}
 			// load the .event
 			mapInstance->LoadEventData(mapsPath);
 

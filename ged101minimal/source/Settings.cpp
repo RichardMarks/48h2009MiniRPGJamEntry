@@ -44,14 +44,17 @@ namespace UTILITY
 
 		/**********************************************************************/
 
-		void Settings::Load(const char* pathName, bool quiet)
+		void Settings::Load(const char* pathName, bool clearBeforeLoad, bool quiet)
 		{
 			std::vector<std::string> fileLines = PARSING::TextFileParser::Execute(pathName, "#");
 			unsigned int lineCount = fileLines.size();
 
 			if (lineCount)
 			{
-				Clear();
+				if (clearBeforeLoad)
+				{
+					Clear();
+				}
 
 				// for each line, parse it
 				for (unsigned int index = 0; index < lineCount; index++)

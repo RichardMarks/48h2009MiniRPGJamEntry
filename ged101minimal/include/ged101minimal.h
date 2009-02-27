@@ -64,6 +64,7 @@
 		#include "TimeStamp.h"
 		#include "StringTokenizer.h"
 		#include "TextFileParser.h"
+		#include "FileUtilities.h"
 	#endif
 
 	// INPUT

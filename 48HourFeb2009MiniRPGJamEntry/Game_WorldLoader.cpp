@@ -17,6 +17,18 @@ namespace GAME
 
 	void GameSingleton::LoadWorldFile(const char* worldPath)
 	{
+		// grab the setting from the game instance
+		bool enableVerboseStartup = ("true" == GameSingleton::GetInstance()->GetSetting("enable_verbose_startup")) ? true : false;
+
+		if (enableVerboseStartup)
+		{
+			LogSimpleMessage("Loading World Configuration File \"%s\" ...", worldPath);
+		}
+		else
+		{
+			LogSimpleMessage("Loading World...");
+		}
+
 		FILE* fp = fopen(worldPath, "r");
 		if (!fp) { LogFatal("Cannot load world: %s!", worldPath); return; }
 
@@ -96,7 +108,10 @@ namespace GAME
 		unsigned int lineCount = fileLines.size();
 
 #if defined(_WORLD_LOADER_VERBOSE)
-		fprintf(stderr, "There are %d lines to parse in %s\n", lineCount, worldPath);
+		if (enableVerboseStartup)
+		{
+			fprintf(stderr, "\nThere are %d lines to parse in %s\n", lineCount, worldPath);
+		}
 #endif
 
 
@@ -114,7 +129,10 @@ namespace GAME
 				if ("TILESDIR" == commandToken)
 				{
 #if defined(_WORLD_LOADER_VERBOSE)
-					fprintf(stderr, "\tTiles are expected to be stored in %s\n\n", paramsToken.c_str());
+					if (enableVerboseStartup)
+					{
+						fprintf(stderr, "\tTiles are expected to be stored in %s\n\n", paramsToken.c_str());
+					}
 #endif
 					SetTilesDirectory(paramsToken.c_str());
 				}
@@ -124,7 +142,10 @@ namespace GAME
 				else if ("MAPSDIR" == commandToken)
 				{
 #if defined(_WORLD_LOADER_VERBOSE)
-					fprintf(stderr, "\tMaps are expected to be stored in %s\n\n", paramsToken.c_str());
+					if (enableVerboseStartup)
+					{
+						fprintf(stderr, "\tMaps are expected to be stored in %s\n\n", paramsToken.c_str());
+					}
 #endif
 					SetMapsDirectory(paramsToken.c_str());
 				}
@@ -134,7 +155,10 @@ namespace GAME
 				else if ("START" == commandToken)
 				{
 #if defined(_WORLD_LOADER_VERBOSE)
-					fprintf(stderr, "\tThe start-up map is named %s\n\n", paramsToken.c_str());
+					if (enableVerboseStartup)
+					{
+						fprintf(stderr, "\tThe start-up map is named %s\n\n", paramsToken.c_str());
+					}
 #endif
 					currentMap_ = gameMaps_->Get(paramsToken.c_str());
 				}
@@ -144,7 +168,10 @@ namespace GAME
 				else if ("SPRITESDIR" == commandToken)
 				{
 #if defined(_WORLD_LOADER_VERBOSE)
-					fprintf(stderr, "\tSprites are expected to be stored in %s\n\n", paramsToken.c_str());
+					if (enableVerboseStartup)
+					{
+						fprintf(stderr, "\tSprites are expected to be stored in %s\n\n", paramsToken.c_str());
+					}
 #endif
 					SetSpritesDirectory(paramsToken.c_str());
 				}
@@ -173,10 +200,13 @@ namespace GAME
 						xTile		= atoi(playerDefParams.at(1).c_str());
 						yTile		= atoi(playerDefParams.at(2).c_str());
 #if defined(_WORLD_LOADER_VERBOSE)
-						fprintf(stderr,
-							"\tPLAYER DEFINITION:\n"
-							"\tThe Player will use Sprite #%d and will start at world coordinates %d, %d (%d, %d in pixels).\n\n",
-							spriteNum, xTile, yTile, 8 * xTile, 8 * yTile);
+						if (enableVerboseStartup)
+						{
+							fprintf(stderr,
+								"\tPLAYER DEFINITION:\n"
+								"\tThe Player will use Sprite #%d and will start at world coordinates %d, %d (%d, %d in pixels).\n\n",
+								spriteNum, xTile, yTile, 8 * xTile, 8 * yTile);
+						}
 #endif
 						// set the player sprite index
 						playerSpriteIndex_ = ((spriteNum - 1) >= 0) ? spriteNum - 1 : 0;
@@ -208,10 +238,13 @@ namespace GAME
 						npcNum 		= atoi(npcDefParams.at(0).c_str());
 						npcSpeed 	= atoi(npcDefParams.at(1).c_str());
 #if defined(_WORLD_LOADER_VERBOSE)
-						fprintf(stderr,
-							"\tNPCSPEED DEFINITION:\n"
-							"\tNPC #%d will have a speed of %d.\n\n",
-							npcNum, npcSpeed);
+						if (enableVerboseStartup)
+						{
+							fprintf(stderr,
+								"\tNPCSPEED DEFINITION:\n"
+								"\tNPC #%d will have a speed of %d.\n\n",
+								npcNum, npcSpeed);
+						}
 #endif
 						gameNPCs_->Get(npcNum - 1)->SetSpeed(npcSpeed);
 					}
@@ -239,67 +272,15 @@ namespace GAME
 						npcNum 		= atoi(npcDefParams.at(0).c_str());
 						motionData 	= npcDefParams.at(1).c_str();
 #if defined(_WORLD_LOADER_VERBOSE)
-						fprintf(stderr,
-							"\tNPCMOTION DEFINITION:\n"
-							"\tNPC #%d will have a motion-data-string of\n\t\"%s\".\n\n",
-							npcNum, motionData.c_str());
+						if (enableVerboseStartup)
+						{
+							fprintf(stderr,
+								"\tNPCMOTION DEFINITION:\n"
+								"\tNPC #%d will have a motion-data-string of\n\t\"%s\".\n\n",
+								npcNum, motionData.c_str());
+						}
 #endif
 						gameNPCs_->Get(npcNum - 1)->SetMotionData(motionData.c_str());
-					}
-				}
-
-	/**************************************************************************/
-
-				else if ("WARP" == commandToken)
-				{
-					// WARP [from-map-name]:[from-x]:[from-y]:[to-map-name]:[to-x]:[to-y]:[armed (true|false)]:[persists (true|false)]
-					std::vector<std::string> warpDefParams = Tokenize(paramsToken, ":");
-
-					std::string fromMapName = "";
-					int fromX = 0;
-					int fromY = 0;
-					std::string toMapName = "";
-					int toX = 0;
-					int toY = 0;
-					std::string warpArmed = "";
-					std::string warpPersists = "";
-
-					unsigned int warpDefParamCount = warpDefParams.size();
-					if (0x8 != warpDefParamCount)
-					{
-						fprintf(stderr,
-						"*** Syntax Error in %s:line #%04d: Missing Parameters:\n    "
-						"Expected [from-map-name]:[from-x]:[from-y]:[to-map-name]:[to-x]:[to-y]:[armed (true|false)]:[persists (true|false)]\n\n",
-						worldPath, index + 1);
-					}
-					else
-					{
-						fromMapName 	= warpDefParams.at(0).c_str();
-						fromX 			= atoi(warpDefParams.at(1).c_str());
-						fromY 			= atoi(warpDefParams.at(2).c_str());
-						toMapName 		= warpDefParams.at(3).c_str();
-						toX 			= atoi(warpDefParams.at(4).c_str());
-						toY 			= atoi(warpDefParams.at(5).c_str());
-						warpArmed 		= warpDefParams.at(6).c_str();
-						warpPersists 	= warpDefParams.at(7).c_str();
-
-#if defined(_WORLD_LOADER_VERBOSE)
-						fprintf(stderr,
-							"\tWARP DEFINITION:\n"
-							"\tFrom map \"%s\" at %d, %d to map \"%s\" at %d, %d.\n"
-							"\tThe warp %s armed by default and %s persist.\n\n",
-							fromMapName.c_str(), fromX, fromY, toMapName.c_str(), toX, toY,
-							(warpArmed=="true")?"is ":"is not ",
-							(warpPersists=="true")?"will ":"will not ");
-#endif
-						gameMaps_->Get(fromMapName.c_str())->AddMapEvent(
-							new GameMapEvent(
-								fromX, fromY, gameMaps_->Get(fromMapName.c_str())->GetID(),
-								GameBasicMapWarp::GetInstance(),
-								(warpArmed=="true")?true:false,
-								(warpPersists=="true")?true:false,"",
-								toX, toY, gameMaps_->Get(toMapName.c_str())->GetID())
-						);
 					}
 				}
 
@@ -329,11 +310,14 @@ namespace GAME
 						xTile		= atoi(npcDefParams.at(2).c_str());
 						yTile		= atoi(npcDefParams.at(3).c_str());
 #if defined(_WORLD_LOADER_VERBOSE)
-						fprintf(stderr,
-							"\tNPC DEFINITION:\n"
-							"\tNPC #%d will use Sprite #%d and will start at world coordinates %d, %d (%d, %d in pixels) on map %s.\n\n",
-							gameNPCs_->GetNumNPCs() + 1,
-							spriteNum, xTile, yTile, 8 * xTile, 8 * yTile, mapName.c_str());
+						if (enableVerboseStartup)
+						{
+							fprintf(stderr,
+								"\tNPC DEFINITION:\n"
+								"\tNPC #%d will use Sprite #%d and will start at world coordinates %d, %d (%d, %d in pixels) on map %s.\n\n",
+								gameNPCs_->GetNumNPCs() + 1,
+								spriteNum, xTile, yTile, 8 * xTile, 8 * yTile, mapName.c_str());
+						}
 #endif
 
 						// position the sprite
@@ -381,16 +365,19 @@ namespace GAME
 						spriteDelay		= atoi(spriteDefParams.at(4).c_str());
 
 #if defined(_WORLD_LOADER_VERBOSE)
-						fprintf(stderr,
-							"\tSPRITE DEFINITION: #%04d\n"
-							"\tSprite will have a frame-delay of %d\n"
-							"\tRequires an Image file called %s\n"
-							"\tcontaining %d %s of %d x %d "
-							"pixel cells with padding of 1 pixel surrounding them.\n\n",
-							gameSprites_->GetNumSprites() + 1, spriteDelay,
-							spriteFile.c_str(), spriteFrames*4,
-							(1==spriteFrames)?"frame":"frames",
-							spriteWidth, spriteHeight);
+						if (enableVerboseStartup)
+						{
+							fprintf(stderr,
+								"\tSPRITE DEFINITION: #%04d\n"
+								"\tSprite will have a frame-delay of %d\n"
+								"\tRequires an Image file called %s\n"
+								"\tcontaining %d %s of %d x %d "
+								"pixel cells with padding of 1 pixel surrounding them.\n\n",
+								gameSprites_->GetNumSprites() + 1, spriteDelay,
+								spriteFile.c_str(), spriteFrames*4,
+								(1==spriteFrames)?"frame":"frames",
+								spriteWidth, spriteHeight);
+						}
 #endif
 						// add the sprite to the manager
 						spriteFile = GetSpritesDirectory() + spriteFile;
@@ -435,15 +422,18 @@ namespace GAME
 						tilePadding 	= atoi(tilesetParams.at(6).c_str());
 
 #if defined(_WORLD_LOADER_VERBOSE)
-						fprintf(stderr,
-							"\tTILESET DEFINITION: %s\n"
-							"\tRequires an Image file called %s\n"
-							"\tcontaining %d %s of %d %s of %d x %d "
-							"pixel tiles with padding of %d %s surrounding them.\n\n",
-							tilesetName.c_str(), tilesetFile.c_str(), tileCols,
-							(1==tileCols)?"column":"columns", tileRows,
-							(1==tileRows)?"row":"rows",tileWidth, tileHeight, tilePadding,
-							(1==tilePadding)?"pixel":"pixels");
+						if (enableVerboseStartup)
+						{
+							fprintf(stderr,
+								"\tTILESET DEFINITION: %s\n"
+								"\tRequires an Image file called %s\n"
+								"\tcontaining %d %s of %d %s of %d x %d "
+								"pixel tiles with padding of %d %s surrounding them.\n\n",
+								tilesetName.c_str(), tilesetFile.c_str(), tileCols,
+								(1==tileCols)?"column":"columns", tileRows,
+								(1==tileRows)?"row":"rows",tileWidth, tileHeight, tilePadding,
+								(1==tilePadding)?"pixel":"pixels");
+						}
 
 #endif
 						// add the tileset to the manager
@@ -476,22 +466,25 @@ namespace GAME
 						tilesetName = mapParams.at(1);
 
 #if defined(_WORLD_LOADER_VERBOSE)
-						const char* mapsPath = GetMapsDirectory().c_str();
-						fprintf(stderr,
-							"\tMAP DEFINITION: %s\n"
-							"\tRequires the following map data files:\n"
-							"\t\t%s%s/%s.map\n"
-							"\t\t%s%s/%s.collision\n"
-							"\t\t%s%s/%s.warp\n"
-							"\t\t%s%s/%s.event\n"
-							"\n"
-							"\tDepends on a Tileset named %s.\n\n",
-							mapName.c_str(),
-							mapsPath, mapName.c_str(), mapName.c_str(),
-							mapsPath, mapName.c_str(), mapName.c_str(),
-							mapsPath, mapName.c_str(), mapName.c_str(),
-							mapsPath, mapName.c_str(), mapName.c_str(),
-							tilesetName.c_str());
+						if (enableVerboseStartup)
+						{
+							const char* mapsPath = GetMapsDirectory().c_str();
+							fprintf(stderr,
+								"\tMAP DEFINITION: %s\n"
+								"\tRequires the following map data files:\n"
+								"\t\t%s%s/%s.map\n"
+								"\t\t%s%s/%s.collision\n"
+								"\t\t%s%s/%s.warp\n"
+								"\t\t%s%s/%s.event\n"
+								"\n"
+								"\tDepends on a Tileset named %s.\n\n",
+								mapName.c_str(),
+								mapsPath, mapName.c_str(), mapName.c_str(),
+								mapsPath, mapName.c_str(), mapName.c_str(),
+								mapsPath, mapName.c_str(), mapName.c_str(),
+								mapsPath, mapName.c_str(), mapName.c_str(),
+								tilesetName.c_str());
+						}
 #endif
 						// add the map to the manager
 						gameMaps_->Add(mapName.c_str(), tilesetName.c_str());

@@ -79,6 +79,11 @@ namespace GAME
 		// are we using a camera field of view to limit rendering ?
 		if (0 != fov)
 		{
+
+			// grab the setting from the game instance
+			bool enableCollisionDebugging = ("true" == GameSingleton::GetInstance()->GetSetting("enable_collision_debugging")) ? true : false;
+
+
 			unsigned int spriteCount = npcs_.size();
 			for (unsigned int index = 0; index < spriteCount; index++)
 			{
@@ -106,11 +111,14 @@ namespace GAME
 					// draw the sprite
 					sprite->Render(target);
 
-					int spriteWidth = 0, spriteHeight = 0;
-					sprite->GetSize(spriteWidth, spriteHeight);
+					if (enableCollisionDebugging)
+					{
+						int spriteWidth = 0, spriteHeight = 0;
+						sprite->GetSize(spriteWidth, spriteHeight);
 
-					ColorRGB redColor(255, 0, 0);
-					target->Rect(sx, sy, sx + spriteWidth, sy + spriteHeight, redColor.Get());
+						ColorRGB redColor(255, 0, 0);
+						target->Rect(sx, sy, sx + spriteWidth, sy + spriteHeight, redColor.Get());
+					}
 
 				}
 			}

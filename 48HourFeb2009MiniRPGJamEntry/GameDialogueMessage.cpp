@@ -162,7 +162,7 @@ namespace GAME
 		// set if we are using dual fonts
 		useDualFonts_ 	= useDualFonts;
 
-		LogSimpleMessage("Initializing Dialogue... %d pages", dialogue_.GetNumPages());
+		//LogSimpleMessage("Initializing Dialogue... %d pages", dialogue_.GetNumPages());
 
 		currentState_ = DIALOGUE::Ready;
 
@@ -181,7 +181,7 @@ namespace GAME
 			// starting printing
 			case DIALOGUE::Ready:
 			{
-				LogSimpleMessage("Dialogue is Ready...");
+				//LogSimpleMessage("Dialogue is Ready...");
 				currentState_ = DIALOGUE::Busy;
 			} break;
 
@@ -206,7 +206,7 @@ namespace GAME
 
 			case DIALOGUE::Finished:
 			{
-				LogSimpleMessage("Dialogue is Finished...");
+				//LogSimpleMessage("Dialogue is Finished...");
 				ResetDialogue();
 				currentState_ = DIALOGUE::Undefined;
 			} break;
@@ -293,11 +293,11 @@ namespace GAME
 
 	void GameDialogueMessage::AdvancePage()
 	{
-		LogSimpleMessage(
-			"AdvancePage (before code block): Page(%d/%d) Line(%d/%d) Char(%d/%d)",
-			currentPage_, pageCount_, currentLine_, lineCount_, currentChar_, charCount_);
+		//LogSimpleMessage(
+		//	"AdvancePage (before code block): Page(%d/%d) Line(%d/%d) Char(%d/%d)",
+		//	currentPage_, pageCount_, currentLine_, lineCount_, currentChar_, charCount_);
 
-		if (currentPage_ < pageCount_)
+		if (currentPage_ < pageCount_ - 1)
 		{
 			currentPage_++;
 
@@ -309,18 +309,18 @@ namespace GAME
 				charCount_ = dialogue_.GetPage(0)->GetLine(0).size();
 			}
 
-			LogSimpleMessage("Advanced Page...%d/%d", currentPage_, pageCount_);
+			//LogSimpleMessage("Advanced Page...%d/%d", currentPage_, pageCount_);
 			currentState_ = DIALOGUE::Busy;
 		}
 		else
 		{
-			LogSimpleMessage("Reached End of Dialogue...");
+			//LogSimpleMessage("Reached End of Dialogue...");
 			// we are at the end of the dialogue, change state
 			currentState_ = DIALOGUE::Finished;
 		}
-		LogSimpleMessage(
-			"AdvancePage (after code block): Page(%d/%d) Line(%d/%d) Char(%d/%d)",
-			currentPage_, pageCount_, currentLine_, lineCount_, currentChar_, charCount_);
+		//LogSimpleMessage(
+		//	"AdvancePage (after code block): Page(%d/%d) Line(%d/%d) Char(%d/%d)",
+		//	currentPage_, pageCount_, currentLine_, lineCount_, currentChar_, charCount_);
 	}
 
 	/**************************************************************************/
@@ -334,11 +334,11 @@ namespace GAME
 			// update the new line info
 			currentChar_ 	= 0;
 			charCount_ 		= dialogue_.GetPage(currentPage_)->GetLine(currentLine_).size();
-			LogSimpleMessage("Advanced Line...%d/%d", currentLine_, lineCount_);
+			//LogSimpleMessage("Advanced Line...%d/%d", currentLine_, lineCount_);
 		}
 		else
 		{
-			LogSimpleMessage("Reached End Of Page...");
+			//LogSimpleMessage("Reached End Of Page...");
 
 			// we are at the end of the page, we go idle
 			currentState_ = DIALOGUE::Idle;
@@ -355,7 +355,7 @@ namespace GAME
 
 	void GameDialogueMessage::AdvanceCharacter()
 	{
-		LogSimpleMessage("AdvanceCharacter");
+		//LogSimpleMessage("AdvanceCharacter");
 		if (currentChar_ < charCount_)
 		{
 			currentChar_++;

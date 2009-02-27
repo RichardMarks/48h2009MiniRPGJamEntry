@@ -35,7 +35,7 @@ namespace UTILITY
 			~Settings();
 
 			/// loads a settings file
-			void Load(const char* pathName, bool quiet = true);
+			void Load(const char* pathName, bool clearBeforeLoad = true, bool quiet = true);
 
 			/// saves settings to a file
 			void Save(const char* pathName, bool quiet = true);

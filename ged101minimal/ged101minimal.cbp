@@ -5,7 +5,7 @@
 		<Option title="ged101minimal" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="SCONS BUILD SCRIPTS/;Core/;Core/Graphics/;Core/Debug/;Core/Utility/GUI/;Core/System/;Core/Input/;Core/Utility/Configuration/;Core/Utility/Parsing/;Core/Utility/Time/;" />
+		<Option virtualFolders="SCONS BUILD SCRIPTS/;Core/;Core/Graphics/;Core/Debug/;Core/Utility/GUI/;Core/System/;Core/Input/;Core/Utility/Configuration/;Core/Utility/Parsing/;Core/Utility/Time/;Core/Utility/File/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="libged101minimal" prefix_auto="1" extension_auto="1" />
@@ -46,6 +46,9 @@
 		</Unit>
 		<Unit filename="include/DebugReport.h">
 			<Option virtualFolder="Core/Debug/" />
+		</Unit>
+		<Unit filename="include/FileUtilities.h">
+			<Option virtualFolder="Core/Utility/File/" />
 		</Unit>
 		<Unit filename="include/GUIListBox.h">
 			<Option virtualFolder="Core/Utility/GUI/" />
@@ -97,6 +100,9 @@
 		</Unit>
 		<Unit filename="source/DebugReport.cpp">
 			<Option virtualFolder="Core/Debug/" />
+		</Unit>
+		<Unit filename="source/FileUtilities.cpp">
+			<Option virtualFolder="Core/Utility/File/" />
 		</Unit>
 		<Unit filename="source/GUIListBox.cpp">
 			<Option virtualFolder="Core/Utility/GUI/" />

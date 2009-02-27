@@ -47,11 +47,15 @@ namespace ENGINE
 	class BitmapFont;
 }
 
+namespace UTILITY { namespace CONFIGURATION { class Settings; }}
+
 /// all game related classes are contained within this namespace
 namespace GAME
 {
 	using ENGINE::ImageResource;
 	using ENGINE::BitmapFont;
+
+	using UTILITY::CONFIGURATION::Settings;
 
 	class GameCamera;
 	class GameObject;
@@ -237,6 +241,18 @@ namespace GAME
 		/// gets the directory that sprites are stored in
 		std::string GetSpritesDirectory() const;
 
+		// the new configuration handling
+
+		/// sets a game setting
+		void SetSetting(const char* setting, const char* value);
+
+		/// gets a game setting
+		std::string GetSetting(const char* setting);
+
+		/// gets a pointer to the game settings
+		Settings* GetSettings() const;
+
+
 /*#**************************************************************************#*/
 
 	private:
@@ -337,6 +353,11 @@ namespace GAME
 
 		/// number of steps to initiate a random monster encounter
 		int stepsUntilAmbush_;
+
+
+
+		/// manages the game settings
+		Settings* gameSettings_;
 
 		/// the directory that tiles are stored in
 		std::string tilesDirectory_;

@@ -201,7 +201,13 @@ namespace GAME
 		// data/maps/Test1/Test1.event
 		std::string mapFileName = filePath + mapName_ + "/" + mapName_ + ".event";
 
-		LogMessage("TODO: implement event loading routine");
+		// grab the setting from the game instance
+		bool enableVerboseStartup = ("true" == GameSingleton::GetInstance()->GetSetting("enable_verbose_startup")) ? true : false;
+
+		if (enableVerboseStartup)
+		{
+			LogMessage("TODO: implement event loading routine");
+		}
 	}
 
 	/**************************************************************************/
@@ -343,12 +349,14 @@ namespace GAME
 
 			AddWarpTargetPair(startX, startY, startMapID, endX, endY, endMapID);
 
+#if 0
 			fprintf(stderr,
 				"WARP From (%d, %d) on %d To (%d, %d) on %d\n",
 				startX, startY,
 				startMapID,
 				endX, endY, endMapID
 				);
+#endif
 		}
 
 		// close the file

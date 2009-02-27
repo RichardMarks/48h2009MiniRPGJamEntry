@@ -167,6 +167,11 @@ namespace GAME
 		tileX2++;
 		tileY2++;
 
+
+		// grab the setting from the game instance
+		bool enableCollisionDebugging = ("true" == GameSingleton::GetInstance()->GetSetting("enable_collision_debugging")) ? true : false;
+
+
 		// render tiles from (tileX1,tileY1) -> (tileX2,tileY2)
 		int row = tileY1 * numCols_ + tileX1; // get the array index to (tileX1,tileY1)
 		for(int y = tileY1 * tileHeight; y < tileY2 * tileHeight; y += tileHeight)
@@ -202,18 +207,23 @@ namespace GAME
 
 // show collision tiles (red) and events (blue)
 #if 1
-				if (tiles_[i].eventNo == 0xFF)
+				if (enableCollisionDebugging)
 				{
-					ColorRGB colorRed(255, 0, 0);
-					destImage->Rect(dx, dy, dx + w-1, dy + h-1, colorRed.Get());
+					if (tiles_[i].eventNo == 0xFF)
+					{
+						ColorRGB colorRed(255, 0, 0);
+						destImage->Rect(dx, dy, dx + w-1, dy + h-1, colorRed.Get());
 
+					}
 				}
+				#if 0
 				else if (tiles_[i].eventNo > 0x0 && tiles_[i].eventNo < 0xFF)
 				{
 					ColorRGB colorBlue(0, 0, 255);
 					destImage->Rect(dx, dy, dx + w-1, dy + h-1, colorBlue.Get());
 
 				}
+				#endif
 #endif
 
 			}

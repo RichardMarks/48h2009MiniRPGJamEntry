@@ -15,6 +15,7 @@ namespace GAME
 		// clean up here
 		#define _TMP_DELRES(resName) if (resName) { delete resName; resName = 0; }
 
+		_TMP_DELRES(gameSettings_)
 		_TMP_DELRES(smallFont_)
 		_TMP_DELRES(largeFont_)
 		_TMP_DELRES(microDisplay_)
