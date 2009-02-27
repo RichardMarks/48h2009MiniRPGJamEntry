@@ -195,6 +195,8 @@ namespace GAME
 
 		void ClearWarpTargetPairs();
 
+		void ClearWarpTargetPair(unsigned int index);
+
 		unsigned int GetNumWarpTargetPairs() const;
 
 	private:

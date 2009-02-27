@@ -52,8 +52,11 @@ namespace GAME
 		void Render(ImageResource* target);
 
 
-		// returns true if the bounding rectangle of this sprite intersects with the passed sprite
+		/// returns true if the bounding rectangle of this sprite intersects with the passed sprite
 		bool CollidesWith(GameMapSprite* sprite) const;
+
+		/// clones the properties of @sprite into @this sprite.
+		void Clone(GameMapSprite* sprite);
 
 	private:
 		GameMapSprite(const GameMapSprite& rhs);

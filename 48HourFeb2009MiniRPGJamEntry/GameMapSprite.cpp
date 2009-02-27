@@ -97,6 +97,16 @@ namespace GAME
 			1 + (currentFrame * width_) + (currentFrame), 1,
 			screenX_, screenY_,
 			width_, height_);
+
+		// grab the setting from the game instance
+		bool enableCollisionDebugging = ("true" == GameSingleton::GetInstance()->GetSetting("enable_collision_debugging")) ? true : false;
+
+		if (enableCollisionDebugging)
+		{
+			ColorRGB redColor(255, 0, 0);
+			target->Rect(screenX_, screenY_, screenX_ + width_, screenY_ + height_, redColor.Get());
+		}
+
 	}
 
 	/**************************************************************************/
@@ -114,6 +124,31 @@ namespace GAME
 			worldX_ < spriteWorldX + spriteWidth &&
 			worldY_ + height_ > spriteWorldY &&
 			worldY_ < spriteWorldY + spriteHeight);
+	}
+
+	/**************************************************************************/
+
+	void GameMapSprite::Clone(GameMapSprite* sprite)
+	{
+		face_ 			= sprite->face_;
+		worldX_ 		= sprite->worldX_;
+		worldY_ 		= sprite->worldY_;
+
+		width_			= sprite->width_;
+		height_			= sprite->height_;
+		screenX_		= sprite->screenX_;
+		screenY_		= sprite->screenY_;
+
+		frame_			= sprite->frame_;
+		frameCount_		= sprite->frameCount_;
+		frameCounter_	= sprite->frameCounter_;
+		frameDelay_		= sprite->frameDelay_;
+
+		animating_		= sprite->animating_;
+
+		if (frames_) { delete frames_; }
+		frames_ = new ImageResource(sprite->frames_->GetWidth(), sprite->frames_->GetHeight());
+		sprite->frames_->Blit(frames_, 0, 0, 0, 0, sprite->frames_->GetWidth(), sprite->frames_->GetHeight());
 	}
 
 } // end namespace

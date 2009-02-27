@@ -2,60 +2,126 @@
 # World Definition File for the ged101minimal-based Mini-RPG Game Engine
 # developed by Richard Marks and Redslash
 
-# Command reference
-# TILESET [name]:[file]:[width]:[height]:[columns]:[rows]:[padding]
-# MAP [map-name]:[tileset-name]
-# START [map-name]
-
+################################################################################
 # define the tilesets
-TILESET Test:testmap_tiles.png:8:8:24:1:1
+################################################################################
 
+TILESET ExteriorA:exteriora.png:8:8:32:2:0
+
+################################################################################
 # define the maps
-MAP Test1:Test
+################################################################################
 
-# define the starting location
-START Test1
+MAP JamDemo1:ExteriorA
+MAP JamDemo2:ExteriorA
+MAP JamDemo3:ExteriorA
 
+################################################################################
 # define the sprites
+################################################################################
+
 SPRITE player.png:8:8:3:5
 SPRITE npc_adultm.png:8:8:3:15
 SPRITE npc_adultf.png:8:8:3:15
-
-#SPRITE npc_childm.png:8:8:3:9
-#SPRITE npc_childf.png:8:8:3:9
-#SPRITE npc_guard.png:8:8:3:20
+SPRITE npc_childm.png:8:8:3:9
+SPRITE npc_childf.png:8:8:3:9
+SPRITE npc_guard.png:8:8:3:20
 #SPRITE antagonist.png:8:8:3:20
 
-#define the player
-PLAYER 1:10:10
+################################################################################
+# define the player
+################################################################################
+
+# the player uses sprite #1 and starts on the JamDemo1 map @ tile position 9, 24
+PLAYER 1:9:24
+START JamDemo1
+
+################################################################################
+# define the NPCs
+################################################################################
+
+# Motion Data
+#
+# N - face north
+# S - face south
+# E - face east
+# W - face west
+# U - move up one tile
+# D - move down one tile
+# L - move left one tile
+# R - move right one tile
+# @ - turn on frame animation
+# _ - turn off frame animation
+# ! - wait for (npc_speed * 4)
+
+################################################################################
+# NPCs on the first map
+################################################################################
+
+# there is a guard that patrols the city wall at the top, from left to right
+# and he stops to look south at the end of his patrol.
+
+NPC 6:JamDemo1:5:0
+NPCMOTION 1:@@ERRRRRR_!!S!!@D_!!!!!!@WLLL_!!S!!@WLLL_!!N!!@U_!!
+
+# there is a guy standing near the player
+
+NPC 2:JamDemo1:6:24
+NPCCHAT 2:jamdemo1_guy1chat1.dialogue
+NPCCHAT 2:jamdemo1_guy1chat2.dialogue
+NPCCHAT 2:jamdemo1_guy1chat3.dialogue
+
+#NPCCHAT 2:generic_male_hello.dialogue
+
+################################################################################
+# NPCs on the second map
+################################################################################
+
+# there is a guard that paces right and left on his little guard post at the top
+# and he just stops briefly at the end of his patrol.
+
+NPC 6:JamDemo2:12:0
+NPCMOTION 3:@@ERRRR_!S!W@LLLL_!S!
+
+################################################################################
+# NPCs on the third map
+################################################################################
+
+# there is a guard who patrols the city wall at the bottom of the screen,
+# from left to right, and he follows the wall north half-way and then returns
+# south to look around before returning to the west to repeat his patrol.
+
+NPC 6:JamDemo3:0:27
+NPCMOTION 4:@@!!
+
+# there is a male npc who talks about the hole in the city walls just north of
+# the hole. He looks south, and east to the water, pausing then looks south and
+# pauses, looking west, pauses, and pauses for a longer while.
+
+NPC 2:JamDemo3:26:5
+NPCMOTION 5:_S!!!!E!!S!!W!!!!!!
+NPCCHAT 5:jamdemo3_guy1chat1.dialogue
+#NPCCHAT 5:jamdemo3_guy1chat2.dialogue
+
+################################################################################
+
+
+
+
 
 # define some npcs
-NPC 2:Test1:19:11
-NPC 2:Test1:15:12
-NPC 3:Test1:9:18
+#NPC 2:Test1:19:11
+#NPC 2:Test1:15:12
+#NPC 3:Test1:9:18
 
-NPCMOTION 1:@@ERRRRSDDDDWLLLLNUUUU
-NPCMOTION 3:@@ERRRRRR_!N!!S!!@WLLLLLL_!S!!N!!
-NPCMOTION 2:@@NUUUUU_!!W!!N!!E!!S!!@DDDDD_!!W!!S!!E!!
+#NPCMOTION 1:@@ERRRRSDDDDWLLLLNUUUU
+#NPCMOTION 3:@@ERRRRRR_!N!!S!!@WLLLLLL_!S!!N!!
+#NPCMOTION 2:@@NUUUUU_!!W!!N!!E!!S!!@DDDDD_!!W!!S!!E!!
 
 
 # NPCCHAT [npc-id]:[dialogue-file]
-NPCCHAT 1:generic_male_hello.dialogue
-NPCCHAT 3:generic_female_hello.dialogue
-NPCCHAT 3:generic_female_hello2.dialogue
-NPCCHAT 3:generic_female_hello3.dialogue
-
-
-# gameMaps_->AddMap("World", "data/maps/world.map", "data/maps/world.set");
-# gameMaps_->AddMap("Castle Entrance", "data/maps/castle0.map", "data/maps/castle.set");
-# gameMaps_->AddMap("Castle Hall", "data/maps/castle1.map", "data/maps/castle.set");
-# gameMaps_->AddMap("Castle Armory", "data/maps/castle2.map", "data/maps/castle.set");
-# gameMaps_->AddMap("Castle Throne Room", "data/maps/castle3.map", "data/maps/castle.set");
-# gameMaps_->AddMap("Castle Chambers", "data/maps/castle4.map", "data/maps/castle.set");
-# gameMaps_->AddMap("Castle Dungeon", "data/maps/castle5.map", "data/maps/castle.set");
-# gameMaps_->AddMap("Town", "data/maps/town0.map", "data/maps/town.set");
-# gameMaps_->AddMap("Dark Forest Entrance", "data/maps/forest0.map", "data/maps/forest.set");
-# gameMaps_->AddMap("Dark Forest Path", "data/maps/forest1.map", "data/maps/forest.set");
-# gameMaps_->AddMap("Dark Forest Dead End", "data/maps/forest2.map", "data/maps/forest.set");
-
+#NPCCHAT 1:generic_male_hello.dialogue
+#NPCCHAT 3:generic_female_hello.dialogue
+#NPCCHAT 3:generic_female_hello2.dialogue
+#NPCCHAT 3:generic_female_hello3.dialogue
 

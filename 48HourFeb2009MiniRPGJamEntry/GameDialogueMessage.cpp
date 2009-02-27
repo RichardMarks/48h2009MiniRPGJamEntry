@@ -287,6 +287,10 @@ namespace GAME
 		pageCount_ 		= 0;
 		lineCount_ 		= 0;
 		charCount_ 		= 0;
+
+		currentPage_ = 0;
+		currentLine_ = 0;
+		currentChar_ = 0;
 	}
 
 	/**************************************************************************/

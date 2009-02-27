@@ -135,10 +135,11 @@ namespace GAME
 			{
 				case MAPEDITORS::EditingBaseLayer: 		{ state_ = MAPEDITORS::EditingCollisionLayer; RenderMap();} break;
 				case MAPEDITORS::EditingCollisionLayer: { state_ = MAPEDITORS::EditingMapWarps; RenderMap();} break;
-				case MAPEDITORS::EditingMapWarps:		{ state_ = MAPEDITORS::EditingEvents; RenderMap();} break;
-				case MAPEDITORS::EditingEvents: 		{ state_ = MAPEDITORS::SelectingTile; } break;
-				case MAPEDITORS::SelectingTile: 		{ state_ = MAPEDITORS::Previewing; RenderMap();} break;
-				case MAPEDITORS::Previewing: 			{ state_ = MAPEDITORS::EditingBaseLayer; RenderMap();} break;
+				case MAPEDITORS::EditingMapWarps:		{ state_ = MAPEDITORS::EditingCollisionLayer; RenderMap();} break;
+
+				//case MAPEDITORS::EditingEvents: 		{ state_ = MAPEDITORS::SelectingTile; } break;
+				//case MAPEDITORS::SelectingTile: 		{ state_ = MAPEDITORS::Previewing; RenderMap();} break;
+				//case MAPEDITORS::Previewing: 			{ state_ = MAPEDITORS::EditingBaseLayer; RenderMap();} break;
 				default:break;
 			}
 		}
@@ -400,8 +401,13 @@ namespace GAME
 									warpFrom_.worldY_,
 									warpFrom_.targetMapID_);
 
+								currentMap_->SaveMapWarpData(GameSingleton::GetInstance()->GetMapsDirectory().c_str());
+								previousMap_->SaveMapWarpData(GameSingleton::GetInstance()->GetMapsDirectory().c_str());
+
 								// restore the previous map we were on
 								SetMap(previousMap_);
+
+
 
 								// restore camera position
 								cameraX_ = previousCameraX_;
@@ -456,8 +462,58 @@ namespace GAME
 						// if there is a warp here, we edit it
 						if (currentMap_->IsWarp(tileX, tileY))
 						{
+							// remove the warp tunnel
+							WarpTargetPair* pair = currentMap_->GetWarpTargetPair(currentMap_->GetWarp(tileX, tileY));
+
+							if (0 != pair)
+							{
+								GameMap* startMapInst 	= maps_->Get(pair->startMap_);
+								GameMap* endMapInst		= maps_->Get(pair->endMap_);
+
+								if (0 != startMapInst && 0 != endMapInst)
+								{
+									int startID = startMapInst->GetWarp(pair->startX_, pair->startY_);
+									int endID   = endMapInst->GetWarp(pair->endX_, pair->endY_);
+
+									fprintf(stderr,
+										"Warp Target Pair: Start WarpID/Map/X/Y: (%d,%d,%d,%d) End WarpID/Map/X/Y: (%d,%d,%d,%d)\n",
+											startID, pair->startMap_, pair->startX_, pair->startY_,
+											endID, pair->endMap_, pair->endX_, pair->endY_);
+
+									startMapInst->ClearWarpTargetPair(startID);
+
+									endMapInst->ClearWarpTargetPair(endID);
+
+									startMapInst->SetWarp(pair->startX_, pair->startY_, -1);
+
+									endMapInst->SetWarp(pair->endX_, pair->endY_, -1);
+
+									// save changes now
+									startMapInst->SaveMapWarpData(GameSingleton::GetInstance()->GetMapsDirectory().c_str());
+									endMapInst->SaveMapWarpData(GameSingleton::GetInstance()->GetMapsDirectory().c_str());
+
+
+									DEBUG::DebugAllegroGUI::MessageBox("Removed the Map Warp", "Map Warp Editor");
+								}
+								else
+								{
+									DEBUG::DebugAllegroGUI::MessageBox("Invalid Map IDs?", "BUG REPORT");
+								}
+							}
+							else
+							{
+								DEBUG::DebugAllegroGUI::MessageBox("Invalid Pair?", "BUG REPORT");
+							}
+
 							// display the warp editor
 
+							// get the info of the warp
+
+
+							// build a warp string
+
+
+#if 0 /// disable editing -- just remove on right-click
 							UTILITY::GUI::GUITextEntryDialog editWarpTextBox(
 								"Please enter a new warp definition in the format:\n"
 								"[from-map-name]:[from-x]:[from-y]:[to-map-name]:[to-x]:[to-y]\n"
@@ -470,13 +526,23 @@ namespace GAME
 							if ("" == editWarpTextBox.GetText())
 							{
 								// remove the warp
-								DEBUG::DebugAllegroGUI::MessageBox("TODO: remove the Map Warp", "Map Warp Editor");
+								// DEBUG::DebugAllegroGUI::MessageBox("TODO: remove the Map Warp", "Map Warp Editor");
+
+								// remove the warp tunnel
+								WarpTargetPair* pair = currentMap_->GetWarpTargetPair(currentMap_->GetWarp(tileX, tileY));
+								maps_->Get(pair->startMap_)->ClearWarpTargetPair(maps_->Get(pair->startMap_)->GetWarp(pair->startX_, pair->startY_));
+								maps_->Get(pair->endMap_)->ClearWarpTargetPair(maps_->Get(pair->endMap_)->GetWarp(pair->endX_, pair->endY_));
+								maps_->Get(pair->startMap_)->SetWarp(pair->startX_, pair->startY_, -1);
+								maps_->Get(pair->endMap_)->SetWarp(pair->endX_, pair->endY_, -1);
+
+								DEBUG::DebugAllegroGUI::MessageBox("Removed the Map Warp", "Map Warp Editor");
 							}
 							else
 							{
 								// update the warp
 								DEBUG::DebugAllegroGUI::MessageBox("TODO: Update the Map Warp", "Map Warp Editor");
 							}
+#endif /// ---------------------------------------------------------------------
 						}
 
 						// update the map panel

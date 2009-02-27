@@ -40,6 +40,10 @@ namespace GAME
 
 		InputDevice->MouseEnableCursorDisplay(false);
 
+		bool doCollision = (MAPEDITORS::EditingCollisionLayer == state_ || MAPEDITORS::EditingMapWarps == state_) ? true : false;
+
+		bool doCollisionOnion = (MAPEDITORS::EditingMapWarps == state_) ? true : false;
+
 		// re-draw the view that the editor's camera can see
 		for (int tileY = cameraY_; tileY < cameraY_ + cameraH_; tileY++)
 		{
@@ -64,20 +68,33 @@ namespace GAME
 					tilePixelY,
 					8, 8);
 
-				// shade the solid tiles red and add a red line to them as well
-				if (MAPEDITORS::EditingCollisionLayer == state_)
+				// shading XD
+				if (doCollision)
 				{
 					if (currentMap_->IsSolid(tileX, tileY))
 					{
-						ColorRGB colorRed(255, 0, 0);
-						ImageResource hilight(8, 8, colorRed.Get());
-						hilight.BlitAlpha(mapPanel_, tilePixelX, tilePixelY, 0.5f);
-						mapPanel_->Line(tilePixelX, tilePixelY, tilePixelX + 7, tilePixelY, colorRed.Get());
-						mapPanel_->Line(tilePixelX, tilePixelY, tilePixelX, tilePixelY + 7, colorRed.Get());
+						if (doCollisionOnion)
+						{
+							ColorRGB colorRed(128, 0, 0);
+							ImageResource hilight(8, 8, colorRed.Get());
+
+							hilight.BlitAlpha(mapPanel_, tilePixelX, tilePixelY, 0.4f);
+
+							mapPanel_->Line(tilePixelX, tilePixelY, tilePixelX + 7, tilePixelY, colorRed.Get());
+							mapPanel_->Line(tilePixelX, tilePixelY, tilePixelX, tilePixelY + 7, colorRed.Get());
+						}
+						else
+						{
+							ColorRGB colorRed(255, 0, 0);
+							ImageResource hilight(8, 8, colorRed.Get());
+
+							hilight.BlitAlpha(mapPanel_, tilePixelX, tilePixelY, 0.5f);
+
+							mapPanel_->Line(tilePixelX, tilePixelY, tilePixelX + 7, tilePixelY, colorRed.Get());
+							mapPanel_->Line(tilePixelX, tilePixelY, tilePixelX, tilePixelY + 7, colorRed.Get());
+						}
 					}
 				}
-
-
 			}
 		}
 
@@ -95,6 +112,8 @@ namespace GAME
 		int mapColumns 	= baseLayer->GetNumColumns();
 
 		InputDevice->MouseEnableCursorDisplay(false);
+
+
 
 		// re-draw the view that the editor's camera can see
 		for (int tileY = cameraY_; tileY < cameraY_ + cameraH_; tileY++)
@@ -116,12 +135,13 @@ namespace GAME
 				if (currentMap_->IsWarp(tileX, tileY))
 				{
 					ColorRGB colorBlue(0, 0, 255);
-					ColorRGB colorWhite(255, 255, 255);
+					ColorRGB magicPink(255, 0, 255);
 
-					ImageResource hilight(16, 16, colorWhite.Get());
-					hilight.Circle(8, 8, 8, colorBlue.Get(), true);
+					ImageResource hilight(16, 16, magicPink.Get());
 
-					hilight.BlitAlpha(mapPanelOverlay_, tilePixelX, tilePixelY, 0.5f);
+					hilight.Circle(8, 8, 3, colorBlue.Get(), true);
+
+					hilight.BlitSprite(mapPanelOverlay_, tilePixelX, tilePixelY);
 
 					BitmapFont t; t.Print(mapPanelOverlay_,
 					tilePixelX, tilePixelY, "%d", currentMap_->GetWarp(tileX, tileY));
@@ -153,6 +173,8 @@ namespace GAME
 		ColorRGB magicPink(255, 0, 255);
 		mapPanelOverlay_->Clear(magicPink.Get());
 
+		int hudy = (mapPanelH * 2) + 10;
+
 		switch(state_)
 		{
 			// we are editing the base layer of the map
@@ -163,7 +185,7 @@ namespace GAME
 				InputDevice->MouseEnableCursorDisplay(true);
 
 				BitmapFont debugFont;
-				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Editing Base Layer of (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
+				debugFont.Print(display, 1, hudy, "Ingame MapED v1.0 - Editing Base Layer of (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
 
 			} break;
 
@@ -175,11 +197,13 @@ namespace GAME
 				RenderMapWarpIDs();
 				mapPanelOverlay_->BlitMasked(display, 0, 0, 0, 0, mapPanelOverlay_->GetWidth(), mapPanelOverlay_->GetHeight());
 
+
+
 				InputDevice->MouseEnableCursorDisplay(true);
 
 				BitmapFont debugFont;
-				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Editing Map Warps on \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
-				debugFont.Print(display, 1, 12, "Mouse Pos Pixel: (%3d, %3d) Tile:(%3d, %3d)", mouseX_, mouseY_, mouseTileX, mouseTileY);
+				debugFont.Print(display, 1, hudy, "Ingame MapED v1.0 - Editing Map Warps on \"%s\"", currentMap_->GetName().c_str());
+				debugFont.Print(display, 1, hudy+12, "Mouse Pos Pixel: (%3d, %3d) Tile:(%3d, %3d)", mouseX_, mouseY_, mouseTileX, mouseTileY);
 
 			} break;
 
@@ -192,8 +216,8 @@ namespace GAME
 				InputDevice->MouseEnableCursorDisplay(true);
 
 				BitmapFont debugFont;
-				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Editing Collision Layer of (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
-				debugFont.Print(display, 1, 12, "Mouse Pos Pixel: (%3d, %3d) Tile:(%3d, %3d)", mouseX_, mouseY_, mouseTileX, mouseTileY);
+				debugFont.Print(display, 1, hudy, "Ingame MapED v1.0 - Editing Collision Layer of (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
+				debugFont.Print(display, 1, hudy+12, "Mouse Pos Pixel: (%3d, %3d) Tile:(%3d, %3d)", mouseX_, mouseY_, mouseTileX, mouseTileY);
 
 
 			} break;
@@ -209,14 +233,14 @@ namespace GAME
 				mapPanelOverlay_->BlitMasked(display, 0, 0, 0, 0, mapPanelOverlay_->GetWidth(), mapPanelOverlay_->GetHeight());
 
 				BitmapFont debugFont;
-				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Editing Events Layer of (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
+				debugFont.Print(display, 1, hudy, "Ingame MapED v1.0 - Editing Events Layer of (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
 			} break;
 
 			// we are selecting a tile from the tileset browser
 			case MAPEDITORS::SelectingTile:
 			{
 				BitmapFont debugFont;
-				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Select a Tile");
+				debugFont.Print(display, 1, hudy, "Ingame MapED v1.0 - Select a Tile");
 			} break;
 
 			// we are previewing the map
@@ -226,7 +250,7 @@ namespace GAME
 				mapPanel_->Blit(display, 0, 0, mapPanelW, mapPanelH, 0, 0, mapPanelW * 2, mapPanelH * 2);
 
 				BitmapFont debugFont;
-				debugFont.Print(display, 1, 1, "Ingame MapED v1.0 - Previewing Map (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
+				debugFont.Print(display, 1, hudy, "Ingame MapED v1.0 - Previewing Map (%d) \"%s\"", currentMap_->GetID(), currentMap_->GetName().c_str());
 
 			} break;
 

@@ -44,6 +44,8 @@ namespace GAME
 		void Pause(unsigned int index);
 		void Resume(unsigned int index);
 
+		void List(FILE* target);
+
 	private:
 		GameNPCManager(const GameNPCManager& rhs);
 		const GameNPCManager& operator=(const GameNPCManager& rhs);

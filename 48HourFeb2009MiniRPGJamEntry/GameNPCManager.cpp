@@ -155,6 +155,27 @@ namespace GAME
 		}
 	}
 
+	void GameNPCManager::List(FILE* target)
+	{
+		int tw = 8;
+		int th = 8;
+		unsigned int spriteCount = npcs_.size();
+		for (unsigned int index = 0; index < spriteCount; index++)
+		{
+			int wx = 0, wy = 0; // sprite world position
+			GameMapSprite* sprite = npcs_.at(index)->GetSprite();
+			sprite->GetWorldPosition(wx, wy);
+
+			fprintf(target,
+				"NPC %d on Map %s @ (%d, %d in tiles) (%d, %d in pixels)\n",
+				index + 1,
+				maps_.at(index).c_str(),
+				wx / tw, wy / th,
+				wx, wy
+				);
+		} // end for
+	}
+
 } // end namespace
 
 

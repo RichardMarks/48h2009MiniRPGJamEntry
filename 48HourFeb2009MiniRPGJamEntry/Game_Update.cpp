@@ -374,7 +374,7 @@ namespace GAME
 
 					if (CheckNPCCollisions())
 					{
-						psx++;
+						psx += 4;
 						playerSprite->SetScreenPosition(psx, psy);
 					}
 
@@ -393,7 +393,7 @@ namespace GAME
 
 						if (CheckNPCCollisions())
 						{
-							camera_->Pan(CAMERA::East);
+							camera_->Pan(CAMERA::East, 4);
 						}
 
 						_TMP_CHECKFORMAPEVENTS
@@ -412,7 +412,7 @@ namespace GAME
 
 							if (CheckNPCCollisions())
 							{
-								psx++;
+								psx += 4;
 								playerSprite->SetScreenPosition(psx, psy);
 							}
 
@@ -444,7 +444,7 @@ namespace GAME
 
 					if (CheckNPCCollisions())
 					{
-						psx--;
+						psx -= 4;
 						playerSprite->SetScreenPosition(psx, psy);
 					}
 
@@ -463,7 +463,7 @@ namespace GAME
 
 						if (CheckNPCCollisions())
 						{
-							camera_->Pan(CAMERA::West);
+							camera_->Pan(CAMERA::West, 4);
 						}
 
 						_TMP_CHECKFORMAPEVENTS
@@ -482,7 +482,7 @@ namespace GAME
 
 							if (CheckNPCCollisions())
 							{
-								psx--;
+								psx -= 4;
 								playerSprite->SetScreenPosition(psx, psy);
 							}
 
@@ -514,7 +514,7 @@ namespace GAME
 
 					if (CheckNPCCollisions())
 					{
-						psy++;
+						psy += 4;
 						playerSprite->SetScreenPosition(psx, psy);
 					}
 
@@ -533,7 +533,7 @@ namespace GAME
 
 						if (CheckNPCCollisions())
 						{
-							camera_->Pan(CAMERA::South);
+							camera_->Pan(CAMERA::South, 4);
 						}
 
 						_TMP_CHECKFORMAPEVENTS
@@ -552,7 +552,7 @@ namespace GAME
 
 							if (CheckNPCCollisions())
 							{
-								psy++;
+								psy += 4;
 								playerSprite->SetScreenPosition(psx, psy);
 							}
 
@@ -584,7 +584,7 @@ namespace GAME
 
 					if (CheckNPCCollisions())
 					{
-						psy--;
+						psy -= 4;
 						playerSprite->SetScreenPosition(psx, psy);
 					}
 
@@ -603,7 +603,7 @@ namespace GAME
 
 						if (CheckNPCCollisions())
 						{
-							camera_->Pan(CAMERA::North);
+							camera_->Pan(CAMERA::North, 4);
 						}
 
 						_TMP_CHECKFORMAPEVENTS
@@ -622,7 +622,7 @@ namespace GAME
 
 							if (CheckNPCCollisions())
 							{
-								psy--;
+								psy -= 4;
 								playerSprite->SetScreenPosition(psx, psy);
 							}
 

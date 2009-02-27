@@ -8,6 +8,8 @@
 
 #include "GameLibrary.h"
 
+#include "GameMap_Editors.h"
+
 namespace GAME
 {
 
@@ -325,6 +327,7 @@ namespace GAME
 				if ("true" == gameSettings_->Get("enable_game_editors"))
 				{
 					SetState(GAMESTATE::MapEditor);
+					MapEditors->SetState(MAPEDITORS::EditingCollisionLayer);
 				}
 				else
 				{
@@ -334,6 +337,11 @@ namespace GAME
 		}
 
 		gameMenu_ = new GameMenuManager();
+
+		if ("true" == gameSettings_->Get("enable_verbose_startup"))
+		{
+			gameNPCs_->List(stderr);
+		}
 
 		return true;
 	}

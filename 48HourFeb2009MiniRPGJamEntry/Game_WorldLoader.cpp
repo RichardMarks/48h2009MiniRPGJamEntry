@@ -255,9 +255,15 @@ namespace GAME
 						{
 							fprintf(stderr,
 								"\tNPC DEFINITION:\n"
-								"\tNPC #%d will use Sprite #%d and will start at world coordinates %d, %d (%d, %d in pixels) on map %s.\n\n",
+								"\tNPC #%d will use Sprite #%d and will start at world coordinates"
+								" %d, %d (%d, %d in pixels) on map %s.\n\n",
 								gameNPCs_->GetNumNPCs() + 1,
-								spriteNum, xTile, yTile, 8 * xTile, 8 * yTile, mapName.c_str());
+								spriteNum,
+								xTile,
+								yTile,
+								8 * xTile,
+								8 * yTile,
+								mapName.c_str());
 						}
 #endif
 
@@ -268,11 +274,22 @@ namespace GAME
 #if 1
 						// class GameNPCManager;
 						// GameNPCManager::Add(GameNPC* npc, const char* parentMapName);
+
+						if (enableVerboseStartup)
+						{
+							fprintf(stderr, "Listing NPCs Before ADD\n");
+							gameNPCs_->List(stderr);
+						}
 						gameNPCs_->Add(
 							// class GameNPC;
 							// GameNPC(GameMapSprite* sprite, int speed = 1, const char* motionData = "");
 							new GameNPC(gameSprites_->Get(spriteNum - 1)), mapName.c_str()
 						);
+						if (enableVerboseStartup)
+						{
+							fprintf(stderr, "Listing NPCs After ADD\n");
+							gameNPCs_->List(stderr);
+						}
 #endif
 					}
 				}

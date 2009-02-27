@@ -325,6 +325,7 @@ namespace GAME
 		{
 			signed int warpIndex;
 			fread(&warpIndex, sizeof(signed int), 1, fp);
+
 			if (tiles[index].eventNo != 0xFF && tiles[index].eventNo != 0xFE)
 			{
 				tiles[index].eventNo = warpIndex;
@@ -500,7 +501,11 @@ namespace GAME
 
 	bool GameMap::IsWarp(int tileX, int tileY) const
 	{
-		return (layers_[0].GetEventAt(tileX, tileY) < 0xFE && layers_[0].GetEventAt(tileX, tileY) >= 0x0) ? true : false;
+		// return (layers_[0].GetEventAt(tileX, tileY) < 0xFE && layers_[0].GetEventAt(tileX, tileY) >= 0x0) ? true : false;
+		signed int warpIndex = layers_[0].GetEventAt(tileX, tileY);
+
+		return (warpIndex < 0x0) ? false :
+			(warpIndex < 0xFE) ? true : false;
 	}
 
 	/**************************************************************************/
@@ -578,6 +583,16 @@ namespace GAME
 	void GameMap::ClearWarpTargetPairs()
 	{
 		warps_.clear();
+	}
+
+	/**************************************************************************/
+
+	void GameMap::ClearWarpTargetPair(unsigned int index)
+	{
+		if (index < warps_.size())
+		{
+			warps_.erase(warps_.begin() + index);
+		}
 	}
 
 	/**************************************************************************/

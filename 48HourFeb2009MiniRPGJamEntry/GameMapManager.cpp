@@ -73,10 +73,10 @@ namespace GAME
 
 			if (enableVerboseStartup)
 			{
-				LogSimpleMessage("Loading Map Event Data for \"%s\" ...", mapName);
+				//LogSimpleMessage("Loading Map Event Data for \"%s\" ...", mapName);
 			}
 			// load the .event
-			mapInstance->LoadEventData(mapsPath.c_str());
+			//mapInstance->LoadEventData(mapsPath.c_str());
 
 			// add the map to the maps_ vector
 			maps_.push_back(mapInstance);

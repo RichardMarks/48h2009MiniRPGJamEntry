@@ -86,39 +86,25 @@ namespace UTILITY
 				void *dp, *dp2, *dp3; - pointers to more object-specific data
 			*/
 
-			internalDialog_ = new DIALOG [2];
+			internalDialog_ = new DIALOG [3];
+
+			// zero out all controls so that we only need to init the members that will not be zero
+			for (unsigned int index = 0; index < 3; index++)
+			{
+				memset(&internalDialog_[index], 0, sizeof(DIALOG));
+			}
+
 
 			// the only control in the dialog is the list box
 			internalDialog_[0].proc 	= d_list_proc;
 			internalDialog_[0].dp 		= reinterpret_cast<void*>(GUIListBox::ListBoxHandler);
-			internalDialog_[0].dp2 		= 0;
-			internalDialog_[0].dp3 		= 0;
-			internalDialog_[0].x		= 0;
-			internalDialog_[0].y		= 0;
 			internalDialog_[0].w		= 320;
 			internalDialog_[0].h 		= 240;
 			internalDialog_[0].fg		= makecol(255, 255, 255);
 			internalDialog_[0].bg		= makecol(0, 0, 0);
-			internalDialog_[0].key		= 0;
 			internalDialog_[0].flags	= D_EXIT;
-			internalDialog_[0].d1		= 0;
-			internalDialog_[0].d2		= 0;
 
-			// the end of the dialog
-			internalDialog_[1].proc 	= 0;
-			internalDialog_[1].dp 		= 0;
-			internalDialog_[1].dp2 		= 0;
-			internalDialog_[1].dp3 		= 0;
-			internalDialog_[1].x		= 0;
-			internalDialog_[1].y		= 0;
-			internalDialog_[1].w		= 0;
-			internalDialog_[1].h 		= 0;
-			internalDialog_[1].fg		= 0;
-			internalDialog_[1].bg		= 0;
-			internalDialog_[1].key		= 0;
-			internalDialog_[1].flags	= 0;
-			internalDialog_[1].d1		= 0;
-			internalDialog_[1].d2		= 0;
+			internalDialog_[1].proc 	= d_yield_proc;
 
 			centre_dialog(internalDialog_);
 		}

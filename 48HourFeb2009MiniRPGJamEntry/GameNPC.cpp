@@ -11,7 +11,7 @@
 namespace GAME
 {
 	GameNPC::GameNPC(GameMapSprite* sprite, int speed, const char* motionData) :
-		sprite_(sprite),
+		sprite_(0),
 		speed_(speed),
 		motionData_(motionData),
 		motionDataCounter_(0),
@@ -24,6 +24,8 @@ namespace GAME
 		paused_(false),
 		currentDialogue_(0)
 	{
+		sprite_ = new GameMapSprite();
+		sprite_->Clone(sprite);
 	}
 
 	/**************************************************************************/
@@ -31,6 +33,11 @@ namespace GAME
 	GameNPC::~GameNPC()
 	{
 		motionData_ = "";
+
+		if (sprite_)
+		{
+			delete sprite_;
+		}
 	}
 
 	/**************************************************************************/
@@ -69,14 +76,14 @@ namespace GAME
 					// face direction changes
 					case 'N': { sprite_->SetFaceDirection(MAPSPRITE::WALK_NORTH_FRAME); } break;
 					case 'S': { sprite_->SetFaceDirection(MAPSPRITE::WALK_SOUTH_FRAME); } break;
-					case 'W': { sprite_->SetFaceDirection(MAPSPRITE::WALK_EAST_FRAME); } break;
-					case 'E': { sprite_->SetFaceDirection(MAPSPRITE::WALK_WEST_FRAME); } break;
+					case 'E': { sprite_->SetFaceDirection(MAPSPRITE::WALK_EAST_FRAME); } break;
+					case 'W': { sprite_->SetFaceDirection(MAPSPRITE::WALK_WEST_FRAME); } break;
 
 					// walking directions
 					case 'U': { distanceWalked_ = 0; walking_ = true; walkingDirection_ = 0; handlingMotion_ = true; } break;
 					case 'D': { distanceWalked_ = 0; walking_ = true; walkingDirection_ = 1; handlingMotion_ = true; } break;
-					case 'L': { distanceWalked_ = 0; walking_ = true; walkingDirection_ = 2; handlingMotion_ = true; } break;
-					case 'R': { distanceWalked_ = 0; walking_ = true; walkingDirection_ = 3; handlingMotion_ = true; } break;
+					case 'R': { distanceWalked_ = 0; walking_ = true; walkingDirection_ = 2; handlingMotion_ = true; } break;
+					case 'L': { distanceWalked_ = 0; walking_ = true; walkingDirection_ = 3; handlingMotion_ = true; } break;
 
 					// animation handlers
 					case '@': { sprite_->Animate(true); } break;
