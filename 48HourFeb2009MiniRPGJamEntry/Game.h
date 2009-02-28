@@ -252,6 +252,12 @@ namespace GAME
 		/// gets a pointer to the game settings
 		Settings* GetSettings() const;
 
+		/// saves the game state
+		void SaveGame();
+
+		/// loads the game state
+		void LoadGame();
+
 
 /*#**************************************************************************#*/
 

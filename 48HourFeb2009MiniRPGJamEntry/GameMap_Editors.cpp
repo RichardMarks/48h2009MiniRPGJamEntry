@@ -74,6 +74,7 @@ namespace GAME
 
 		// update the map panel
 		RenderMap();
+		Render();
 	}
 
 	/**************************************************************************/
@@ -104,6 +105,8 @@ namespace GAME
 		mouseRBClicked_ 	= false;
 		placedFirst_ 		= false;
 
+		showGrid_			= false;
+
 		return true;
 	}
 
@@ -128,6 +131,12 @@ namespace GAME
 		//int displayHeight = display->GetHeight();
 
 /*#**************************************************************************#*/
+
+		if (InputDevice->KeyPressed(KEY::Key_G))
+		{
+			showGrid_ = !showGrid_;
+			RenderGrid();
+		}
 
 		if (InputDevice->KeyPressed(KEY::Key_Tab))
 		{
@@ -203,6 +212,32 @@ namespace GAME
 
 		mouseX_ = InputDevice->MouseX();
 		mouseY_ = InputDevice->MouseY();
+
+
+		// press F8 to pick a map to edit
+
+		if (InputDevice->KeyPressed(KEY::Key_F8))
+		{
+			UTILITY::GUI::GUIListBox mapList;
+			unsigned int numMaps = maps_->GetNumMaps();
+			for (unsigned int index = 0; index < numMaps; index++)
+			{
+				mapList.Add(maps_->Get(index)->GetName().c_str());
+			}
+			mapList.Show();
+
+			// save a pointer to the current map
+			previousMap_ = currentMap_;
+
+			// save the camera position
+			previousCameraX_ = cameraX_;
+			previousCameraY_ = cameraY_;
+
+			// load the target map in
+			SetMap(maps_->Get(mapList.GetSelection().c_str()));
+		}
+
+
 
 		switch(state_)
 		{

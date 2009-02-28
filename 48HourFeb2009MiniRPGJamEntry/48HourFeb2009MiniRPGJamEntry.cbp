@@ -258,6 +258,15 @@
 		<Unit filename="data/dialogue/generic_male_hello.dialogue">
 			<Option virtualFolder="Data Files/" />
 		</Unit>
+		<Unit filename="data/dialogue/jamdemo1_guy1chat1.dialogue">
+			<Option virtualFolder="Data Files/" />
+		</Unit>
+		<Unit filename="data/dialogue/jamdemo1_guy1chat2.dialogue">
+			<Option virtualFolder="Data Files/" />
+		</Unit>
+		<Unit filename="data/dialogue/jamdemo1_guy1chat3.dialogue">
+			<Option virtualFolder="Data Files/" />
+		</Unit>
 		<Unit filename="data/dialogue/jamdemo3_guy1chat1.dialogue">
 			<Option virtualFolder="Data Files/" />
 		</Unit>

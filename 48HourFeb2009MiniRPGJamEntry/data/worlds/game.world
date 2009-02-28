@@ -23,7 +23,7 @@ MAP JamDemo3:ExteriorA
 SPRITE player.png:8:8:3:5
 SPRITE npc_adultm.png:8:8:3:15
 SPRITE npc_adultf.png:8:8:3:15
-SPRITE npc_childm.png:8:8:3:9
+SPRITE npc_childm.png:8:8:3:5
 SPRITE npc_childf.png:8:8:3:9
 SPRITE npc_guard.png:8:8:3:20
 #SPRITE antagonist.png:8:8:3:20
@@ -92,7 +92,7 @@ NPCMOTION 3:@@ERRRR_!S!W@LLLL_!S!
 # south to look around before returning to the west to repeat his patrol.
 
 NPC 6:JamDemo3:0:27
-NPCMOTION 4:@@!!
+NPCMOTION 4:@@ERRRRRRRRRRRRRRR_!@NUUUUUUUUUU_!!!!@SDDDDDDDDDD_!!E!!S!!E!!N!!W@LLLLLLLLLLLLLLL_!!!!
 
 # there is a male npc who talks about the hole in the city walls just north of
 # the hole. He looks south, and east to the water, pausing then looks south and
@@ -103,25 +103,30 @@ NPCMOTION 5:_S!!!!E!!S!!W!!!!!!
 NPCCHAT 5:jamdemo3_guy1chat1.dialogue
 #NPCCHAT 5:jamdemo3_guy1chat2.dialogue
 
+
+# there are four kids inside the city walls
+
+# reference:
+# sprite #4 is a boy, #5 is a girl
+
+# the first boy runs right 7 paces, then down 9 paces, then left 6 paces, then up 8, then left, then up, repeat
+NPC 4:JamDemo3:0:0
+NPCMOTION 6:@@ERRRRRRRSDDDDDDDDDWLLLLLLNUUUUUUUUWLNU
+
+# the first girl runs right 5 paces, left 5 paces, repeats
+NPC 5:JamDemo3:1:1
+NPCMOTION 7:@@ERRRRRWLLLLL
+
+# the second boy runs left 2 paces, waits, runs right 3 paces, looks south, waits waits waits waits
+# looks east, then runs left 3 paces, waits and runs right 1 pace, waits waits waits and repeats
+NPC 4:JamDemo3:2:2
+NPCMOTION 8:@@WLL_!!@ERRRR_S!!!!!E@WLLL_!!@ER_!!!!!
+
+# the second girl just looks left and right, waiting a little before looking in another direction
+NPC 5:JamDemo3:3:3
+NPCMOTION 9:__W!!!E!W!E!!!
+
+
 ################################################################################
 
-
-
-
-
-# define some npcs
-#NPC 2:Test1:19:11
-#NPC 2:Test1:15:12
-#NPC 3:Test1:9:18
-
-#NPCMOTION 1:@@ERRRRSDDDDWLLLLNUUUU
-#NPCMOTION 3:@@ERRRRRR_!N!!S!!@WLLLLLL_!S!!N!!
-#NPCMOTION 2:@@NUUUUU_!!W!!N!!E!!S!!@DDDDD_!!W!!S!!E!!
-
-
-# NPCCHAT [npc-id]:[dialogue-file]
-#NPCCHAT 1:generic_male_hello.dialogue
-#NPCCHAT 3:generic_female_hello.dialogue
-#NPCCHAT 3:generic_female_hello2.dialogue
-#NPCCHAT 3:generic_female_hello3.dialogue
 

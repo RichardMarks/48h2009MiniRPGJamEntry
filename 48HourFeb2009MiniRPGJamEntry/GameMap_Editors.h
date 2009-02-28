@@ -75,6 +75,8 @@ namespace GAME
 		void RenderMapWarpIDs();
 		void RenderEventIDs();
 
+		void RenderGrid();
+
 		// shared resource pointers -- the game singleton class is responsible for init/destroy these pointers
 
 		/// shared resource pointer to the display surface of the game system
@@ -134,6 +136,8 @@ namespace GAME
 		/// holds the position of the camera before the map change when adding warps
 		int previousCameraX_;
 		int previousCameraY_;
+
+		bool showGrid_;
 
 		/// used internally for placing map warps
 		struct WarpTarget

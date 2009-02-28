@@ -56,12 +56,8 @@ namespace GAME
 			windowOverlay_->BlitMasked(microDisplay_, 0, 0, 0, 0, windowOverlay_->GetWidth(), windowOverlay_->GetHeight());
 		}
 
-		// handle any region clear requests
-		if (requestToClearDialogueRegion_)
-		{
-			microDisplay_->Rect(4, 93, 133, 145, 0, true);
-			requestToClearDialogueRegion_ = false;
-		}
+		// clear the dialogue area
+		microDisplay_->Rect(4, 93, 133, 145, 0, true);
 
 		// render dialogues if there are any
 		if (DIALOGUE::Undefined != dialogueMessage_->GetState())

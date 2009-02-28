@@ -98,6 +98,7 @@ namespace GAME
 			}
 		}
 
+
 		InputDevice->MouseEnableCursorDisplay(true);
 	}
 
@@ -158,6 +159,23 @@ namespace GAME
 	{
 	}
 
+	void GameMapEditorsSingleton::RenderGrid()
+	{
+		if (showGrid_)
+		{
+			ColorRGB colorGrid(0, 0, 0);
+			for (int gridY = 0; gridY < cameraH_; gridY++)
+			{
+				mapPanelOverlay_->Line(0, gridY * 16, cameraW_ * 16, gridY * 16, colorGrid.Get());
+			}
+
+			for (int gridX = 0; gridX < cameraW_; gridX++)
+			{
+				mapPanelOverlay_->Line(gridX * 16, 0, gridX * 16, cameraH_ * 16, colorGrid.Get());
+			}
+		}
+	}
+
 	/**************************************************************************/
 
 	void GameMapEditorsSingleton::Render()
@@ -173,6 +191,12 @@ namespace GAME
 		ColorRGB magicPink(255, 0, 255);
 		mapPanelOverlay_->Clear(magicPink.Get());
 
+		if (showGrid_)
+		{
+			RenderGrid();
+		}
+
+
 		int hudy = (mapPanelH * 2) + 10;
 
 		switch(state_)
@@ -182,6 +206,7 @@ namespace GAME
 			{
 				InputDevice->MouseEnableCursorDisplay(false);
 				mapPanel_->Blit(display, 0, 0, mapPanelW, mapPanelH, 0, 0, mapPanelW * 2, mapPanelH * 2);
+
 				InputDevice->MouseEnableCursorDisplay(true);
 
 				BitmapFont debugFont;
@@ -213,6 +238,8 @@ namespace GAME
 				// draw the map
 				InputDevice->MouseEnableCursorDisplay(false);
 				mapPanel_->Blit(display, 0, 0, mapPanelW, mapPanelH, 0, 0, mapPanelW * 2, mapPanelH * 2);
+				mapPanelOverlay_->BlitMasked(display, 0, 0, 0, 0, mapPanelOverlay_->GetWidth(), mapPanelOverlay_->GetHeight());
+
 				InputDevice->MouseEnableCursorDisplay(true);
 
 				BitmapFont debugFont;

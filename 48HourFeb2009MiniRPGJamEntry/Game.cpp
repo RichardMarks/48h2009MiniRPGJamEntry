@@ -95,6 +95,134 @@ namespace GAME
 
 
 
+	/**************************************************************************/
+
+	void GameSingleton::SaveGame()
+	{
+		FILE* fp = fopen("game.sav", "wb");
+		if (fp)
+		{
+			fprintf(stderr, "------------------SAVING----------------------------------\n");
+			// write the player's data
+			int pwx, pwy, psx, psy, pfd;
+			gameSprites_->Get(playerSpriteIndex_)->GetWorldPosition(pwx, pwy);
+			gameSprites_->Get(playerSpriteIndex_)->GetScreenPosition(psx, psy);
+			gameSprites_->Get(playerSpriteIndex_)->GetFaceDirection(pfd);
+			unsigned int playerData[5] =
+			{
+				pwx, pwy, psx, psy, pfd
+			};
+			fwrite(&playerData, sizeof(playerData), 1, fp);
+
+			fprintf(stderr,
+				"--------VAR--FORM---------------\n"
+				"player world pos  : %d, %d\n"
+				"player screen pos : %d, %d\n"
+				"player face dir   : %d\n"
+				"------ARRAY--FORM---------------\n"
+				"player world pos  : %d, %d\n"
+				"player screen pos : %d, %d\n"
+				"player face dir   : %d\n",
+				pwx, pwy, psx, psy, pfd, playerData[0], playerData[1], playerData[2], playerData[3], playerData[4]);
+
+			// write the camera data
+			int cwx, cwy, cw, ch, cww, cwh;
+			camera_->GetWorldPosition(cwx, cwy);
+			camera_->GetWorldSize(cww, cwh);
+			camera_->GetSize(cw, ch);
+			unsigned int cameraData[6] =
+			{
+				cwx, cwy, cw, ch, cww, cwh
+			};
+			fwrite(&cameraData, sizeof(cameraData), 1, fp);
+
+			fprintf(stderr,
+				"--------VAR--FORM---------------\n"
+				"camera world pos  : %d, %d\n"
+				"camera size       : %d, %d\n"
+				"camera world size : %d, %d\n"
+				"------ARRAY--FORM---------------\n"
+				"camera world pos  : %d, %d\n"
+				"camera size       : %d, %d\n"
+				"camera world size : %d, %d\n",
+				cwx, cwy, cw, ch, cww, cwh, cameraData[0], cameraData[1], cameraData[2], cameraData[3], cameraData[4], cameraData[5]);
+
+
+
+			// write the current map data
+			unsigned int currentMapId = currentMap_->GetID();
+			fwrite(&currentMapId, sizeof(currentMapId), 1, fp);
+
+			fprintf(stderr, "current map id is %d\n", currentMapId);
+
+			// close the file
+			fclose(fp);
+		}
+		else
+		{
+			DEBUG::DebugAllegroGUI::MessageBox("Unable to open the game.sav file!", "SAVING FAILED!");
+		}
+	}
+
+	/**************************************************************************/
+
+	void GameSingleton::LoadGame()
+	{
+		if (UTILITY::FILESYSTEM::FileExists::Execute("game.sav"))
+		{
+			FILE* fp = fopen("game.sav", "rb");
+			if (fp)
+			{
+				fprintf(stderr, "------------------LOADING----------------------------------\n");
+				// read the player's data
+				unsigned int playerData[5] = {0};
+				fread(&playerData, sizeof(playerData), 1, fp);
+
+				fprintf(stderr,
+				"player world pos  : %d, %d\n"
+				"player screen pos : %d, %d\n"
+				"player face dir   : %d\n",
+				playerData[0], playerData[1], playerData[2], playerData[3], playerData[4]);
+
+				// read the camera data
+				unsigned int cameraData[6] = {0};
+				fread(&cameraData, sizeof(cameraData), 1, fp);
+
+				fprintf(stderr,
+				"camera world pos  : %d, %d\n"
+				"camera size       : %d, %d\n"
+				"camera world size : %d, %d\n",
+				cameraData[0], cameraData[1], cameraData[2], cameraData[3], cameraData[4], cameraData[5]);
+
+				// read the current map data
+				unsigned int currentMapId = 0;
+				fread(&currentMapId, sizeof(currentMapId), 1, fp);
+
+				fprintf(stderr, "current map id is %d\n", currentMapId);
+
+				// close the file
+				fclose(fp);
+
+				// assign values to the engine
+				gameSprites_->Get(playerSpriteIndex_)->SetWorldPosition(playerData[0], playerData[1]);
+				gameSprites_->Get(playerSpriteIndex_)->SetScreenPosition(playerData[2], playerData[3]);
+				gameSprites_->Get(playerSpriteIndex_)->SetFaceDirection(playerData[4]);
+
+				camera_->SetWorldPosition(cameraData[0], cameraData[1]);
+				camera_->SetWorldSize(cameraData[2], cameraData[3]);
+				camera_->SetSize(cameraData[4], cameraData[5]);
+
+				ChangeMap(gameMaps_->Get(currentMapId));
+
+			}
+			else
+			{
+				DEBUG::DebugAllegroGUI::MessageBox("Unable to open the game.sav file!", "LOADING FAILED!");
+			}
+		}
+	}
+
+	/**************************************************************************/
 
 
 
@@ -197,7 +325,12 @@ namespace GAME
 			// exit when the user presses ESC
 			if (InputDevice->KeyPressed(KEY::Key_Escape))
 			{
-				running = false;
+				bool yesNo = DEBUG::DebugAllegroGUI::YesNo("Really Quit?", "48h Contest LO-Fi Mini-RPG Game Project");
+
+				if (yesNo)
+				{
+					running = false;
+				}
 			}
 
 // test the dialogue system by pressing SPACE
@@ -259,6 +392,33 @@ namespace GAME
 						{
 							// update the main game logic
 							Update();
+
+							// save the player position with S
+#if 0 /// saving and loading does not work yet
+							if (InputDevice->KeyPressed(KEY::Key_S))
+							{
+								bool yesNo = DEBUG::DebugAllegroGUI::YesNo("Save?", "48h Contest LO-Fi Mini-RPG Game Project");
+
+								if (yesNo)
+								{
+									// save
+									SaveGame();
+								}
+							}
+
+							// reload with L
+							if (InputDevice->KeyPressed(KEY::Key_L))
+							{
+								bool yesNo = DEBUG::DebugAllegroGUI::YesNo("Reload Saved Game?", "48h Contest LO-Fi Mini-RPG Game Project");
+
+								if (yesNo)
+								{
+									// load
+									LoadGame();
+								}
+							}
+#endif
+
 
 							// handle the 'random' monster ambushes
 
