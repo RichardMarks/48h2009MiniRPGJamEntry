@@ -122,7 +122,7 @@ namespace GAME
 						{
 						case 0:
 						{
-							bool canMoveNorth = (baseLayer->GetEventAt(spriteTileX, (spriteTileY > 0) ? spriteTileY - 1 : 0) == 0xFF) ? false : true;
+							bool canMoveNorth = (baseLayer->GetSolidAt(spriteTileX, (spriteTileY > 0) ? spriteTileY - 1 : 0) == 0xFF) ? false : true;
 
 							if (canMoveNorth) { worldY--; }
 							else
@@ -136,7 +136,7 @@ namespace GAME
 
 						case 1:
 						{
-							bool canMoveSouth = (baseLayer->GetEventAt(spriteTileX, (spriteTileY < mapRows - 1) ? spriteTileY + 1 : mapRows - 1) == 0xFF) ? false : true;
+							bool canMoveSouth = (baseLayer->GetSolidAt(spriteTileX, (spriteTileY < mapRows - 1) ? spriteTileY + 1 : mapRows - 1) == 0xFF) ? false : true;
 
 							if (canMoveSouth) { worldY++; }
 							else
@@ -149,7 +149,7 @@ namespace GAME
 
 						case 2:
 						{
-							bool canMoveEast = (baseLayer->GetEventAt((spriteTileX < mapColumns - 1) ? spriteTileX + 1 : mapColumns - 1, spriteTileY) == 0xFF) ? false : true;
+							bool canMoveEast = (baseLayer->GetSolidAt((spriteTileX < mapColumns - 1) ? spriteTileX + 1 : mapColumns - 1, spriteTileY) == 0xFF) ? false : true;
 
 							if (canMoveEast) { worldX++; }
 							else
@@ -163,7 +163,7 @@ namespace GAME
 
 						case 3:
 						{
-							bool canMoveEast = (baseLayer->GetEventAt((spriteTileX > 0) ? spriteTileX - 1 : 0, spriteTileY) == 0xFF) ? false : true;
+							bool canMoveEast = (baseLayer->GetSolidAt((spriteTileX > 0) ? spriteTileX - 1 : 0, spriteTileY) == 0xFF) ? false : true;
 
 							if (canMoveEast) { worldX--; }
 							else
