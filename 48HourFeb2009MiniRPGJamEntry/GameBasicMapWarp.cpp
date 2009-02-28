@@ -60,7 +60,15 @@ namespace GAME
 			fromMap, fromX, fromY, toMap, toX, toY);
 		#endif
 
-		toX++;
+		int playerFace;
+		playerSprite->GetFaceDirection(playerFace);
+		switch(playerFace)
+		{
+			case MAPSPRITE::WALK_NORTH_FRAME: { toY--; } break;
+			case MAPSPRITE::WALK_SOUTH_FRAME: { toY++; } break;
+			case MAPSPRITE::WALK_EAST_FRAME:  { toX++; } break;
+			case MAPSPRITE::WALK_WEST_FRAME:  { toX--; } break;
+		}
 
 		// change the map if its valid
 		GameMap* newMap = game->GetMapManager()->Get(toMap);

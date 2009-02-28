@@ -87,10 +87,39 @@ namespace GAME
 
 	/**************************************************************************/
 
+
+
+
+
 	void GameMapLayer::SetEventAt(int col, int row, int event)
 	{
 		tiles_[row * numCols_ + col].eventNo = event;
 	}
+
+
+	int GameMapLayer::GetSolidAt(int col,int row) const
+	{
+		return tiles_[row * numCols_ + col].solid;
+	}
+
+	void GameMapLayer::SetSolidAt(int col,int row, int event)
+	{
+		tiles_[row * numCols_ + col].solid = event;
+	}
+
+	int GameMapLayer::GetWarpAt(int col,int row) const
+	{
+		return tiles_[row * numCols_ + col].warp;
+	}
+
+	void GameMapLayer::SetWarpAt(int col,int row, int event)
+	{
+		tiles_[row * numCols_ + col].warp = event;
+	}
+
+
+
+
 
 	/**************************************************************************/
 
@@ -100,6 +129,48 @@ namespace GAME
 	}
 
 	/**************************************************************************/
+
+	void GameMapLayer::FillTiles(int value)
+	{
+		std::vector<Tile>::iterator iter;
+		for (iter = tiles_.begin(); iter != tiles_.end(); iter++)
+		{
+			(*iter).tileIndex = value;
+		}
+	}
+
+	void GameMapLayer::FillEvents(int value)
+	{
+		std::vector<Tile>::iterator iter;
+		for (iter = tiles_.begin(); iter != tiles_.end(); iter++)
+		{
+			(*iter).eventNo = value;
+		}
+	}
+
+	void GameMapLayer::FillSolid(int value)
+	{
+		std::vector<Tile>::iterator iter;
+		for (iter = tiles_.begin(); iter != tiles_.end(); iter++)
+		{
+			(*iter).solid = value;
+		}
+	}
+
+	void GameMapLayer::FillWarps(int value)
+	{
+		std::vector<Tile>::iterator iter;
+		for (iter = tiles_.begin(); iter != tiles_.end(); iter++)
+		{
+			(*iter).warp = value;
+		}
+	}
+
+
+
+
+
+
 
 	void GameMapLayer::DrawLayer(ImageResource* destImage, int srcX, int srcY, int destX, int destY, int width, int height) const
 	{

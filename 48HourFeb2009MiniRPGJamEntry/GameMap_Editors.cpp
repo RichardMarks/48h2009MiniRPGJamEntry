@@ -300,6 +300,24 @@ namespace GAME
 						DEBUG::DebugAllegroGUI::MessageBox("Changes were not saved.", "Map Warp Editor");
 					}
 				}
+
+				// NUKE
+				if (InputDevice->KeyPressed(KEY::Key_F12))
+				{
+					bool yesNo = DEBUG::DebugAllegroGUI::YesNo("NUKE ALL WARPS FROM MAP????", "Map Warp Editor");
+
+					if (yesNo)
+					{
+						currentMap_->NukeWarps();
+						currentMap_->SaveMapWarpData(GameSingleton::GetInstance()->GetMapsDirectory().c_str());
+						std::string message = "NUKED ALL Map Warp Data for " + currentMap_->GetName() + ".map";
+						DEBUG::DebugAllegroGUI::MessageBox(message.c_str(), "Map Warp Editor");
+					}
+					else
+					{
+						DEBUG::DebugAllegroGUI::MessageBox("Nothing Changed.", "Map Warp Editor");
+					}
+				}
 #endif
 				// only process clicks on the inside of the map panel
 				if (mouseX_ > 0 && mouseX_ < (cameraW_ * 16) && mouseY_ > 0 && mouseY_ < (cameraH_ * 16))
@@ -462,6 +480,16 @@ namespace GAME
 						// if there is a warp here, we edit it
 						if (currentMap_->IsWarp(tileX, tileY))
 						{
+							fprintf(stderr,
+								"Warp-Removal Routine:\n"
+								"current map -> GetWarp returns %d\n"
+								"total number of maps in engine is %d\n"
+								"total number of warps on current map is %d\n",
+								currentMap_->GetWarp(tileX, tileY),
+								maps_->GetNumMaps(),
+								currentMap_->GetNumWarpTargetPairs()
+								);
+
 							// remove the warp tunnel
 							WarpTargetPair* pair = currentMap_->GetWarpTargetPair(currentMap_->GetWarp(tileX, tileY));
 

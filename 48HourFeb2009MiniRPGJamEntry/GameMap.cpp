@@ -133,7 +133,7 @@ namespace GAME
 		for (int index = 0; index < tileSize; index++)
 		{
 			unsigned char colDat = static_cast<unsigned char>(
-				(tiles[index].eventNo == 0xFF) ? 0xFF : 0x0);
+				(tiles[index].solid == 0xFF) ? 0xFF : 0x0);
 			fwrite(&colDat, sizeof(unsigned char), 1, fp);
 		}
 
@@ -177,7 +177,7 @@ namespace GAME
 		{
 			unsigned char colDat;
 			fread(&colDat, sizeof(unsigned char), 1, fp);
-			tiles[index].eventNo = colDat;
+			tiles[index].solid = colDat;
 		}
 
 		// close the file
@@ -248,7 +248,7 @@ namespace GAME
 		// negative values mean there is no warp at the location
 		for (int index = 0; index < tileSize; index++)
 		{
-			signed int e = static_cast<signed int>(tiles[index].eventNo);
+			signed int e = static_cast<signed int>(tiles[index].warp);
 
 			signed int warpIndex = static_cast<signed int>((e >= 0x0 && e < 0xFF) ? e : -1);
 			fwrite(&warpIndex, sizeof(signed int), 1, fp);
@@ -325,11 +325,7 @@ namespace GAME
 		{
 			signed int warpIndex;
 			fread(&warpIndex, sizeof(signed int), 1, fp);
-
-			if (tiles[index].eventNo != 0xFF && tiles[index].eventNo != 0xFE)
-			{
-				tiles[index].eventNo = warpIndex;
-			}
+			tiles[index].warp = warpIndex;
 		}
 
 		// read the total number of warps as unsigned int value as (A)
@@ -487,14 +483,14 @@ namespace GAME
 
 	void GameMap::SetTileSolid(int tileX, int tileY, bool isSolid)
 	{
-		layers_[0].SetEventAt(tileX, tileY, (isSolid) ? 0xFF : 0xFE);
+		layers_[0].SetSolidAt(tileX, tileY, (isSolid) ? 0xFF : 0xFE);
 	}
 
 	/**************************************************************************/
 
 	bool GameMap::IsSolid(int tileX, int tileY) const
 	{
-		return (layers_[0].GetEventAt(tileX, tileY) == 0xFF) ? true : false;
+		return (layers_[0].GetSolidAt(tileX, tileY) == 0xFF) ? true : false;
 	}
 
 	/**************************************************************************/
@@ -502,7 +498,7 @@ namespace GAME
 	bool GameMap::IsWarp(int tileX, int tileY) const
 	{
 		// return (layers_[0].GetEventAt(tileX, tileY) < 0xFE && layers_[0].GetEventAt(tileX, tileY) >= 0x0) ? true : false;
-		signed int warpIndex = layers_[0].GetEventAt(tileX, tileY);
+		signed int warpIndex = layers_[0].GetWarpAt(tileX, tileY);
 
 		return (warpIndex < 0x0) ? false :
 			(warpIndex < 0xFE) ? true : false;
@@ -512,14 +508,14 @@ namespace GAME
 
 	void GameMap::SetWarp(int tileX, int tileY, int warpIndex)
 	{
-		layers_[0].SetEventAt(tileX, tileY, warpIndex);
+		layers_[0].SetWarpAt(tileX, tileY, warpIndex);
 	}
 
 	/**************************************************************************/
 
 	int GameMap::GetWarp(int tileX, int tileY) const
 	{
-		return layers_[0].GetEventAt(tileX, tileY);
+		return layers_[0].GetWarpAt(tileX, tileY);
 	}
 
 	/**************************************************************************/
@@ -600,6 +596,13 @@ namespace GAME
 	unsigned int GameMap::GetNumWarpTargetPairs() const
 	{
 		return warps_.size();
+	}
+
+	void GameMap::NukeWarps()
+	{
+		ClearWarpTargetPairs();
+
+		layers_[0].FillWarps(-1);
 	}
 }
 

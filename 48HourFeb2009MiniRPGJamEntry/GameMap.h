@@ -199,6 +199,9 @@ namespace GAME
 
 		unsigned int GetNumWarpTargetPairs() const;
 
+		/// destroys all warps on the map
+		void NukeWarps();
+
 	private:
 		std::vector<WarpTargetPair*> warps_;
 
