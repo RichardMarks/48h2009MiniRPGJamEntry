@@ -2,13 +2,16 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
 	<File name="SConstruct" open="0" top="0" tabpos="0">
-		<Cursor position="1115" topLine="0" />
+		<Cursor position="1033" topLine="0" />
 	</File>
 	<File name="include/BitmapFont.h" open="0" top="0" tabpos="0">
 		<Cursor position="154" topLine="0" />
 	</File>
 	<File name="include/DebugReport.h" open="0" top="0" tabpos="0">
 		<Cursor position="7471" topLine="173" />
+	</File>
+	<File name="include/FileUtilities.h" open="0" top="0" tabpos="0">
+		<Cursor position="447" topLine="0" />
 	</File>
 	<File name="include/GUIListBox.h" open="0" top="0" tabpos="0">
 		<Cursor position="609" topLine="0" />
@@ -22,8 +25,14 @@
 	<File name="include/InputDevice.h" open="0" top="0" tabpos="0">
 		<Cursor position="12903" topLine="375" />
 	</File>
+	<File name="include/Settings.h" open="0" top="0" tabpos="0">
+		<Cursor position="381" topLine="9" />
+	</File>
+	<File name="include/TextFileParser.h" open="0" top="0" tabpos="0">
+		<Cursor position="1106" topLine="0" />
+	</File>
 	<File name="include/ged101minimal.h" open="0" top="0" tabpos="0">
-		<Cursor position="211" topLine="2" />
+		<Cursor position="1367" topLine="34" />
 	</File>
 	<File name="source/BitmapFont.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="499" topLine="0" />
@@ -31,13 +40,25 @@
 	<File name="source/DebugReport.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="6606" topLine="187" />
 	</File>
+	<File name="source/FileUtilities.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="545" topLine="15" />
+	</File>
 	<File name="source/GUIListBox.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="4177" topLine="0" />
+		<Cursor position="2744" topLine="67" />
+	</File>
+	<File name="source/GUIMessageBox.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2445" topLine="132" />
 	</File>
 	<File name="source/GUITextEntryDialog.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="299" topLine="6" />
 	</File>
 	<File name="source/InputDevice_Mouse.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="3677" topLine="118" />
+	</File>
+	<File name="source/Settings.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1410" topLine="32" />
+	</File>
+	<File name="source/TextFileParser.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1086" topLine="15" />
 	</File>
 </CodeBlocks_layout_file>

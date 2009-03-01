@@ -2,13 +2,13 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
 	<File name="Game.cpp" open="0" top="0" tabpos="9">
-		<Cursor position="3571" topLine="127" />
+		<Cursor position="10199" topLine="378" />
 	</File>
 	<File name="Game.h" open="0" top="0" tabpos="2">
-		<Cursor position="1083" topLine="0" />
+		<Cursor position="6327" topLine="197" />
 	</File>
 	<File name="GameBasicMapWarp.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="128" topLine="0" />
+		<Cursor position="1614" topLine="74" />
 	</File>
 	<File name="GameBattle.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="1125" topLine="0" />
@@ -40,11 +40,14 @@
 	<File name="GameBattle_Update.cpp" open="0" top="0" tabpos="8">
 		<Cursor position="297" topLine="0" />
 	</File>
+	<File name="GameCamera.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="0" topLine="110" />
+	</File>
 	<File name="GameCamera.h" open="0" top="0" tabpos="0">
-		<Cursor position="1427" topLine="9" />
+		<Cursor position="1499" topLine="20" />
 	</File>
 	<File name="GameDialogueMessage.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1002" topLine="106" />
+		<Cursor position="6599" topLine="259" />
 	</File>
 	<File name="GameDialogueMessage.h" open="0" top="0" tabpos="0">
 		<Cursor position="741" topLine="83" />
@@ -59,10 +62,10 @@
 		<Cursor position="1004" topLine="2" />
 	</File>
 	<File name="GameMap.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="10241" topLine="308" />
+		<Cursor position="16646" topLine="556" />
 	</File>
 	<File name="GameMap.h" open="0" top="0" tabpos="2">
-		<Cursor position="367" topLine="52" />
+		<Cursor position="5356" topLine="159" />
 	</File>
 	<File name="GameMapEvent.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="190" topLine="0" />
@@ -71,43 +74,46 @@
 		<Cursor position="827" topLine="3" />
 	</File>
 	<File name="GameMapLayer.cpp" open="0" top="0" tabpos="9">
-		<Cursor position="3557" topLine="144" />
+		<Cursor position="3054" topLine="120" />
 	</File>
 	<File name="GameMapLayer.h" open="0" top="0" tabpos="0">
-		<Cursor position="3275" topLine="36" />
+		<Cursor position="3326" topLine="105" />
 	</File>
 	<File name="GameMapManager.cpp" open="0" top="0" tabpos="10">
-		<Cursor position="1263" topLine="18" />
+		<Cursor position="3115" topLine="0" />
 	</File>
 	<File name="GameMapManager.h" open="0" top="0" tabpos="0">
-		<Cursor position="633" topLine="4" />
+		<Cursor position="624" topLine="4" />
 	</File>
 	<File name="GameMapSprite.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="199" topLine="63" />
+		<Cursor position="3656" topLine="104" />
 	</File>
 	<File name="GameMapSprite.h" open="0" top="0" tabpos="0">
-		<Cursor position="0" topLine="15" />
+		<Cursor position="907" topLine="19" />
 	</File>
 	<File name="GameMapSpriteManager.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="216" topLine="0" />
+		<Cursor position="216" topLine="62" />
 	</File>
 	<File name="GameMap_Editors.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="12717" topLine="426" />
+		<Cursor position="7188" topLine="228" />
 	</File>
 	<File name="GameMap_Editors.h" open="0" top="0" tabpos="2">
-		<Cursor position="3462" topLine="111" />
+		<Cursor position="1443" topLine="60" />
+	</File>
+	<File name="GameMap_Editors_Render.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="4348" topLine="223" />
 	</File>
 	<File name="GameNPC.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="5050" topLine="180" />
+		<Cursor position="4397" topLine="171" />
 	</File>
 	<File name="GameNPC.h" open="0" top="0" tabpos="0">
-		<Cursor position="0" topLine="18" />
+		<Cursor position="416" topLine="13" />
 	</File>
 	<File name="GameNPCManager.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1712" topLine="0" />
+		<Cursor position="670" topLine="13" />
 	</File>
 	<File name="GameNPCManager.h" open="0" top="0" tabpos="0">
-		<Cursor position="768" topLine="21" />
+		<Cursor position="235" topLine="7" />
 	</File>
 	<File name="GameNameEntry.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="1833" topLine="36" />
@@ -119,10 +125,10 @@
 		<Cursor position="719" topLine="0" />
 	</File>
 	<File name="GameSprite.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="2487" topLine="99" />
+		<Cursor position="2026" topLine="39" />
 	</File>
 	<File name="GameSprite.h" open="0" top="0" tabpos="0">
-		<Cursor position="1244" topLine="34" />
+		<Cursor position="662" topLine="16" />
 	</File>
 	<File name="GameTileset.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="179" topLine="0" />
@@ -130,29 +136,56 @@
 	<File name="GameTilesetManager.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="181" topLine="0" />
 	</File>
+	<File name="Game_CheckNPCCollisions.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="0" topLine="12" />
+	</File>
 	<File name="Game_Destroy.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="741" topLine="0" />
+		<Cursor position="340" topLine="0" />
 	</File>
 	<File name="Game_Dialogue.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="632" topLine="3" />
+		<Cursor position="515" topLine="0" />
 	</File>
-	<File name="Game_Initialize.cpp" open="0" top="0" tabpos="10">
-		<Cursor position="2792" topLine="66" />
+	<File name="Game_DirectoryManagement.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1741" topLine="15" />
+	</File>
+	<File name="Game_Initialize.cpp" open="1" top="1" tabpos="3">
+		<Cursor position="3634" topLine="122" />
 	</File>
 	<File name="Game_Render.cpp" open="0" top="0" tabpos="6">
-		<Cursor position="835" topLine="0" />
+		<Cursor position="1618" topLine="20" />
 	</File>
 	<File name="Game_Update.cpp" open="0" top="0" tabpos="4">
-		<Cursor position="3160" topLine="63" />
+		<Cursor position="18099" topLine="607" />
 	</File>
 	<File name="Game_WorldLoader.cpp" open="0" top="0" tabpos="4">
-		<Cursor position="7068" topLine="247" />
+		<Cursor position="8137" topLine="244" />
 	</File>
 	<File name="SConstruct" open="0" top="0" tabpos="0">
 		<Cursor position="2143" topLine="27" />
 	</File>
 	<File name="data/battles/game.battle" open="0" top="0" tabpos="0">
 		<Cursor position="0" topLine="2" />
+	</File>
+	<File name="data/dialogue/generic_female_hello.dialogue" open="0" top="0" tabpos="0">
+		<Cursor position="31" topLine="0" />
+	</File>
+	<File name="data/dialogue/generic_female_hello2.dialogue" open="0" top="0" tabpos="0">
+		<Cursor position="30" topLine="0" />
+	</File>
+	<File name="data/dialogue/generic_female_hello3.dialogue" open="0" top="0" tabpos="0">
+		<Cursor position="66" topLine="0" />
+	</File>
+	<File name="data/dialogue/generic_male_hello.dialogue" open="0" top="0" tabpos="0">
+		<Cursor position="23" topLine="0" />
+	</File>
+	<File name="data/dialogue/test.dialogue" open="0" top="0" tabpos="0">
+		<Cursor position="309" topLine="0" />
+	</File>
+	<File name="data/worlds/game.world" open="1" top="0" tabpos="2">
+		<Cursor position="910" topLine="0" />
+	</File>
+	<File name="game.cfg" open="1" top="0" tabpos="1">
+		<Cursor position="214" topLine="0" />
 	</File>
 	<File name="main.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="919" topLine="0" />
