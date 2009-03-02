@@ -32,6 +32,9 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	// fix windows bug? maybe...
+	GraphicsDevice->Destroy();
+
 	LogSimpleMessage("Shutdown Sequence Complete.");
 	return 0;
 }

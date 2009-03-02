@@ -42,8 +42,6 @@ namespace GAME
 
 		#undef _TMP_DELRES
 
-		allegro_exit();
-
 	}
 
 } // end namespace
