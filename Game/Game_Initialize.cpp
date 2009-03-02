@@ -15,10 +15,10 @@ namespace GAME
 
 	bool GameSingleton::Initialize(int argc, char* argv[])
 	{
-		if (!gameSettings_)
-		{
-			gameSettings_ = new UTILITY::CONFIGURATION::Settings();
+		gameSettings_ = new UTILITY::CONFIGURATION::Settings();
 
+		if (gameSettings_)
+		{
 			// default settings
 			gameSettings_->Set("screen_width", "800");
 			gameSettings_->Set("screen_width", "600");

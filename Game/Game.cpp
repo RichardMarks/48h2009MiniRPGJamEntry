@@ -228,7 +228,31 @@ namespace GAME
 
 
 
-	GameSingleton::GameSingleton() { /* do not put code here */ }
+	GameSingleton::GameSingleton() :
+		microDisplay_(0),
+		smallFont_(0),
+		largeFont_(0),
+		camera_(0),
+		windowOverlay_(0),
+		playerPortrait_(0),
+		gameTiles_(0),
+		gameMaps_(0),
+		currentMap_(0),
+		gameSprites_(0),
+		gameNPCs_(0),
+		dialogueMessage_(0),
+		gameMenu_(0),
+		gameStateManager_(0),
+		playerSpriteIndex_(0),
+		requestToClearDialogueRegion_(false),
+		stepsTaken_(0),
+		stepsUntilAmbush_(0),
+		gameSettings_(0)
+		#if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
+		,lofiOverlay_(0)
+		#endif
+
+	{ /* do not put code here */ }
 
 	/**************************************************************************/
 

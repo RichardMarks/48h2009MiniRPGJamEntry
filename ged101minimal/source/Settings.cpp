@@ -157,10 +157,13 @@ namespace UTILITY
 
 		std::string Settings::Get(const char* setting)
 		{
-			SettingTableIterator iter;
-			if ((iter = settings_.find(setting)) != settings_.end())
+			if (settings_.size())
 			{
-				return iter->second.c_str();
+				SettingTableIterator iter;
+				if ((iter = settings_.find(setting)) != settings_.end())
+				{
+					return iter->second.c_str();
+				}
 			}
 			return "";
 		}

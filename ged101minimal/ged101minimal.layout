@@ -20,13 +20,19 @@
 		<Cursor position="435" topLine="0" />
 	</File>
 	<File name="include/GameTimer.h" open="0" top="0" tabpos="0">
-		<Cursor position="1124" topLine="3" />
+		<Cursor position="1124" topLine="86" />
+	</File>
+	<File name="include/GraphicsDevice.h" open="0" top="0" tabpos="0">
+		<Cursor position="6878" topLine="147" />
+	</File>
+	<File name="include/ImageResource.h" open="0" top="0" tabpos="0">
+		<Cursor position="2551" topLine="363" />
 	</File>
 	<File name="include/InputDevice.h" open="0" top="0" tabpos="0">
-		<Cursor position="12903" topLine="375" />
+		<Cursor position="12903" topLine="547" />
 	</File>
 	<File name="include/Settings.h" open="0" top="0" tabpos="0">
-		<Cursor position="381" topLine="9" />
+		<Cursor position="381" topLine="27" />
 	</File>
 	<File name="include/TextFileParser.h" open="0" top="0" tabpos="0">
 		<Cursor position="1106" topLine="0" />
@@ -52,11 +58,17 @@
 	<File name="source/GUITextEntryDialog.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="299" topLine="6" />
 	</File>
+	<File name="source/GraphicsDevice.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="5206" topLine="54" />
+	</File>
+	<File name="source/ImageResource.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="4416" topLine="624" />
+	</File>
 	<File name="source/InputDevice_Mouse.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="3677" topLine="118" />
 	</File>
 	<File name="source/Settings.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1410" topLine="32" />
+		<Cursor position="3680" topLine="120" />
 	</File>
 	<File name="source/TextFileParser.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="1086" topLine="15" />

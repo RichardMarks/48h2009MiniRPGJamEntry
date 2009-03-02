@@ -93,9 +93,6 @@
 		<Unit filename="GameBattleSpriteManager.h">
 			<Option virtualFolder="Battle System/Managers/" />
 		</Unit>
-		<Unit filename="GameBattle_BattleLoader.cpp">
-			<Option virtualFolder="Battle System/" />
-		</Unit>
 		<Unit filename="GameBattle_Initialize.cpp">
 			<Option virtualFolder="Battle System/" />
 		</Unit>
