@@ -365,14 +365,14 @@ namespace GAME
 		/// manages the game settings
 		Settings* gameSettings_;
 
-		/// the directory that tiles are stored in
-		std::string tilesDirectory_;
+		//// the directory that tiles are stored in
+		//std::string tilesDirectory_;
 
-		/// the directory that maps are stored in
-		std::string mapsDirectory_;
+		//// the directory that maps are stored in
+		//std::string mapsDirectory_;
 
-		/// the directory that sprites are stored in
-		std::string spritesDirectory_;
+		//// the directory that sprites are stored in
+		//std::string spritesDirectory_;
 
 /*#**************************************************************************#*/
 

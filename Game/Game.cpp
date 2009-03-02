@@ -431,10 +431,10 @@ namespace GAME
 							if (stepsUntilAmbush_ <= 0)
 							{
 								// tell the battle system to initialize
-								BattleEngine->SetState(BATTLE::Initialize);
+								//BattleEngine->SetState(BATTLE::Initialize);
 
 								// tell the game to process the battle system on the next update
-								SetState(GAMESTATE::Battle);
+								//SetState(GAMESTATE::Battle);
 
 								// reset ambush step counter
 								/** TODO:
@@ -458,14 +458,14 @@ namespace GAME
 						// the external battle system processing takes place
 
 						// update the battle system
-						BattleEngine->Update();
+						//BattleEngine->Update();
 
 						// has the battle finished?
-						if (BATTLE::Finished == BattleEngine->GetState())
-						{
+						//if (BATTLE::Finished == BattleEngine->GetState())
+						//{
 							// tell the game to process the game world
 							SetState(GAMESTATE::World);
-						}
+						//}
 
 					} break;
 
@@ -511,7 +511,7 @@ namespace GAME
 				case GAMESTATE::Battle:
 				{
 					// render the battle system
-					BattleEngine->Render();
+					//BattleEngine->Render();
 				} break;
 
 				case GAMESTATE::Menu:

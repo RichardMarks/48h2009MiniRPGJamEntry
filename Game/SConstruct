@@ -52,7 +52,6 @@ projectConfig['sources'] = Split("""
 	GameBattleSceneManager.cpp
 	GameBattle.cpp
 	GameBattle_Initialize.cpp
-	GameBattle_BattleLoader.cpp
 	GameBattle_Update.cpp
 	GameBattle_Render.cpp
 	GameDialogueMessage.cpp
