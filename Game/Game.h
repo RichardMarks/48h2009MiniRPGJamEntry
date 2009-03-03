@@ -6,30 +6,6 @@
 // Author: Richard Marks
 // Purpose: the primary game singleton class
 
-/**
- * @mainpage
- * The primary goal of this project is to build a mini-rpg game during the 48-hour game making jam.
- * Second to that goal is to design and implement a reusable tile-based rpg game engine based on the ged101minimal code base.
- *
- * The game engine should be comprised of
- * - smooth-scrolling camera-based tile-map rendering system
- * - real-time enemy-encounter (battle) system
- * - dynamically extendable game menu system
- * - animated / scripted NPC system
- * - scripted game events system
- * - built-in game content editors
- *
- *
- * The aforementioned smooth-scrolling camera-based tile-map rendering system should be able to support
- * - maps of nearly any dimension
- * - tiles of 8x8, 16x16, 24x24, 32x32, and 64x64 sizes
- * - "zoomed" rendering at x1, x2, x3, x4 zoom levels
- * - multiple layers of tiles
- * - tile-based collision
- * - a single tile-set per map
- * - a near unlimited number of maps
- */
-
 #ifndef __GAME_H__
 #define __GAME_H__
 
@@ -260,10 +236,11 @@ namespace GAME
 
 
 /*#**************************************************************************#*/
+		/// constructor
+		GameSingleton();
 
 	private:
-		/// hidden constructor
-		GameSingleton();
+
 
 		/// hidden copy constructor
 		GameSingleton(const GameSingleton& rhs);
@@ -360,21 +337,8 @@ namespace GAME
 		/// number of steps to initiate a random monster encounter
 		int stepsUntilAmbush_;
 
-
-
 		/// manages the game settings
 		Settings* gameSettings_;
-
-		//// the directory that tiles are stored in
-		//std::string tilesDirectory_;
-
-		//// the directory that maps are stored in
-		//std::string mapsDirectory_;
-
-		//// the directory that sprites are stored in
-		//std::string spritesDirectory_;
-
-/*#**************************************************************************#*/
 
 // all of this will be removed after the 48 hour jam entry
 #if defined(FORTYEIGHTHOUR_JAM_ENTRY_VERSION)
@@ -382,7 +346,10 @@ namespace GAME
 		/// the 48 hour LOFI jam logo
 		ImageResource* lofiOverlay_;
 #endif
+
 	};
+
+	extern GameSingleton* globalGameInstance;
 
 	/// allegro hw independent timing code
 	extern volatile int allegroTimerSpeedCounter;

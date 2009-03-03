@@ -262,8 +262,7 @@ namespace GAME
 
 	GameSingleton* GameSingleton::GetInstance()
 	{
-		static GameSingleton instance;
-		return &instance;
+		return globalGameInstance;
 	}
 
 	/**************************************************************************/
